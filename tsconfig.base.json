@@ -1,0 +1,32 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2020",
+    "module": "ESNext",
+    "useDefineForClassFields": false,
+    "lib": ["ES2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@jost/shared": ["libs/shared/src/index.ts"],
+      "@jost/shared/*": ["libs/shared/src/*"],
+      "@jost/finance/feature": ["apps/finance/src/app/feature/finance.routes.ts"],
+      "@jost/about-me/feature": ["apps/about-me/src/app/feature/about-me.routes.ts"],
+      "@jost/playground/feature": ["apps/playground/src/app/feature/playground.routes.ts"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "about-me",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/about-me/src",
+  "prefix": "app",
+  "tags": []
+}

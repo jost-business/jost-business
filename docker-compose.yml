@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  shell:
+    build:
+      context: .
+      dockerfile: apps/shell/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - finance
+      - about-me
+      - playground
+    environment:
+      - NODE_ENV=production
+    networks:
+      - jost-network
+
+  finance:
+    build:
+      context: .
+      dockerfile: apps/finance/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - jost-network
+
+  about-me:
+    build:
+      context: .
+      dockerfile: apps/about-me/Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - jost-network
+
+  playground:
+    build:
+      context: .
+      dockerfile: apps/playground/Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - jost-network
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - shell
+      - finance
+      - about-me
+      - playground
+    networks:
+      - jost-network
+
+networks:
+  jost-network:
+    driver: bridge

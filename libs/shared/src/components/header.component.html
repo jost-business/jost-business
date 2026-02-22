@@ -1,0 +1,16 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <span class="header-title">Jost Business</span>
+  <span class="spacer"></span>
+  <div class="user-menu" *ngIf="authService.isAuthenticated()">
+    <button mat-button [matMenuTriggerFor]="menu" class="user-button">
+      {{ authService.currentUser()?.name }}
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()" class="logout-button">Logout</button>
+    </mat-menu>
+  </div>
+  <button mat-button *ngIf="!authService.isAuthenticated()" routerLink="/login" class="login-button">
+    Login
+  </button>
+</mat-toolbar>

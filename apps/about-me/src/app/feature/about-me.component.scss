@@ -1,0 +1,82 @@
+.about-me-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-title {
+  margin: 0;
+  padding: 0;
+  font-size: 32px;
+  font-weight: 500;
+  color: #333;
+}
+
+.about-card,
+.bio-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  border-bottom: 1px solid #eee;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-list {
+  padding: 0;
+  list-style: none;
+}
+
+.list-item {
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.list-label {
+  color: #333;
+  font-weight: 600;
+  min-width: 120px;
+}
+
+.list-value {
+  color: #666;
+  flex: 1;
+}
+
+.login-prompt {
+  margin: 0;
+  color: #999;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.bio-text {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.bio-card {
+  margin-top: 20px;
+}

@@ -1,0 +1,42 @@
+<div class="about-me-container">
+  <h2 class="about-title">About Me</h2>
+  <mat-card class="about-card">
+    <mat-card-header class="card-header">
+      <mat-card-title class="card-title">Profile Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <div class="profile-info" *ngIf="authService.isAuthenticated()">
+        <mat-list class="profile-list">
+          <mat-list-item class="list-item">
+            <strong class="list-label">Name:</strong>
+            <span class="list-value">{{ authService.currentUser()?.name }}</span>
+          </mat-list-item>
+          <mat-list-item class="list-item">
+            <strong class="list-label">Email:</strong>
+            <span class="list-value">{{ authService.currentUser()?.email }}</span>
+          </mat-list-item>
+          <mat-list-item class="list-item">
+            <strong class="list-label">Role:</strong>
+            <span class="list-value">{{ authService.currentUser()?.role }}</span>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <p class="login-prompt" *ngIf="!authService.isAuthenticated()">
+        Please log in to see your profile information.
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="bio-card">
+    <mat-card-header class="card-header">
+      <mat-card-title class="card-title">Bio</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <p class="bio-text">
+        Welcome to the About Me section of Jost Business.
+        This is a modern micro frontend application built with Angular 21,
+        using signals and zoneless change detection.
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

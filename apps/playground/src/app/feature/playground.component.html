@@ -1,0 +1,56 @@
+<div class="playground-container">
+  <h2 class="playground-title">Playground</h2>
+  <mat-card class="signals-card">
+    <mat-card-header class="card-header">
+      <mat-card-title class="card-title">Interactive Signals Demo</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <p class="description">
+        Experiment with Angular 21 Signals and zoneless change detection!
+      </p>
+
+      <mat-form-field appearance="fill" class="input-field">
+        <mat-label>Enter text</mat-label>
+        <input matInput [(ngModel)]="inputValue" placeholder="Type something..." class="input-element" />
+      </mat-form-field>
+
+      <div class="output-section">
+        <p class="output-row">
+          <span class="output-label">Input value:</span>
+          <strong class="output-value">{{ inputValue }}</strong>
+        </p>
+        <p class="output-row">
+          <span class="output-label">Character count:</span>
+          <strong class="output-value">{{ inputValue.length }}</strong>
+        </p>
+        <p class="output-row">
+          <span class="output-label">Uppercase:</span>
+          <strong class="output-value">{{ inputValue.toUpperCase() }}</strong>
+        </p>
+      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="resetInput()"
+        class="reset-button"
+      >
+        Reset
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="state-card">
+    <mat-card-header class="card-header">
+      <mat-card-title class="card-title">Cross-App State</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <p class="state-text" *ngIf="authService.isAuthenticated()">
+        You are logged in as: <strong class="user-name">{{ authService.currentUser()?.name }}</strong>
+      </p>
+      <p class="state-text" *ngIf="!authService.isAuthenticated()">
+        Not logged in yet. Try logging in from other apps to see state synchronization!
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
