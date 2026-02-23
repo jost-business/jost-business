@@ -1,8 +1,8 @@
 <header class="app-toolbar">
-<h1 class="app-title">Jost Business</h1>
+<h1 class="app-title">Jost</h1>
   <span class="spacer"></span>
   <nav class="nav-menu">
-    <a routerLink="/" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{ exact: true }">
+    <a href="/" class="nav-link">
       Home
     </a>
     <a href="/finance/" class="nav-link">
@@ -18,7 +18,42 @@
 </header>
 
 <div class="content">
-  <p>Multi-app Angular 21 + Nx monorepo deployment</p>
-  <p>Navigate using the menu above to explore different sections.</p>
-  <router-outlet></router-outlet>
+  <h2 class="content-title">Advanced Micro-Frontend Architecture</h2>
+  
+  <div class="content-body">
+    <div class="content-main">
+      <p>
+        This is a production-grade micro-frontend application built with <strong>Angular 21</strong> and <strong>Nx monorepo</strong>, 
+        demonstrating enterprise-level architecture and DevOps practices.
+      </p>
+      
+      <h3>Key Features</h3>
+      <ul>
+        <li><strong>Micro-Frontend Architecture:</strong> Independent Angular applications (Shell, Finance, About-me, Playground) deployed as separate services</li>
+        <li><strong>Containerized Deployment:</strong> Multi-stage Docker builds with optimized production images running on a Virtual Private Server</li>
+        <li><strong>Reverse Proxy & SSL/TLS:</strong> Nginx reverse proxy with HTTPS termination and automated SSL certificate management</li>
+        <li><strong>Monorepo Orchestration:</strong> Nx for managing dependencies, builds, and cross-app configuration at scale</li>
+        <li><strong>Standalone Components:</strong> Modern Angular with zoneless change detection for optimal performance</li>
+        <li><strong>Asset Pipeline:</strong> Optimized build output with proper base href routing for sub-applications</li>
+      </ul>
+
+      <h3>Technology Stack</h3>
+      <p>
+        <strong>Frontend:</strong> Angular 21 (Standalone Components) | <strong>Build Tool:</strong> Nx 22.5.2 with esbuild | 
+        <strong>Containerization:</strong> Docker & Docker Compose | <strong>Reverse Proxy:</strong> Nginx with SSL/TLS
+      </p>
+
+      <h3>Infrastructure</h3>
+      <p>
+        Deployed on a Virtual Private Server (Ubuntu 20.04) with automated container orchestration, 
+        monitoring, and production-grade HTTPS. Each micro-frontend runs independently yet seamlessly 
+        integrates through intelligent routing and shared navigation patterns.
+      </p>
+
+    </div>
+
+    <div class="content-sidebar">
+      <img class="legend-image" src="/assets/images/legend.png" alt="Legend" />
+    </div>
+  </div>
 </div>
