@@ -5,20 +5,19 @@
     <a routerLink="/" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{ exact: true }">
       Home
     </a>
-    <a routerLink="/finance" routerLinkActive="active" class="nav-link">
+    <a href="/finance/" class="nav-link">
       Finance
     </a>
-    <a routerLink="/about-me" routerLinkActive="active" class="nav-link">
+    <a href="/about-me/" class="nav-link">
       About Me
     </a>
-    <a routerLink="/playground" routerLinkActive="active" class="nav-link">
+    <a href="/playground/" class="nav-link">
       Playground
     </a>
   </nav>
 </header>
 
 <div class="content">
-  <h2>Welcome to Jost Business</h2>
   <p>Multi-app Angular 21 + Nx monorepo deployment</p>
   <p>Navigate using the menu above to explore different sections.</p>
   <router-outlet></router-outlet>
