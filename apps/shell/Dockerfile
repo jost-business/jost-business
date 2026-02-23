@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build the shell app
-RUN npm run build
+RUN npx nx build shell
 
 # Stage 2: Runtime
 FROM node:20-alpine

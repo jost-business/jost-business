@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build the about-me app
-RUN npx ng build about-me || npm run build
+RUN npx nx build about-me
 
 # Stage 2: Runtime
 FROM node:20-alpine

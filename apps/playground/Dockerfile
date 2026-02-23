@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build the playground app
-RUN npx ng build playground || npm run build
+RUN npx nx build playground
 
 # Stage 2: Runtime
 FROM node:20-alpine

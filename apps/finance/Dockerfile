@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build the finance app (using ng build directly)
-RUN npx ng build finance || npm run build
+RUN npx nx build finance
 
 # Stage 2: Runtime
 FROM node:20-alpine
