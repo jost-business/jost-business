@@ -8,7 +8,8 @@
     "start": "nx serve shell",
     "build": "nx build shell",
     "serve": "nx serve shell",
-    "test": "nx test"
+    "test": "nx test",
+    "ssh:server": "ssh root@167.86.87.165 -t \"cd /home/projects/jost-business && bash\""
   },
   "keywords": [],
   "author": "",
