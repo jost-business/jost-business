@@ -3,7 +3,7 @@ import { provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FINANCE_ROUTES } from './app/feature/finance.routes';
+import { ABOUT_ME_ROUTES } from './app/feature/about-me.routes';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +16,6 @@ class RootComponent {}
 bootstrapApplication(RootComponent, {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(FINANCE_ROUTES),
+    provideRouter(ABOUT_ME_ROUTES),
   ],
 }).catch((err) => console.error(err));
