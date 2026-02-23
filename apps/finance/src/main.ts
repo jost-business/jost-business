@@ -1,21 +1,13 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideZoneChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { FINANCE_ROUTES } from './app/feature/finance.routes';
 
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  template: '<router-outlet></router-outlet>',
-})
-class RootComponent {}
+import { AppComponent } from './app/app.component';
+import { APP_ROUTES } from './app/app.routes';
 
-bootstrapApplication(RootComponent, {
+bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(FINANCE_ROUTES),
+    provideZonelessChangeDetection(),
+    provideRouter(APP_ROUTES),
   ],
 }).catch((err) => console.error(err));
