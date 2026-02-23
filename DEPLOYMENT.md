@@ -81,23 +81,18 @@ sudo apt-get install -y git
 ## Step 2: Clone Your Repository to Server
 
 ```bash
-cd /home
-git clone <your-repository-url> jost-business
+mkdir -p /home/projects
+cd /home/projects
+git clone https://github.com/jost-business/jost-business.git jost-business
 cd jost-business
-```
-
-Or if you don't have a git repository yet, SCP the files:
-```bash
-# From your local machine
-scp -r d:\projects\jost-business/* root@167.86.87.165:/home/jost-business/
 ```
 
 ## Step 3: Set Up SSL Certificates
 
 ### Generate self-signed certificate (for testing)
 ```bash
-mkdir -p /home/jost-business/certs
-cd /home/jost-business/certs
+mkdir -p /home/projects/jost-business/certs
+cd /home/projects/jost-business/certs
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout key.pem -out cert.pem \
   -subj "/C=US/ST=State/L=City/O=Organization/CN=jost.business"
@@ -106,10 +101,10 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 ### Or use Let's Encrypt (recommended for production)
 ```bash
 sudo certbot certonly --standalone -d jost.business
-sudo cp /etc/letsencrypt/live/jost.business/fullchain.pem /home/jost-business/certs/cert.pem
-sudo cp /etc/letsencrypt/live/jost.business/privkey.pem /home/jost-business/certs/key.pem
-sudo chown root:root /home/jost-business/certs/*
-sudo chmod 644 /home/jost-business/certs/*
+sudo cp /etc/letsencrypt/live/jost.business/fullchain.pem /home/projects/jost-business/certs/cert.pem
+sudo cp /etc/letsencrypt/live/jost.business/privkey.pem /home/projects/jost-business/certs/key.pem
+sudo chown root:root /home/projects/jost-business/certs/*
+sudo chmod 644 /home/projects/jost-business/certs/*
 ```
 
 ## Step 4: Verify DNS Configuration
@@ -123,7 +118,7 @@ Should resolve to your server IP: 167.86.87.165
 ## Step 5: Build and Run Docker Containers
 
 ```bash
-cd /home/jost-business
+cd /home/projects/jost-business
 
 # Build all containers
 docker-compose build
@@ -179,7 +174,7 @@ Create a cron job to renew certificates automatically:
 sudo crontab -e
 
 # Add this line:
-0 2 * * * certbot renew --quiet && cp /etc/letsencrypt/live/jost.business/fullchain.pem /home/jost-business/certs/cert.pem && cp /etc/letsencrypt/live/jost.business/privkey.pem /home/jost-business/certs/key.pem && docker-compose -f /home/jost-business/docker-compose.yml restart nginx
+0 2 * * * certbot renew --quiet && cp /etc/letsencrypt/live/jost.business/fullchain.pem /home/projects/jost-business/certs/cert.pem && cp /etc/letsencrypt/live/jost.business/privkey.pem /home/projects/jost-business/certs/key.pem && docker-compose -f /home/projects/jost-business/docker-compose.yml restart nginx
 ```
 
 ## Monitoring & Health Checks
@@ -233,7 +228,7 @@ nslookup jost.business
 
 ### Rebuild and restart everything
 ```bash
-cd /home/jost-business
+cd /home/projects/jost-business
 docker-compose down
 docker-compose build --no-cache
 docker-compose up -d

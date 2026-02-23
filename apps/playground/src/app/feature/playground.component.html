@@ -1,18 +1,18 @@
 <div class="playground-container">
   <h2 class="playground-title">Playground</h2>
-  <mat-card class="signals-card">
-    <mat-card-header class="card-header">
-      <mat-card-title class="card-title">Interactive Signals Demo</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="card-content">
+  <div class="signals-card">
+    <div class="card-header">
+      <h3 class="card-title">Interactive Signals Demo</h3>
+    </div>
+    <div class="card-content">
       <p class="description">
         Experiment with Angular 21 Signals and zoneless change detection!
       </p>
 
-      <mat-form-field appearance="fill" class="input-field">
-        <mat-label>Enter text</mat-label>
-        <input matInput [(ngModel)]="inputValue" placeholder="Type something..." class="input-element" />
-      </mat-form-field>
+      <div class="input-field">
+        <label>Enter text</label>
+        <input [(ngModel)]="inputValue" placeholder="Type something..." class="input-element" />
+      </div>
 
       <div class="output-section">
         <p class="output-row">
@@ -30,27 +30,25 @@
       </div>
 
       <button
-        mat-raised-button
-        color="primary"
         (click)="resetInput()"
         class="reset-button"
       >
         Reset
       </button>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 
-  <mat-card class="state-card">
-    <mat-card-header class="card-header">
-      <mat-card-title class="card-title">Cross-App State</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="card-content">
+  <div class="state-card">
+    <div class="card-header">
+      <h3 class="card-title">Cross-App State</h3>
+    </div>
+    <div class="card-content">
       <p class="state-text" *ngIf="authService.isAuthenticated()">
         You are logged in as: <strong class="user-name">{{ authService.currentUser()?.name }}</strong>
       </p>
       <p class="state-text" *ngIf="!authService.isAuthenticated()">
         Not logged in yet. Try logging in from other apps to see state synchronization!
       </p>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>

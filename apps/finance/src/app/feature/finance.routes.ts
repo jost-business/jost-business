@@ -1,14 +1,12 @@
 import { Route } from '@angular/router';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
 import { AuthService } from '@jost/shared';
 
 @Component({
   selector: 'app-finance-list',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatTableModule],
+  imports: [CommonModule],
   templateUrl: './finance.component.html',
   styleUrl: './finance.component.scss',
 })

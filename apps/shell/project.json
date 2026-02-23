@@ -5,7 +5,7 @@
   "prefix": "app",
   "targets": {
     "build": {
-      "executor": "@nx/angular:build",
+      "executor": "@nx/angular:browser-esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/shell",
@@ -18,7 +18,7 @@
           "apps/shell/src/assets"
         ],
         "styles": [
-          "libs/shared/src/theme/material-theme.scss",
+          // "libs/shared/src/theme/material-theme.scss",
           "apps/shell/src/styles.scss"
         ],
         "scripts": [],
@@ -46,12 +46,6 @@
           "outputHashing": "all",
           "optimization": true,
           "buildOptimizer": true,
-          "fileReplacements": [
-            {
-              "replace": "apps/shell/src/environments/environment.ts",
-              "with": "apps/shell/src/environments/environment.prod.ts"
-            }
-          ],
           "sourceMap": false,
           "namedChunks": false,
           "aot": true,

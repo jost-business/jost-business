@@ -1,10 +1,10 @@
 <div class="finance-container">
   <h2 class="finance-title">Finance Dashboard</h2>
-  <mat-card class="finance-card">
-    <mat-card-header class="card-header">
-      <mat-card-title class="card-title">Account Overview</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="card-content">
+  <div class="finance-card">
+    <div class="card-header">
+      <h3 class="card-title">Account Overview</h3>
+    </div>
+    <div class="card-content">
       <p class="user-greeting" *ngIf="authService.isAuthenticated()">
         Welcome, {{ authService.currentUser()?.name }}!
       </p>
@@ -12,25 +12,22 @@
         Please log in to view your finances.
       </p>
 
-      <table mat-table [dataSource]="transactions" class="transactions-table">
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef class="table-header">Date</th>
-          <td mat-cell *matCellDef="let element" class="table-cell">{{ element.date }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef class="table-header">Description</th>
-          <td mat-cell *matCellDef="let element" class="table-cell">{{ element.description }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef class="table-header">Amount</th>
-          <td mat-cell *matCellDef="let element" class="table-cell amount">{{ element.amount | currency }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+      <table class="transactions-table">
+        <thead>
+          <tr class="header-row">
+            <th class="table-header">Date</th>
+            <th class="table-header">Description</th>
+            <th class="table-header">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="data-row" *ngFor="let element of transactions">
+            <td class="table-cell">{{ element.date }}</td>
+            <td class="table-cell">{{ element.description }}</td>
+            <td class="table-cell amount">{{ element.amount | currency }}</td>
+          </tr>
+        </tbody>
       </table>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>
