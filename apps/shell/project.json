@@ -9,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/shell",
-        "index": "apps/shell/src/index.html",
+        "index": "apps/shell/src/index.development.html",
         "main": "apps/shell/src/main.ts",
         "polyfills": [],
         "tsConfig": "apps/shell/tsconfig.app.json",
@@ -34,7 +34,11 @@
         "namedChunks": true
       },
       "configurations": {
+        "development": {
+          "index": "apps/shell/src/index.development.html"
+        },
         "production": {
+          "index": "apps/shell/src/index.production.html",
           "budgets": [
             {
               "type": "initial",
@@ -62,7 +66,7 @@
     "serve": {
       "executor": "@nx/angular:dev-server",
       "options": {
-        "buildTarget": "shell:build"
+        "buildTarget": "shell:build:development"
       },
       "configurations": {
         "production": {

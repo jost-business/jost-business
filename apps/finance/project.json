@@ -9,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/finance",
-        "index": "apps/finance/src/index.html",
+        "index": "apps/finance/src/index.development.html",
         "main": "apps/finance/src/main.ts",
         "polyfills": [],
         "tsConfig": "apps/finance/tsconfig.app.json",
@@ -34,7 +34,11 @@
         "namedChunks": true
       },
       "configurations": {
+        "development": {
+          "index": "apps/finance/src/index.development.html"
+        },
         "production": {
+          "index": "apps/finance/src/index.production.html",
           "budgets": [
             {
               "type": "initial",
@@ -62,7 +66,7 @@
     "serve": {
       "executor": "@nx/angular:dev-server",
       "options": {
-        "buildTarget": "finance:build"
+        "buildTarget": "finance:build:development"
       },
       "configurations": {
         "production": {
