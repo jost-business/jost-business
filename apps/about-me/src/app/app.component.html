@@ -11,16 +11,12 @@
       <p class="hero-subtitle">Building scalable, modern applications with Angular, microservices, and cutting-edge technologies</p>
       <div class="hero-stats">
         <div class="stat">
-          <span class="stat-number">10+</span>
+          <span class="stat-number">20+</span>
           <span class="stat-label">Years Experience</span>
         </div>
         <div class="stat">
           <span class="stat-number">50+</span>
           <span class="stat-label">Projects Delivered</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">2</span>
-          <span class="stat-label">Continents</span>
         </div>
       </div>
     </div>
@@ -41,26 +37,6 @@
       <div class="focus-card">
         <h3>⚡ Modern Technologies</h3>
         <p>Constantly exploring and mastering the latest frameworks, tools, and best practices in web development. From TypeScript to containerization, always at the cutting edge.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Professional Experience -->
-  <section class="experience-section">
-    <h2>Professional Experience</h2>
-    <div class="experience-item">
-      <div class="experience-header">
-        <h3>Software Architect</h3>
-        <span class="company-name">LGT</span>
-      </div>
-      <p class="experience-description">
-        Architected and led the design of large-scale enterprise applications, making strategic technology decisions and mentoring development teams. Focused on scalability, performance, and maintainability across multiple projects and teams.
-      </p>
-      <div class="skills-highlight">
-        <span class="skill-tag">Enterprise Architecture</span>
-        <span class="skill-tag">Team Leadership</span>
-        <span class="skill-tag">System Design</span>
-        <span class="skill-tag">Cloud Infrastructure</span>
       </div>
     </div>
   </section>
@@ -112,26 +88,6 @@
     </div>
   </section>
 
-  <!-- Passion Projects -->
-  <section class="passion-section">
-    <h2>Passion: Micro-Frontend Architecture</h2>
-    <div class="passion-content">
-      <p>
-        In my free time, I build and experiment with advanced micro-frontend architectures. My current project showcases:
-      </p>
-      <ul class="passion-features">
-        <li>Production-grade micro-frontend setup with independent Angular applications</li>
-        <li>Multi-stage Docker builds and container orchestration</li>
-        <li>Nginx reverse proxy with SSL/TLS termination</li>
-        <li>Nx monorepo management for scalable project organization</li>
-        <li>Deployment on Virtual Private Servers with proven DevOps practices</li>
-      </ul>
-      <p class="passion-note">
-        This goes beyond typical hobby projects—it's a demonstration of how to architect and deploy production-grade applications that scale.
-      </p>
-    </div>
-  </section>
-
   <!-- Lifestyle & Balance -->
   <section class="lifestyle-section">
     <h2>Beyond Code</h2>
@@ -162,15 +118,38 @@
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="cta-section">
-    <h2>Let's Build Something Great</h2>
-    <p>Whether you need a full-stack developer, an architect to design your next system, or someone to lead your technical vision—I'm ready to make an impact.</p>
-    <div class="cta-buttons">
-      <a href="mailto:contact@jostbusiness.com" class="btn btn-primary">Get In Touch</a>
-      <a href="https://linkedin.com" class="btn btn-secondary">Connect on LinkedIn</a>
+  <!-- Next Adventure -->
+  <section class="adventure-section">
+    <h2>Next Adventure</h2>
+    <div class="adventure-content">
+      <p>
+        Sometimes the best adventures are the ones shared with someone special. I'm counting down the days to reunite with my beloved girlfriend in the beautiful city of Casablanca, before I head to the stunning lagoons of Dakhla for an unforgettable wing foiling getaway.
+      </p>
+      <div class="countdown-container">
+        <div class="countdown-header">
+          <p>Casablanca & Dakhla Adventure Countdown</p>
+        </div>
+        <div class="countdown-timer">
+          <div class="countdown-unit">
+            <div class="countdown-value">{{ days }}</div>
+            <div class="countdown-label">Days</div>
+          </div>
+          <div class="countdown-separator">:</div>
+          <div class="countdown-unit">
+            <div class="countdown-value">{{ hours }}</div>
+            <div class="countdown-label">Hours</div>
+          </div>
+          <div class="countdown-separator">:</div>
+          <div class="countdown-unit">
+            <div class="countdown-value">{{ minutes }}</div>
+            <div class="countdown-label">Minutes</div>
+          </div>
+        </div>
+      </div>
+      <div class="adventure-image">
+        <img src="assets/images/us.jpeg" alt="Adventure awaits - Casablanca and Dakhla" />
+      </div>
     </div>
   </section>
-</div>
 
-<router-outlet></router-outlet>
+</div>
