@@ -23,7 +23,6 @@
           }
         ],
         "styles": [
-          "libs/shared/src/theme/material-theme.scss",
           "apps/shell/src/styles.scss"
         ],
         "scripts": [],
