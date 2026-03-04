@@ -15,7 +15,12 @@
         "tsConfig": "apps/shell/tsconfig.app.json",
         "assets": [
           "apps/shell/src/favicon.ico",
-          "apps/shell/src/assets"
+          "apps/shell/src/assets",
+          {
+            "glob": "**/*",
+            "input": "libs/shared-assets/src/images",
+            "output": "/assets/images"
+          }
         ],
         "styles": [
           // "libs/shared/src/theme/material-theme.scss",

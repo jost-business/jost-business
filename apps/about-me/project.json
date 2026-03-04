@@ -15,7 +15,12 @@
         "tsConfig": "apps/about-me/tsconfig.app.json",
         "assets": [
           "apps/about-me/src/favicon.ico",
-          "apps/about-me/src/assets"
+          "apps/about-me/src/assets",
+          {
+            "glob": "**/*",
+            "input": "libs/shared-assets/src/images",
+            "output": "/assets/images"
+          }
         ],
         "styles": [
           "apps/about-me/src/styles.scss"
@@ -38,8 +43,8 @@
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
+              "maximumWarning": "8kb",
+              "maximumError": "12kb"
             }
           ],
           "outputHashing": "all",

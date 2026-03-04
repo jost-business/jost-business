@@ -15,7 +15,12 @@
         "tsConfig": "apps/finance/tsconfig.app.json",
         "assets": [
           "apps/finance/src/favicon.ico",
-          "apps/finance/src/assets"
+          "apps/finance/src/assets",
+          {
+            "glob": "**/*",
+            "input": "libs/shared-assets/src/images",
+            "output": "/assets/images"
+          }
         ],
         "styles": [
           "apps/finance/src/styles.scss"

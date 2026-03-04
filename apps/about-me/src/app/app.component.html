@@ -4,7 +4,173 @@
 </header>
 
 <div class="content">
-  <h2>About Me</h2>
-  <p>Personal profile and information.</p>
-  <router-outlet></router-outlet>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Full Stack Developer & Architect</h1>
+      <p class="hero-subtitle">Building scalable, modern applications with Angular, microservices, and cutting-edge technologies</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">10+</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">Projects Delivered</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">2</span>
+          <span class="stat-label">Continents</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Current Focus -->
+  <section class="focus-section">
+    <h2>Current Focus</h2>
+    <div class="focus-grid">
+      <div class="focus-card">
+        <h3>🎯 Full Stack Development</h3>
+        <p>Specialized in Angular (latest versions) with expertise across the entire technology stack - from responsive frontends to scalable backend architectures.</p>
+      </div>
+      <div class="focus-card">
+        <h3>🏗️ Micro-Frontend Architecture</h3>
+        <p>Passionate about building independent, loosely coupled frontend applications. My hobby project demonstrates enterprise-grade micro-frontend patterns and DevOps practices.</p>
+      </div>
+      <div class="focus-card">
+        <h3>⚡ Modern Technologies</h3>
+        <p>Constantly exploring and mastering the latest frameworks, tools, and best practices in web development. From TypeScript to containerization, always at the cutting edge.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Professional Experience -->
+  <section class="experience-section">
+    <h2>Professional Experience</h2>
+    <div class="experience-item">
+      <div class="experience-header">
+        <h3>Software Architect</h3>
+        <span class="company-name">LGT</span>
+      </div>
+      <p class="experience-description">
+        Architected and led the design of large-scale enterprise applications, making strategic technology decisions and mentoring development teams. Focused on scalability, performance, and maintainability across multiple projects and teams.
+      </p>
+      <div class="skills-highlight">
+        <span class="skill-tag">Enterprise Architecture</span>
+        <span class="skill-tag">Team Leadership</span>
+        <span class="skill-tag">System Design</span>
+        <span class="skill-tag">Cloud Infrastructure</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Stack -->
+  <section class="tech-stack-section">
+    <h2>Technical Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-category">
+        <h4>Frontend</h4>
+        <ul>
+          <li>Angular (v21+)</li>
+          <li>TypeScript</li>
+          <li>RxJS & Reactive Patterns</li>
+          <li>SCSS / CSS</li>
+          <li>Standalone Components</li>
+        </ul>
+      </div>
+      <div class="tech-category">
+        <h4>Backend & Services</h4>
+        <ul>
+          <li>Node.js / Express</li>
+          <li>REST APIs</li>
+          <li>Microservices</li>
+          <li>Database Design</li>
+          <li>System Architecture</li>
+        </ul>
+      </div>
+      <div class="tech-category">
+        <h4>DevOps & Infrastructure</h4>
+        <ul>
+          <li>Docker & Containerization</li>
+          <li>Docker Compose</li>
+          <li>Nginx & Reverse Proxies</li>
+          <li>SSL/TLS Certificates</li>
+          <li>Cloud Deployment</li>
+        </ul>
+      </div>
+      <div class="tech-category">
+        <h4>Tools & Practices</h4>
+        <ul>
+          <li>Nx Monorepos</li>
+          <li>Git / Version Control</li>
+          <li>CI/CD Pipelines</li>
+          <li>Testing Frameworks</li>
+          <li>Agile Methodologies</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Passion Projects -->
+  <section class="passion-section">
+    <h2>Passion: Micro-Frontend Architecture</h2>
+    <div class="passion-content">
+      <p>
+        In my free time, I build and experiment with advanced micro-frontend architectures. My current project showcases:
+      </p>
+      <ul class="passion-features">
+        <li>Production-grade micro-frontend setup with independent Angular applications</li>
+        <li>Multi-stage Docker builds and container orchestration</li>
+        <li>Nginx reverse proxy with SSL/TLS termination</li>
+        <li>Nx monorepo management for scalable project organization</li>
+        <li>Deployment on Virtual Private Servers with proven DevOps practices</li>
+      </ul>
+      <p class="passion-note">
+        This goes beyond typical hobby projects—it's a demonstration of how to architect and deploy production-grade applications that scale.
+      </p>
+    </div>
+  </section>
+
+  <!-- Lifestyle & Balance -->
+  <section class="lifestyle-section">
+    <h2>Beyond Code</h2>
+    <div class="lifestyle-content">
+      <p>
+        I believe in maintaining a balanced lifestyle. When I'm not architecting systems, you'll find me on the water pursuing extreme sports:
+      </p>
+      <div class="hobbies-grid">
+        <div class="hobby-card">
+          <span class="hobby-icon">🪁</span>
+          <h4>Wing Foiling</h4>
+          <p>Mastering the balance between wind, water, and wing—a sport that demands precision and constant adaptation.</p>
+        </div>
+        <div class="hobby-card">
+          <span class="hobby-icon">🏄</span>
+          <h4>Pump Foiling</h4>
+          <p>The art of generating speed and glide without wind—pure athleticism and technique.</p>
+        </div>
+        <div class="hobby-card">
+          <span class="hobby-icon">🪂</span>
+          <h4>Kite Surfing</h4>
+          <p>Harnessing the power of the wind for an unforgettable rush and connection with nature.</p>
+        </div>
+      </div>
+      <div class="travel-section">
+        <p><strong>Favorite Destinations:</strong> The pristine lagoons of Dakhla and the crystal waters of Egypt offer the perfect conditions for these sports. The combination of consistent wind, flat waters, and stunning natural beauty makes these places paradise for enthusiasts.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Let's Build Something Great</h2>
+    <p>Whether you need a full-stack developer, an architect to design your next system, or someone to lead your technical vision—I'm ready to make an impact.</p>
+    <div class="cta-buttons">
+      <a href="mailto:contact@jostbusiness.com" class="btn btn-primary">Get In Touch</a>
+      <a href="https://linkedin.com" class="btn btn-secondary">Connect on LinkedIn</a>
+    </div>
+  </section>
 </div>
+
+<router-outlet></router-outlet>
