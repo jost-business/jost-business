@@ -1,0 +1,17 @@
+export const spacingTokens = {
+  none: '0',
+  ant: '0.125rem',
+  bee: '0.25rem',
+  snail: '0.5rem',
+  frog: '0.75rem',
+  rat: '1rem',
+  chicken: '1.25rem',
+  cat: '1.5rem',
+  dog: '2rem',
+  donkey: '2.5rem',
+  gorilla: '3rem',
+  lion: '3.5rem',
+  grizzly: '4rem',
+  rhino: '5rem',
+  elephant: '6rem',
+};
