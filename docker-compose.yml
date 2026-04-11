@@ -11,6 +11,7 @@ services:
       - finance
       - about-me
       - playground
+      - travel
     environment:
       - NODE_ENV=production
     networks:
@@ -49,6 +50,17 @@ services:
     networks:
       - jost-network
 
+  travel:
+    build:
+      context: .
+      dockerfile: apps/travel/Dockerfile
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - jost-network
+
   nginx:
     image: nginx:latest
     ports:
@@ -62,6 +74,7 @@ services:
       - finance
       - about-me
       - playground
+      - travel
     networks:
       - jost-network
 

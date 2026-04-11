@@ -20,7 +20,8 @@
       "@jost/shared/*": ["libs/shared/src/*"],
       "@jost/finance/feature": ["apps/finance/src/app/feature/finance.routes.ts"],
       "@jost/about-me/feature": ["apps/about-me/src/app/feature/about-me.routes.ts"],
-      "@jost/playground/feature": ["apps/playground/src/app/feature/playground.routes.ts"]
+      "@jost/playground/feature": ["apps/playground/src/app/feature/playground.routes.ts"],
+      "@jost/travel/feature": ["apps/travel/src/app/feature/travel.routes.ts"]
     }
   },
   "angularCompilerOptions": {

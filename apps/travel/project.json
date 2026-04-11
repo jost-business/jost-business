@@ -1,0 +1,82 @@
+{
+  "name": "travel",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/travel/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:browser-esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/travel",
+        "index": "apps/travel/src/index.development.html",
+        "main": "apps/travel/src/main.ts",
+        "polyfills": [],
+        "tsConfig": "apps/travel/tsconfig.app.json",
+        "assets": [
+          "apps/travel/src/favicon.ico",
+          "apps/travel/src/assets",
+          {
+            "glob": "**/*",
+            "input": "libs/shared-assets/src/images",
+            "output": "/assets/images"
+          }
+        ],
+        "styles": [
+          "apps/travel/src/styles.scss"
+        ],
+        "scripts": [],
+        "vendorChunk": true,
+        "extractLicenses": false,
+        "buildOptimizer": false,
+        "sourceMap": true,
+        "optimization": false,
+        "namedChunks": true
+      },
+      "configurations": {
+        "development": {
+          "index": "apps/travel/src/index.development.html"
+        },
+        "production": {
+          "index": "apps/travel/src/index.production.html",
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "optimization": true,
+          "buildOptimizer": true,
+          "sourceMap": false,
+          "namedChunks": false,
+          "aot": true,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/angular:dev-server",
+      "options": {
+        "buildTarget": "travel:build:development"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "travel:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": []
+}

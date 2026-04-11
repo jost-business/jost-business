@@ -1,0 +1,33 @@
+<div class="travel-container">
+  <h2 class="travel-title">Travel Dashboard</h2>
+  <div class="travel-card">
+    <div class="card-header">
+      <h3 class="card-title">Trips Overview</h3>
+    </div>
+    <div class="card-content">
+      <p class="user-greeting" *ngIf="authService.isAuthenticated()">
+        Welcome, {{ authService.currentUser()?.name }}!
+      </p>
+      <p class="login-prompt" *ngIf="!authService.isAuthenticated()">
+        Please log in to view your trips.
+      </p>
+
+      <table class="trips-table">
+        <thead>
+          <tr class="header-row">
+            <th class="table-header">Date</th>
+            <th class="table-header">Destination</th>
+            <th class="table-header">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="data-row" *ngFor="let trip of trips">
+            <td class="table-cell">{{ trip.date }}</td>
+            <td class="table-cell">{{ trip.destination }}</td>
+            <td class="table-cell status">{{ trip.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
