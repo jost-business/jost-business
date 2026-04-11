@@ -1,7 +1,7 @@
 <div class="travel-container">
   <h2 class="travel-title">Travel Dashboard</h2>
 
-  <div class="travel-card" *ngFor="let year of travelYears">
+  <div class="travel-card" *ngFor="let year of travelService.travelYears">
     <div class="card-header">
       <h3 class="card-title">{{ year.year }}</h3>
     </div>
@@ -15,10 +15,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="data-row" *ngFor="let trip of year.trips">
+          <tr class="data-row"
+              *ngFor="let trip of year.trips"
+              [class.clickable]="travelService.isCompleted(trip)"
+              [routerLink]="travelService.isCompleted(trip) ? ['/trip', trip.id] : null">
             <td class="table-cell">{{ trip.from | date:'dd.MM' }} - {{ trip.to | date:'dd.MM' }}</td>
             <td class="table-cell">{{ trip.destination }}</td>
-            <td class="table-cell status" [class.completed]="getStatus(trip)() === 'Completed'" [class.upcoming]="getStatus(trip)() !== 'Completed'">{{ getStatus(trip)() }}</td>
+            <td class="table-cell status" [class.completed]="travelService.isCompleted(trip)" [class.upcoming]="!travelService.isCompleted(trip)">{{ travelService.getStatus(trip) }}</td>
           </tr>
         </tbody>
       </table>
