@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 16px;
 }
 
 .travel-title {
@@ -14,10 +15,13 @@
 
 .travel-card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .card-header {
   border-bottom: 1px solid #eee;
+  padding: 16px;
 }
 
 .card-title {
@@ -65,7 +69,14 @@
 
   &.status {
     font-weight: 500;
-    color: #333;
+  }
+
+  &.completed {
+    color: #4caf50;
+  }
+
+  &.upcoming {
+    color: #1976d2;
   }
 }
 
@@ -82,5 +93,22 @@
 
   &:nth-child(even) {
     background-color: #fafafa;
+  }
+}
+
+@media (max-width: 768px) {
+  .travel-container {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .travel-title {
+    font-size: 24px;
+  }
+
+  .table-header,
+  .table-cell {
+    padding: 8px;
+    font-size: 13px;
   }
 }
