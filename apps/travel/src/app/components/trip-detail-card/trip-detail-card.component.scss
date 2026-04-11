@@ -89,6 +89,7 @@
   }
 
   .gallery-image {
-    height: 180px;
+    height: auto;
+    max-height: 400px;
   }
 }

@@ -20,14 +20,14 @@ export class TravelService {
       trips: [
         { id: '2025-12-cabo-verde', from: new Date(2025, 11, 21), to: new Date(2026, 0, 12), destination: 'Cabo Verde', photos: [] },
         { id: '2025-10-turkey', from: new Date(2025, 9, 11), to: new Date(2025, 9, 30), destination: 'Turkey', photos: [
+          'alanya_love.jpeg',
+          'hera-hotel.jpeg',
+          'hera-pool.jpeg',
           'alanya.jpeg',
           'alanya_cable_car.jpeg',
-          'alanya_love.jpeg',
           'black_party.jpeg',
           'coast.jpeg',
           'dinner.jpeg',
-          'hera-hotel.jpeg',
-          'hera-pool.jpeg',
           'kiss.jpeg',
           'land_of_legends_castle.jpeg',
           'laugh.jpeg',
