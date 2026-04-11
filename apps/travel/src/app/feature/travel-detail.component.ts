@@ -2,11 +2,13 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TravelService, Trip } from '@jost/shared';
+import { TripDetailCardComponent } from '../components/trip-detail-card/trip-detail-card.component';
+import { PhotoGalleryComponent } from '../components/photo-gallery/photo-gallery.component';
 
 @Component({
   selector: 'app-travel-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TripDetailCardComponent, PhotoGalleryComponent],
   templateUrl: './travel-detail.component.html',
   styleUrl: './travel-detail.component.scss',
 })

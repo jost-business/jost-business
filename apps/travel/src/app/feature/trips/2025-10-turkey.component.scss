@@ -1,1 +1,25 @@
-/* Custom Turkey trip styles */
+.turkey-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  margin-top: 1.5rem;
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+  }
+}
+
+.trip-image {
+  width: 100%;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .turkey-card {
+    padding: 1.25rem;
+  }
+}

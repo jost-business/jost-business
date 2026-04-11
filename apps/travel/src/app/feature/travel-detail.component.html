@@ -1,6 +1,8 @@
 <div class="detail-container" *ngIf="trip; else notFound">
   <a routerLink="/" class="back-link">&larr; Back to overview</a>
+  <app-trip-detail-card [trip]="trip"></app-trip-detail-card>
   <router-outlet></router-outlet>
+  <app-photo-gallery [trip]="trip"></app-photo-gallery>
 </div>
 
 <ng-template #notFound>

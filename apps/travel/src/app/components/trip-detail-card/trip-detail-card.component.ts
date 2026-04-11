@@ -16,8 +16,4 @@ export class TripDetailCardComponent {
     const diffMs = this.trip.to.getTime() - this.trip.from.getTime();
     return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
   }
-
-  get photoUrls(): string[] {
-    return this.trip.photos.map(p => `assets/images/trips/${this.trip.id}/${p}`);
-  }
 }
