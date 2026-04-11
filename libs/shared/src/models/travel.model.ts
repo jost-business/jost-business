@@ -3,6 +3,7 @@ export interface Trip {
   from: Date;
   to: Date;
   destination: string;
+  photos: string[];
 }
 
 export interface TravelYear {

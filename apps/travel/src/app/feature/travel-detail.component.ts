@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { TravelService } from '@jost/shared';
-import { Trip } from '@jost/shared';
+import { TravelService, Trip } from '@jost/shared';
 
 @Component({
   selector: 'app-travel-detail',
@@ -18,15 +17,9 @@ export class TravelDetailComponent {
   trip: Trip | undefined;
 
   constructor() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id') || this.route.snapshot.data['tripId'];
     if (id) {
       this.trip = this.travelService.getTripById(id);
     }
-  }
-
-  get duration(): number {
-    if (!this.trip) return 0;
-    const diffMs = this.trip.to.getTime() - this.trip.from.getTime();
-    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
   }
 }

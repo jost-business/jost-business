@@ -1,0 +1,25 @@
+<div class="detail-card">
+  <h2 class="detail-title">{{ trip.destination }}</h2>
+
+  <div class="detail-grid">
+    <div class="detail-item">
+      <span class="detail-label">From</span>
+      <span class="detail-value">{{ trip.from | date:'dd MMMM yyyy' }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">To</span>
+      <span class="detail-value">{{ trip.to | date:'dd MMMM yyyy' }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Duration</span>
+      <span class="detail-value">{{ duration }} days</span>
+    </div>
+  </div>
+
+  <div class="photo-gallery" *ngIf="photoUrls.length > 0">
+    <h3 class="gallery-title">Photos</h3>
+    <div class="gallery-grid">
+      <img *ngFor="let url of photoUrls" [src]="url" [alt]="trip.destination" class="gallery-image" />
+    </div>
+  </div>
+</div>
