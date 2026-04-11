@@ -140,60 +140,6 @@
   .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 }
 
-.adventure-section {
-  background-color: #fafafa; border-bottom: 1px solid #f0f0f0 !important;
-
-  .adventure-content {
-    p { color: var(--gray); font-size: 16px; line-height: 1.8; margin-bottom: 40px; }
-  }
-
-  .countdown-container {
-    background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    text-align: center;
-
-    .countdown-header {
-      margin-bottom: 32px;
-      p { color: var(--text); font-size: 18px; font-weight: 600; margin: 0; letter-spacing: 0.5px; }
-    }
-
-    .countdown-timer {
-      display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
-      margin-bottom: 32px;
-
-      .countdown-unit {
-        display: flex; flex-direction: column; align-items: center;
-
-        .countdown-value {
-          font-size: 48px; font-weight: 700; color: var(--primary); line-height: 1;
-          min-width: 80px; text-align: center;
-          background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 16px;
-          border-radius: 8px; box-shadow: 0 2px 4px rgba(25, 118, 210, 0.15);
-        }
-
-        .countdown-label {
-          font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 1px;
-          margin-top: 8px;
-        }
-      }
-
-      .countdown-separator {
-        font-size: 32px; color: var(--gray); font-weight: 700;
-        margin: 0 4px;
-        align-self: center;
-        height: 60px; display: flex; align-items: flex-start; padding-top: 8px;
-      }
-    }
-
-    .adventure-image {
-      display: flex; justify-content: center; margin: 0;
-      img {
-        max-width: 100%; height: auto; border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-        max-height: 400px; object-fit: cover;
-      }
-    }
-  }
-}
 
 
 @media (max-width: 768px) {
@@ -208,23 +154,4 @@
   .experience-header { flex-direction: column; align-items: flex-start; }
   .cta-buttons { flex-direction: column; }
   .cta-buttons .btn { width: 100%; justify-content: center; }
-
-  .adventure-section {
-    .countdown-container {
-      padding: 24px;
-
-      .countdown-timer {
-        gap: 8px;
-
-        .countdown-unit {
-          .countdown-value { font-size: 32px; min-width: 60px; padding: 12px 8px; }
-          .countdown-label { font-size: 11px; }
-        }
-
-        .countdown-separator { font-size: 24px; }
-      }
-    }
-
-    .adventure-image img { max-height: 300px; }
-  }
 }
