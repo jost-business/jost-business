@@ -25,6 +25,7 @@ RUN npm install -g serve
 
 # Copy built app from builder
 COPY --from=builder /app/dist/apps/finance /app/dist
+RUN mv /app/dist/index.production.html /app/dist/index.html
 
 # Expose port
 EXPOSE 3001
