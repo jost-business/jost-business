@@ -22,6 +22,9 @@
             "output": "/assets/images"
           }
         ],
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/shared/src/styles"]
+        },
         "styles": [
           "apps/playground/src/styles.scss"
         ],

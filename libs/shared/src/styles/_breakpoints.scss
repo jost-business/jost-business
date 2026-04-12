@@ -1,0 +1,40 @@
+// Shared breakpoint tokens — single source of truth for all micro-frontends.
+// Aligned with Tailwind defaults.
+
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+@mixin sm {
+  @media (min-width: $bp-sm) { @content; }
+}
+
+@mixin md {
+  @media (min-width: $bp-md) { @content; }
+}
+
+@mixin lg {
+  @media (min-width: $bp-lg) { @content; }
+}
+
+@mixin xl {
+  @media (min-width: $bp-xl) { @content; }
+}
+
+// Mobile-first "down" variants (max-width based)
+@mixin below-sm {
+  @media (max-width: #{$bp-sm - 1px}) { @content; }
+}
+
+@mixin below-md {
+  @media (max-width: #{$bp-md - 1px}) { @content; }
+}
+
+@mixin below-lg {
+  @media (max-width: #{$bp-lg - 1px}) { @content; }
+}
+
+@mixin below-xl {
+  @media (max-width: #{$bp-xl - 1px}) { @content; }
+}

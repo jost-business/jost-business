@@ -1,0 +1,17 @@
+<header class="app-toolbar">
+  <h1 class="app-title">Jost</h1>
+  <span class="spacer"></span>
+  <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <nav class="nav-menu" [class.open]="menuOpen()">
+    <a href="/" class="nav-link" (click)="closeMenu()">Home</a>
+<!--     <a href="/finance/" class="nav-link" (click)="closeMenu()">Finance</a> -->
+    <a href="/about-me/" class="nav-link" (click)="closeMenu()">About Me</a>
+<!--     <a href="/playground/" class="nav-link" (click)="closeMenu()">Playground</a> -->
+    <a href="/travel/" class="nav-link" (click)="closeMenu()">Travel</a>
+  </nav>
+</header>
+<div class="overlay" [class.visible]="menuOpen()" (click)="closeMenu()"></div>
