@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TravelService } from '@jost/shared';
 import { AdventureCountdownComponent } from '../components/adventure-countdown/adventure-countdown.component';
@@ -7,7 +7,7 @@ import { AdventureCountdownComponent } from '../components/adventure-countdown/a
 @Component({
   selector: 'app-travel-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, AdventureCountdownComponent],
+  imports: [DatePipe, RouterModule, AdventureCountdownComponent],
   templateUrl: './travel.component.html',
   styleUrl: './travel.component.scss',
 })

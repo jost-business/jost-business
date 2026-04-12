@@ -2,12 +2,15 @@
   <div class="header-content">
     <h1>Jost Business</h1>
     <div class="spacer"></div>
-    <div class="user-menu" *ngIf="authService.isAuthenticated()">
-      <span>{{ authService.currentUser()?.name }}</span>
-      <button (click)="logout()" class="logout-button">Logout</button>
-    </div>
-    <button *ngIf="!authService.isAuthenticated()" routerLink="/login" class="login-button">
-      Login
-    </button>
+    @if (authService.isAuthenticated()) {
+      <div class="user-menu">
+        <span>{{ authService.currentUser()?.name }}</span>
+        <button (click)="logout()" class="logout-button">Logout</button>
+      </div>
+    } @else {
+      <button routerLink="/login" class="login-button">
+        Login
+      </button>
+    }
   </div>
 </header>

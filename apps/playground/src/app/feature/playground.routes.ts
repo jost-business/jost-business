@@ -1,6 +1,5 @@
 import { Route } from '@angular/router';
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@jost/shared';
 
@@ -8,7 +7,6 @@ import { AuthService } from '@jost/shared';
   selector: 'app-playground',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
   ],
   templateUrl: './playground.component.html',

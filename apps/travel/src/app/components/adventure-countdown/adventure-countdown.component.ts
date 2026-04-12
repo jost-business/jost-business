@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-adventure-countdown',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './adventure-countdown.component.html',
   styleUrl: './adventure-countdown.component.scss',
 })

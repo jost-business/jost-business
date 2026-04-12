@@ -5,12 +5,15 @@
       <h3 class="card-title">Account Overview</h3>
     </div>
     <div class="card-content">
-      <p class="user-greeting" *ngIf="authService.isAuthenticated()">
-        Welcome, {{ authService.currentUser()?.name }}!
-      </p>
-      <p class="login-prompt" *ngIf="!authService.isAuthenticated()">
-        Please log in to view your finances.
-      </p>
+      @if (authService.isAuthenticated()) {
+        <p class="user-greeting">
+          Welcome, {{ authService.currentUser()?.name }}!
+        </p>
+      } @else {
+        <p class="login-prompt">
+          Please log in to view your finances.
+        </p>
+      }
 
       <table class="transactions-table">
         <thead>
@@ -21,11 +24,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="data-row" *ngFor="let element of transactions">
+          @for (element of transactions; track element.date) {
+          <tr class="data-row">
             <td class="table-cell">{{ element.date }}</td>
             <td class="table-cell">{{ element.description }}</td>
             <td class="table-cell amount">{{ element.amount | currency }}</td>
           </tr>
+          }
         </tbody>
       </table>
     </div>

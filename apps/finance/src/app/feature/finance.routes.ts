@@ -1,12 +1,12 @@
 import { Route } from '@angular/router';
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { AuthService } from '@jost/shared';
 
 @Component({
   selector: 'app-finance-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CurrencyPipe],
   templateUrl: './finance.component.html',
   styleUrl: './finance.component.scss',
 })

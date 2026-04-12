@@ -1,13 +1,13 @@
-<div class="detail-container" *ngIf="trip; else notFound">
+@if (trip) {
+<div class="detail-container">
   <a routerLink="/" class="back-link">&larr; Back to overview</a>
   <app-trip-detail-card [trip]="trip"></app-trip-detail-card>
   <router-outlet></router-outlet>
   <app-photo-gallery [trip]="trip"></app-photo-gallery>
 </div>
-
-<ng-template #notFound>
-  <div class="detail-container">
-    <a routerLink="/" class="back-link">&larr; Back to overview</a>
-    <p class="not-found">Trip not found.</p>
-  </div>
-</ng-template>
+} @else {
+<div class="detail-container">
+  <a routerLink="/" class="back-link">&larr; Back to overview</a>
+  <p class="not-found">Trip not found.</p>
+</div>
+}

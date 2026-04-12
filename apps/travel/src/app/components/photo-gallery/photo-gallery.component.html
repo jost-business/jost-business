@@ -1,6 +1,10 @@
-<div class="photo-gallery" *ngIf="photoUrls.length > 0">
+@if (photoUrls.length > 0) {
+<div class="photo-gallery">
   <h3 class="gallery-title">Photos</h3>
   <div class="gallery-grid">
-    <img *ngFor="let url of photoUrls" [src]="url" [alt]="trip.destination" class="gallery-image" />
+    @for (url of photoUrls; track url) {
+      <img [src]="url" [alt]="trip.destination" class="gallery-image" />
+    }
   </div>
 </div>
+}

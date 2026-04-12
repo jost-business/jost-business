@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Trip } from '@jost/shared';
 
 @Component({
   selector: 'app-trip-detail-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [DatePipe],
   templateUrl: './trip-detail-card.component.html',
   styleUrl: './trip-detail-card.component.scss',
 })

@@ -43,12 +43,15 @@
       <h3 class="card-title">Cross-App State</h3>
     </div>
     <div class="card-content">
-      <p class="state-text" *ngIf="authService.isAuthenticated()">
-        You are logged in as: <strong class="user-name">{{ authService.currentUser()?.name }}</strong>
-      </p>
-      <p class="state-text" *ngIf="!authService.isAuthenticated()">
-        Not logged in yet. Try logging in from other apps to see state synchronization!
-      </p>
+      @if (authService.isAuthenticated()) {
+        <p class="state-text">
+          You are logged in as: <strong class="user-name">{{ authService.currentUser()?.name }}</strong>
+        </p>
+      } @else {
+        <p class="state-text">
+          Not logged in yet. Try logging in from other apps to see state synchronization!
+        </p>
+      }
     </div>
   </div>
 </div>
