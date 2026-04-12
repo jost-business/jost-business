@@ -1,46 +1,43 @@
-.header-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+.app-toolbar {
   display: flex;
   align-items: center;
   padding: 0 16px;
+  background-color: #1976d2;
+  min-height: 64px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header-title {
-  font-size: 18px;
+.app-title {
+  font-size: 20px;
   font-weight: 500;
+  color: white;
+  margin: 0;
 }
 
 .spacer {
   flex: 1 1 auto;
 }
 
-.user-menu {
+.nav-menu {
   display: flex;
+  gap: 8px;
   align-items: center;
 }
 
-.user-button {
+.nav-link {
   color: white;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-}
-
-.login-button {
-  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
   font-weight: 500;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
   }
-}
 
-.logout-button {
-  color: inherit;
+  &.active {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
 }
