@@ -27,7 +27,8 @@
         },
         "styles": [
           "libs/shared/src/styles/index.scss",
-          "apps/travel/src/styles.scss"
+          "apps/travel/src/styles.scss",
+          "node_modules/leaflet/dist/leaflet.css"
         ],
         "scripts": [],
         "vendorChunk": true,

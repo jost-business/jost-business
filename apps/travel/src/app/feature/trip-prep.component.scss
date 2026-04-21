@@ -34,6 +34,25 @@
   padding: 16px;
 }
 
+.region-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.map-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 350px;
+}
+
+@media (max-width: 768px) {
+  .region-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 .countries-table {
   width: 100%;
   border-collapse: collapse;
