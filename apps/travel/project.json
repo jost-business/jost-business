@@ -26,6 +26,7 @@
           "includePaths": ["libs/shared/src/styles"]
         },
         "styles": [
+          "libs/shared/src/styles/index.scss",
           "apps/travel/src/styles.scss"
         ],
         "scripts": [],
