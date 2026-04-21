@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { VisaFreeComponent } from './visa-free.component';
+import { EVisaComponent } from './e-visa.component';
 import { TravelDetailComponent } from './travel-detail.component';
 import { TripDefaultComponent } from './trip-default.component';
 import { Turkey2025Component } from './trips/2025-10-turkey.component';
@@ -18,6 +19,10 @@ export const TRAVEL_ROUTES: Route[] = [
   {
     path: 'visa-free',
     component: VisaFreeComponent,
+  },
+  {
+    path: 'e-visa',
+    component: EVisaComponent,
   },
   {
     path: 'trip/2025-10-turkey',
