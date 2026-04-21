@@ -26,13 +26,13 @@ const iconDefault = L.icon({
 });
 
 @Component({
-  selector: 'app-trip-prep',
+  selector: 'app-visa-free',
   standalone: true,
   imports: [],
-  templateUrl: './trip-prep.component.html',
-  styleUrl: './trip-prep.component.scss',
+  templateUrl: './visa-free.component.html',
+  styleUrl: './visa-free.component.scss',
 })
-export class TripPrepComponent implements AfterViewInit, OnDestroy {
+export class VisaFreeComponent implements AfterViewInit, OnDestroy {
   private maps: L.Map[] = [];
 
   readonly regions: Region[] = [
