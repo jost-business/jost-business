@@ -18,6 +18,24 @@
   --spacing-elephant: 6rem;
 }
 
+:root {
+  --spacing-none: 0;
+  --spacing-ant: 0.125rem;
+  --spacing-bee: 0.25rem;
+  --spacing-snail: 0.5rem;
+  --spacing-frog: 0.75rem;
+  --spacing-rat: 1rem;
+  --spacing-chicken: 1.25rem;
+  --spacing-cat: 1.5rem;
+  --spacing-dog: 2rem;
+  --spacing-donkey: 2.5rem;
+  --spacing-gorilla: 3rem;
+  --spacing-lion: 3.5rem;
+  --spacing-grizzly: 4rem;
+  --spacing-rhino: 5rem;
+  --spacing-elephant: 6rem;
+}
+
 @source not inline("*");
 @source inline("m-{*}");
 @source inline("p-{*}");
