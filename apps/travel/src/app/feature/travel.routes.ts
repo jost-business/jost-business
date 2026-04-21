@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
-import { TravelListComponent } from './travel.component';
+import { DashboardComponent } from './dashboard.component';
+import { TripPrepComponent } from './trip-prep.component';
 import { TravelDetailComponent } from './travel-detail.component';
 import { TripDefaultComponent } from './trip-default.component';
 import { Turkey2025Component } from './trips/2025-10-turkey.component';
@@ -7,7 +8,16 @@ import { Turkey2025Component } from './trips/2025-10-turkey.component';
 export const TRAVEL_ROUTES: Route[] = [
   {
     path: '',
-    component: TravelListComponent,
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
+  {
+    path: 'trip-prep',
+    component: TripPrepComponent,
   },
   {
     path: 'trip/2025-10-turkey',

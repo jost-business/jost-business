@@ -1,0 +1,35 @@
+<div class="travel-container">
+  <h2 class="travel-title">Travel Dashboard</h2>
+
+  @for (year of travelService.travelYears; track year.year) {
+  <div class="travel-card">
+    <div class="card-header">
+      <h3 class="card-title">{{ year.year }}</h3>
+    </div>
+    <div class="card-content">
+      <table class="trips-table">
+        <thead>
+          <tr class="header-row">
+            <th class="table-header">Date</th>
+            <th class="table-header">Destination</th>
+            <th class="table-header">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (trip of year.trips; track trip.id) {
+          <tr class="data-row"
+              [class.clickable]="travelService.isCompleted(trip)"
+              [routerLink]="travelService.isCompleted(trip) ? ['/trip', trip.id] : null">
+            <td class="table-cell">{{ trip.from | date:'dd.MM' }} - {{ trip.to | date:'dd.MM' }}</td>
+            <td class="table-cell">{{ trip.destination }}</td>
+            <td class="table-cell status" [class.completed]="travelService.isCompleted(trip)" [class.upcoming]="!travelService.isCompleted(trip)">{{ travelService.getStatus(trip) }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  }
+</div>
+
+<app-adventure-countdown></app-adventure-countdown>
