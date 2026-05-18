@@ -27,7 +27,7 @@ export class AdventureCountdownComponent implements OnInit, OnDestroy {
   }
 
   private updateCountdown(): void {
-    const targetDate = new Date('2026-06-10T16:05:00').getTime();
+    const targetDate = new Date('2026-06-5T16:05:00').getTime();
     const now = new Date().getTime();
     const difference = targetDate - now;
 
