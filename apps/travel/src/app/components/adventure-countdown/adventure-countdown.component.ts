@@ -35,7 +35,7 @@ export class AdventureCountdownComponent implements OnInit, OnDestroy {
       this.days = Math.floor(difference / (1000 * 60 * 60 * 24));
       this.hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       this.minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      this.nights = Math.ceil(difference / (1000 * 60 * 60 * 24));
+      this.nights = Math.floor((targetDate - new Date().setHours(0, 0, 0, 0)) / (1000 * 60 * 60 * 24));
     } else {
       this.days = 0;
       this.hours = 0;
