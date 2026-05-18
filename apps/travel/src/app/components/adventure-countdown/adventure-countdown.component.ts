@@ -12,6 +12,7 @@ export class AdventureCountdownComponent implements OnInit, OnDestroy {
   days = 0;
   hours = 0;
   minutes = 0;
+  nights = 0;
   private countdownSubscription?: Subscription;
 
   ngOnInit(): void {
@@ -34,10 +35,12 @@ export class AdventureCountdownComponent implements OnInit, OnDestroy {
       this.days = Math.floor(difference / (1000 * 60 * 60 * 24));
       this.hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       this.minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      this.nights = Math.ceil(difference / (1000 * 60 * 60 * 24));
     } else {
       this.days = 0;
       this.hours = 0;
       this.minutes = 0;
+      this.nights = 0;
     }
   }
 }

@@ -93,6 +93,44 @@
       }
     }
 
+    .sleeps-container {
+      display: flex;
+      justify-content: center;
+      margin: 32px auto 0;
+      width: fit-content;
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(25, 118, 210, 0.15);
+
+      .countdown-unit {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .countdown-value {
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--primary);
+        line-height: 1;
+        min-width: 80px;
+        text-align: center;
+        background: transparent;
+        box-shadow: none;
+        padding: 16px;
+      }
+
+      .countdown-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 8px;
+      }
+    }
+
     .adventure-image {
       display: flex;
       justify-content: center;
