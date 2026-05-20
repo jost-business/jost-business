@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, input } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
+import { Trip } from '@jost/shared';
 
 @Component({
   selector: 'app-adventure-countdown',
@@ -9,6 +10,7 @@ import { interval, Subscription } from 'rxjs';
   styleUrl: './adventure-countdown.component.scss',
 })
 export class AdventureCountdownComponent implements OnInit, OnDestroy {
+  readonly trip = input<Trip>();
   days = 0;
   hours = 0;
   minutes = 0;
@@ -27,7 +29,15 @@ export class AdventureCountdownComponent implements OnInit, OnDestroy {
   }
 
   private updateCountdown(): void {
-    const targetDate = new Date('2026-06-05T16:05:00').getTime();
+    const trip = this.trip();
+    if (!trip) {
+      this.days = 0;
+      this.hours = 0;
+      this.minutes = 0;
+      this.nights = 0;
+      return;
+    }
+    const targetDate = trip.from.getTime();
     const now = new Date().getTime();
     const difference = targetDate - now;
 

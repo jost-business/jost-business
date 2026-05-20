@@ -13,4 +13,12 @@ import { AdventureCountdownComponent } from '../components/adventure-countdown/a
 })
 export class DashboardComponent {
   constructor(public travelService: TravelService) {}
+
+  get nextTrip() {
+    const now = new Date();
+    return this.travelService.travelYears
+      .flatMap(year => year.trips)
+      .filter(trip => trip.from > now)
+      .sort((a, b) => a.from.getTime() - b.from.getTime())[0] ?? null;
+  }
 }
