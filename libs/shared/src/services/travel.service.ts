@@ -9,7 +9,7 @@ export class TravelService {
     {
       year: 2026,
       trips: [
-        { id: '2026-08-casablanca', from: new Date(2026, 7, 11, 16, 5), to: new Date(2026, 7, 14, 8, 40), destination: 'Casablanca, Morocco', photos: [] },
+        { id: '2026-08-casablanca', from: new Date(2026, 7, 16, 16, 5), to: new Date(2026, 8, 2, 8, 40), destination: 'Casablanca, Morocco', photos: [] },
         { id: '2026-07-casablanca', from: new Date(2026, 6, 3, 16, 5), to: new Date(2026, 6, 12, 8, 40), destination: 'Casablanca, Morocco', photos: [] },
         { id: '2026-06-casablanca', from: new Date(2026, 5, 5, 16, 5), to: new Date(2026, 5, 14, 8, 40), destination: 'Casablanca, Morocco', photos: [] },
         { id: '2026-04-casablanca', from: new Date(2026, 3, 1), to: new Date(2026, 3, 8), destination: 'Casablanca, Morocco', photos: [] },
