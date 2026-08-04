@@ -4,6 +4,21 @@ This file tracks completed work, planned features and ideas across the jost-busi
 
 ---
 
+## Context / Architecture
+
+- **Monorepo**: Nx workspace at `D:\projects\jost-business` (Angular 21, Nx 22)
+- **Production server**: Contabo VPS — `167.86.87.165` — Nuremberg, Germany
+- **Domain**: `jost.business` (GoDaddy, nameservers: `ns17/18.domaincontrol.com`)
+- **Reverse proxy**: nginx running in Docker on the server
+- **Docker**: All apps run via `docker-compose.yml` on `jost-network`
+- **Current Docker services**: shell (3000), finance (3001), about-me (3002), playground (3003), travel (3004), nginx (80/443)
+- **PWA**: `countdown.jost.business` → GitHub Pages from `apps/pwa-countdown/` in this repo
+- **GitHub org**: `jost-business` — repo is public
+- **Shared lib**: `libs/ui/countdown` — `CountdownComponent` used by travel + pwa-countdown
+- **DB tool access**: PostgreSQL will be exposed on port 5432 for DBeaver/TablePlus
+
+---
+
 ## Completed
 
 ### pwa-countdown (apps/pwa-countdown)
