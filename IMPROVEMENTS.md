@@ -53,13 +53,7 @@ This file tracks completed work, planned features and ideas across the jost-busi
   }).catch(() => {});
   ```
 - [ ] API stores event in PostgreSQL
-- [ ] API optionally sends a push notification (via ntfy self-hosted or email)
-
-### Self-Hosted ntfy (optional)
-- [ ] Add `binwiederhier/ntfy` Docker container to `docker-compose.yml`
-- [ ] Expose at `jost.business/notify` via nginx
-- [ ] Replace `ntfy.sh` public server with private self-hosted instance
-- [ ] The API forwards events to the private ntfy instance
+- [ ] API sends a push notification or email to the owner
 
 ### Docker Automated Deployment
 - [ ] GitHub Actions workflow for Contabo server apps (about-me, travel, shell, etc.)
