@@ -7,3 +7,9 @@
 .env
 .env.local
 .env.*.local
+
+.angular
+
+__screenshots__/
+
+vitest.config.*.timestamp*

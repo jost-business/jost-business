@@ -1,0 +1,31 @@
+@if (!state().arrived) {
+  <div class="countdown-grid">
+    <div class="countdown-unit">
+      <div class="countdown-value">{{ pad(state().days) }}</div>
+      <div class="countdown-label">Days</div>
+    </div>
+    <span class="sep">:</span>
+    <div class="countdown-unit">
+      <div class="countdown-value">{{ pad(state().hours) }}</div>
+      <div class="countdown-label">Hours</div>
+    </div>
+    <span class="sep">:</span>
+    <div class="countdown-unit">
+      <div class="countdown-value">{{ pad(state().minutes) }}</div>
+      <div class="countdown-label">Minutes</div>
+    </div>
+    @if (showSeconds()) {
+      <span class="sep dim">:</span>
+      <div class="countdown-unit">
+        <div class="countdown-value seconds">{{ pad(state().seconds) }}</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
+    }
+  </div>
+  <div class="sleeps-pill">
+    <span class="sleeps-value">{{ state().nights }}</span>
+    <span class="sleeps-label">sleeps to go 🌙</span>
+  </div>
+} @else {
+  <ng-content select="[arrived]"></ng-content>
+}
