@@ -42,6 +42,15 @@
     "@nx/vitest:test": {
       "cache": true,
       "inputs": ["default", "^default"]
+    },
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^default",
+        { "fileset": "{workspaceRoot}/tsconfig.json" }
+      ]
     }
   },
   "plugins": ["@nx/angular/plugin"],

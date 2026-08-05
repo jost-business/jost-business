@@ -38,35 +38,32 @@ This file tracks completed work, planned features and ideas across the jost-busi
 ## In Progress / Planned
 
 ### PostgreSQL Database (docker-compose)
-- [ ] Add `postgres:17-alpine` service to `docker-compose.yml` on `jost-network`
-- [ ] Add persistent volume `postgres_data`
-- [ ] Expose port `5432` for external DB tool access (DBeaver / TablePlus)
-- [ ] Credentials managed via `.env` file (not committed)
+- [x] Add `postgres:17-alpine` service to `docker-compose.yml` on `jost-network`
+- [x] Add persistent volume `postgres_data`
+- [x] Expose port `5432` for external DB tool access (DBeaver / TablePlus)
+- [x] Credentials managed via `.env` file (not committed) — see `.env.example`
 
 ### API Service (apps/api)
-- [ ] Nx Node.js app scaffolded: `nx generate @nx/node:app api`
-- [ ] Express or Fastify backend in TypeScript
-- [ ] Exposed via nginx at `api.jost.business`
-- [ ] Docker container added to `docker-compose.yml`
+- [x] Nx Node.js app scaffolded: `nx generate @nx/node:app api`
+- [x] Fastify backend in TypeScript — `apps/api/`
+- [x] Docker container added to `docker-compose.yml` (port 3005)
+- [ ] Exposed via nginx at `api.jost.business` ← nginx block added, DNS still needed
 
 #### API Route Structure
 ```
-/jost-business/travel         GET  – get all travel entries
-/jost-business/travel         POST – create travel entry
+/jost-business/travel         GET  – get all travel entries  ✓ stub
+/jost-business/travel         POST – create travel entry     ✓ stub
 
-/pwa/notification             GET  – get notification history
-/pwa/notification             POST – log app open event (replaces ntfy.sh)
+/pwa/notification             GET  – get notification history  ✓ stub
+/pwa/notification             POST – log app open event        ✓ stub
 ```
 
+### Travel App Refactor
+- [x] Update `apps/travel` countdown component to use `libs/ui/countdown` (shared lib)
+- [x] Remove duplicate countdown logic from `adventure-countdown.component.ts`
+
 ### PWA → API Integration
-- [ ] Replace the removed `ntfy.sh` call in `app.ts` with:
-  ```typescript
-  fetch('https://api.jost.business/pwa/notification', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ event: 'app_open', timestamp: new Date() })
-  }).catch(() => {});
-  ```
+- [ ] Wire `pwa-countdown` app open event to `POST https://api.jost.business/pwa/notification`
 - [ ] API stores event in PostgreSQL
 - [ ] API sends a push notification or email to the owner
 
@@ -75,11 +72,13 @@ This file tracks completed work, planned features and ideas across the jost-busi
 - [ ] On push → SSH into server → `git pull && docker compose up -d --build <service>`
 - [ ] Requires: SSH private key stored as GitHub secret
 
-### Travel App Refactor
-- [ ] Update `apps/travel` countdown component to use `libs/ui/countdown` (shared lib)
-- [ ] Remove duplicate `adventure-countdown.component.ts`
+### API: PostgreSQL Integration
+- [ ] Add `pg` / `postgres` driver to API
+- [ ] DB connection via `DATABASE_URL` env var
+- [ ] Migrate stubs to real DB reads/writes
 
-### Future Ideas
+### DNS
+- [ ] Add `api.jost.business` A-record (GoDaddy) pointing to `167.86.87.165`
 - [ ] iOS "Add to Home Screen" hint banner in the PWA (Safari only, shown once)
 - [ ] Show trip duration (days together) in the countdown
 - [ ] Small photo gallery of previous trips in the travel app

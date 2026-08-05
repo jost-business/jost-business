@@ -4,35 +4,16 @@
     <p>
       Sometimes the best adventures are the ones shared with someone special. I'm counting down the days to reunite with my beloved girlfriend in the beautiful city of Casablanca.
     </p>
+    @if (trip(); as trip) {
     <div class="countdown-container">
       <div class="countdown-header">
-        <p>Casablanca Adventure Countdown</p>
+        <p>{{ trip.destination }} Adventure Countdown</p>
       </div>
-      <div class="countdown-timer">
-        <div class="countdown-unit">
-          <div class="countdown-value">{{ days }}</div>
-          <div class="countdown-label">Days</div>
-        </div>
-        <div class="countdown-separator">:</div>
-        <div class="countdown-unit">
-          <div class="countdown-value">{{ hours }}</div>
-          <div class="countdown-label">Hours</div>
-        </div>
-        <div class="countdown-separator">:</div>
-        <div class="countdown-unit">
-          <div class="countdown-value">{{ minutes }}</div>
-          <div class="countdown-label">Minutes</div>
-        </div>
-      </div>
+      <lib-countdown [targetDate]="trip.from" [showSeconds]="false" />
       <div class="adventure-image">
-        <img src="assets/images/us.jpeg" alt="Adventure awaits - Casablanca" />
-      </div>
-      <div class="sleeps-container">
-        <div class="countdown-unit">
-          <div class="countdown-value">{{ nights }}</div>
-          <div class="countdown-label">Sleeps</div>
-        </div>
+        <img src="assets/images/us.jpeg" alt="Adventure awaits - {{ trip.destination }}" />
       </div>
     </div>
+    }
   </div>
 </section>

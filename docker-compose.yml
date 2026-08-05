@@ -61,6 +61,24 @@ services:
     networks:
       - jost-network
 
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3005
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    depends_on:
+      - postgres
+    networks:
+      - jost-network
+
   nginx:
     image: nginx:latest
     ports:
@@ -75,9 +93,27 @@ services:
       - about-me
       - playground
       - travel
+      - api
+    networks:
+      - jost-network
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - jost-network
 
 networks:
   jost-network:
     driver: bridge
+
+volumes:
+  postgres_data:
