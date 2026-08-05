@@ -18,6 +18,11 @@
           {
             "glob": "**/*",
             "input": "apps/pwa-countdown/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "apps/pwa-countdown/src/assets",
+            "output": "assets"
           }
         ],
         "styles": ["apps/pwa-countdown/src/styles.scss"]

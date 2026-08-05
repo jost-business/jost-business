@@ -54,20 +54,20 @@ $text-muted:  rgba(255, 255, 255, 0.55);
   }
 
   // ── Countdown grid ────────────────────────────────────────────────
-  .countdown-grid {
+  ::ng-deep .countdown-grid {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
 
-    .unit {
+    .countdown-unit {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
 
-      .value {
+      .countdown-value {
         font-size: clamp(38px, 10vw, 54px);
         font-weight: 700;
         color: $rose-light;
@@ -94,7 +94,7 @@ $text-muted:  rgba(255, 255, 255, 0.55);
         }
       }
 
-      .label {
+      .countdown-label {
         font-size: 10px;
         font-weight: 600;
         letter-spacing: 2px;
@@ -117,7 +117,7 @@ $text-muted:  rgba(255, 255, 255, 0.55);
   }
 
   // ── Sleeps pill ───────────────────────────────────────────────────
-  .sleeps {
+  ::ng-deep .sleeps-pill {
     display: flex;
     align-items: baseline;
     gap: 8px;
