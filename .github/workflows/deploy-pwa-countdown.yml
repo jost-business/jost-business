@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+      - name: Set build version
+        run: echo "export const APP_VERSION = '${{ github.run_number }}';" > apps/pwa-countdown/src/app/version.ts
+
       - name: Build
         run: npx nx build pwa-countdown --configuration production --base-href /
 

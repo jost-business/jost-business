@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CountdownComponent } from 'ui-countdown';
+import { APP_VERSION } from './version';
 
 const TARGET = new Date(2026, 7, 16, 16, 5); // August 16, 2026
 const API = 'https://jost.business/api';
@@ -14,6 +15,7 @@ const API = 'https://jost.business/api';
 })
 export class App implements OnInit {
   readonly target = TARGET;
+  readonly version = APP_VERSION;
 
   ngOnInit(): void {
     this.trackAppOpen();
