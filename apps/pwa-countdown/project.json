@@ -25,9 +25,10 @@
             "output": "assets"
           },
           {
-            "glob": "*.{jpg,jpeg,png,webp,svg,gif}",
+            "glob": "**/*",
             "input": "libs/shared-assets/src/images",
-            "output": "assets/images"
+            "output": "assets/images",
+            "ignore": ["trips/**"]
           }
         ],
         "styles": ["apps/pwa-countdown/src/styles.scss"]
