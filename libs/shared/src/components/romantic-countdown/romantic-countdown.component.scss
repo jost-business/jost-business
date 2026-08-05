@@ -99,6 +99,16 @@ $text-muted:  rgba(255, 255, 255, 0.55);
   }
 }
 
+.quote {
+  font-size: 14px;
+  line-height: 1.9;
+  color: $text-muted;
+  text-align: center;
+  font-style: italic;
+  max-width: 280px;
+  margin: 0;
+}
+
 .photo-frame {
   width: 100%;
   max-width: 300px;
