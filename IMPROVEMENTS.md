@@ -51,11 +51,11 @@ This file tracks completed work, planned features and ideas across the jost-busi
 
 #### API Route Structure
 ```
-/jost-business/travel         GET  – get all travel entries  ✓ stub
-/jost-business/travel         POST – create travel entry     ✓ stub
+/jost-business/travel         GET  – get all travel entries  ✓ reads from DB
+/jost-business/travel         POST – create travel entry     ✓ writes to DB
 
-/pwa/notification             GET  – get notification history  ✓ stub
-/pwa/notification             POST – log app open event        ✓ stub
+/pwa/notification             GET  – get notification history  ✓ reads from DB
+/pwa/notification             POST – log app open event        ✓ writes to DB
 ```
 
 ### Travel App Refactor
@@ -63,9 +63,14 @@ This file tracks completed work, planned features and ideas across the jost-busi
 - [x] Remove duplicate countdown logic from `adventure-countdown.component.ts`
 
 ### PWA → API Integration
-- [ ] Wire `pwa-countdown` app open event to `POST https://api.jost.business/pwa/notification`
-- [ ] API stores event in PostgreSQL
-- [ ] API sends a push notification or email to the owner
+- [x] PWA fires `POST jost.business/api/pwa/notification` on every app open
+- [x] API stores event in PostgreSQL `notification_events` table
+- [x] CORS configured to allow requests from `countdown.jost.business`
+
+### PWA Deployment
+- [x] Migrated GitHub Pages from `pwa-adventure-countdown` repo to monorepo (`jost-business/jost-business`)
+- [x] Custom domain `countdown.jost.business` now served from monorepo Pages
+- [x] Auto build version number injected by GitHub Actions (`github.run_number`)
 
 ### Docker Automated Deployment
 - [ ] GitHub Actions workflow for Contabo server apps (about-me, travel, shell, etc.)
