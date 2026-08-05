@@ -79,7 +79,8 @@ $text-muted:  rgba(255, 255, 255, 0.55);
 
 ::ng-deep .sleeps-pill {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
   background: $rose-dim;
   border: 1px solid $rose-border;
