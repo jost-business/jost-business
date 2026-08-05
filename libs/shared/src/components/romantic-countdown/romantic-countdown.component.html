@@ -1,0 +1,13 @@
+<lib-countdown [targetDate]="targetDate()" [showSeconds]="showSeconds()">
+  <div arrived>
+    <ng-content select="[arrived]"></ng-content>
+  </div>
+</lib-countdown>
+
+<div class="photo-frame">
+  <img src="assets/images/us.jpeg" alt="Us" />
+</div>
+
+@if (version()) {
+  <p class="build-version">v{{ version() }}</p>
+}

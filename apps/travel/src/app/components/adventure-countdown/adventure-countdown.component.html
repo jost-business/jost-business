@@ -9,10 +9,7 @@
       <div class="countdown-header">
         <p>{{ trip.destination }} Adventure Countdown</p>
       </div>
-      <lib-countdown [targetDate]="trip.from" [showSeconds]="false" />
-      <div class="adventure-image">
-        <img src="assets/images/us.jpeg" alt="Adventure awaits - {{ trip.destination }}" />
-      </div>
+      <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="false" />
     </div>
     }
   </div>

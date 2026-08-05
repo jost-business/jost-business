@@ -1,11 +1,11 @@
 import { Component, input } from '@angular/core';
 import { Trip } from '@jost/shared';
-import { CountdownComponent } from 'ui-countdown';
+import { RomanticCountdownComponent } from '@jost/shared';
 
 @Component({
   selector: 'app-adventure-countdown',
   standalone: true,
-  imports: [CountdownComponent],
+  imports: [RomanticCountdownComponent],
   templateUrl: './adventure-countdown.component.html',
   styleUrl: './adventure-countdown.component.scss',
 })

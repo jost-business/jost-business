@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { CountdownComponent } from 'ui-countdown';
+import { RomanticCountdownComponent } from '@jost/shared';
 import { APP_VERSION } from './version';
 
 const TARGET = new Date(2026, 7, 16, 16, 5); // August 16, 2026
@@ -8,7 +8,7 @@ const API = 'https://jost.business/api';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CountdownComponent],
+  imports: [RomanticCountdownComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

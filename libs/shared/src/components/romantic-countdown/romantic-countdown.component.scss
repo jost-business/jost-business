@@ -1,0 +1,122 @@
+$rose:        #e91e63;
+$rose-light:  #f8bbd0;
+$rose-dim:    rgba(233, 30, 99, 0.12);
+$rose-border: rgba(233, 30, 99, 0.3);
+$text-muted:  rgba(255, 255, 255, 0.55);
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  background: rgba(10, 0, 8, 0.88);
+  border-radius: 16px;
+  padding: 32px 24px;
+  border: 1px solid $rose-border;
+}
+
+::ng-deep .countdown-grid {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    .countdown-value {
+      font-size: clamp(38px, 10vw, 54px);
+      font-weight: 700;
+      color: $rose-light;
+      background: $rose-dim;
+      border: 1px solid $rose-border;
+      border-radius: 12px;
+      min-width: clamp(70px, 18vw, 88px);
+      padding: 14px 12px;
+      text-align: center;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      box-shadow:
+        0 0 28px rgba(233, 30, 99, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+
+      &.seconds {
+        font-size: clamp(24px, 6vw, 34px);
+        min-width: clamp(50px, 13vw, 64px);
+        color: rgba(248, 187, 208, 0.45);
+        border-color: rgba(233, 30, 99, 0.14);
+        box-shadow: none;
+        background: rgba(233, 30, 99, 0.05);
+      }
+    }
+
+    .countdown-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: $text-muted;
+    }
+  }
+
+  .sep {
+    font-size: 32px;
+    font-weight: 700;
+    color: $rose;
+    opacity: 0.55;
+    align-self: flex-start;
+    padding-top: 12px;
+    line-height: 1;
+
+    &.dim { opacity: 0.2; }
+  }
+}
+
+::ng-deep .sleeps-pill {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  background: $rose-dim;
+  border: 1px solid $rose-border;
+  border-radius: 40px;
+  padding: 10px 28px;
+
+  .sleeps-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: $rose-light;
+  }
+
+  .sleeps-label {
+    font-size: 14px;
+    color: $text-muted;
+  }
+}
+
+.photo-frame {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 0 48px rgba(233, 30, 99, 0.18),
+    0 20px 60px rgba(0, 0, 0, 0.55);
+  border: 1px solid $rose-border;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.build-version {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 1px;
+}

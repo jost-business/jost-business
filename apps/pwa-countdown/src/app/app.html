@@ -5,7 +5,7 @@
     <p class="subtitle">August 16, 2026</p>
   </header>
 
-  <lib-countdown [targetDate]="target" [showSeconds]="true">
+  <lib-romantic-countdown [targetDate]="target" [showSeconds]="true" [version]="version">
     <div arrived class="celebration">
       <div class="heart">❤️</div>
       <h1>Today is the Day!</h1>
@@ -15,15 +15,9 @@
       </div>
       <p class="enjoy">✈️ Bon voyage. Enjoy every single moment.</p>
     </div>
-  </lib-countdown>
-
-  <div class="photo-frame">
-    <img src="assets/images/us.jpeg" alt="Us in Casablanca" />
-  </div>
+  </lib-romantic-countdown>
 
   <p class="quote">
     &ldquo;Sometimes the best adventures are the ones<br />shared with someone special.&rdquo;
   </p>
-
-  <p class="build-version">v{{ version }}</p>
 </main>
