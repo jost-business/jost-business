@@ -5,9 +5,10 @@ DROP TABLE IF EXISTS travel_entries;
 
 -- PWA app-open events logged by the API
 CREATE TABLE notification_events (
-  id        SERIAL PRIMARY KEY,
-  event     TEXT        NOT NULL,
-  timestamp TIMESTAMPTZ NOT NULL DEFAULT now()
+  id         SERIAL PRIMARY KEY,
+  event      TEXT        NOT NULL,
+  user_agent TEXT,
+  timestamp  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- Travel entries (future: migrate from TravelService hardcoded data)

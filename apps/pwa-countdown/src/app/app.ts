@@ -26,7 +26,11 @@ export class App implements OnInit {
     fetch(`${API}/pwa/notification`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event: 'app_open', timestamp: new Date() }),
+      body: JSON.stringify({
+        event: 'app_open',
+        user_agent: navigator.userAgent,
+        timestamp: new Date(),
+      }),
     }).catch(() => {});
   }
 
