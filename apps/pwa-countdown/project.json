@@ -25,7 +25,7 @@
             "output": "assets"
           },
           {
-            "glob": "**/*",
+            "glob": "*.{jpg,jpeg,png,webp,svg,gif}",
             "input": "libs/shared-assets/src/images",
             "output": "assets/images"
           }
