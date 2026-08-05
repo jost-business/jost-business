@@ -10,3 +10,10 @@ export interface TravelYear {
   year: number;
   trips: Trip[];
 }
+
+export interface TravelEntry {
+  id: string;
+  destination: string;
+  from_date: string;
+  to_date: string;
+}
