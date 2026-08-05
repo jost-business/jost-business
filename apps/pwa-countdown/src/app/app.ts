@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CountdownComponent } from 'ui-countdown';
 
 const TARGET = new Date(2026, 7, 16, 16, 5); // August 16, 2026
+const API = 'https://api.jost.business';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,16 @@ export class App implements OnInit {
   readonly target = TARGET;
 
   ngOnInit(): void {
+    this.trackAppOpen();
     this.initNotifications();
+  }
+
+  private trackAppOpen(): void {
+    fetch(`${API}/pwa/notification`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event: 'app_open', timestamp: new Date() }),
+    }).catch(() => {});
   }
 
   private async initNotifications(): Promise<void> {

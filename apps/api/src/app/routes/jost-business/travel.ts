@@ -1,11 +1,5 @@
 import { FastifyInstance } from 'fastify';
-
-interface TravelEntry {
-  id: string;
-  destination: string;
-  from_date: string;
-  to_date: string;
-}
+import { TravelEntry } from '@jost/models';
 
 export default async function (fastify: FastifyInstance) {
   fastify.get('/jost-business/travel', async () => {

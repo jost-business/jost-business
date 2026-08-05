@@ -18,6 +18,7 @@
     "paths": {
       "@jost/shared": ["libs/shared/src/index.ts"],
       "@jost/shared/*": ["libs/shared/src/*"],
+      "@jost/models": ["libs/shared/src/models/travel.model.ts"],
       "@jost/finance/feature": [
         "apps/finance/src/app/feature/finance.routes.ts"
       ],
