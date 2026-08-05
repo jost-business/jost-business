@@ -47,7 +47,7 @@ This file tracks completed work, planned features and ideas across the jost-busi
 - [x] Nx Node.js app scaffolded: `nx generate @nx/node:app api`
 - [x] Fastify backend in TypeScript — `apps/api/`
 - [x] Docker container added to `docker-compose.yml` (port 3005)
-- [ ] Exposed via nginx at `api.jost.business` ← nginx block added, DNS still needed
+- [x] Exposed via nginx at `jost.business/api` (path-based, no extra DNS needed)
 
 #### API Route Structure
 ```

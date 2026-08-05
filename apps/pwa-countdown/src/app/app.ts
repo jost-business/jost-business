@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CountdownComponent } from 'ui-countdown';
 
 const TARGET = new Date(2026, 7, 16, 16, 5); // August 16, 2026
-const API = 'https://api.jost.business';
+const API = 'https://jost.business/api';
 
 @Component({
   selector: 'app-root',
