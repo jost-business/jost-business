@@ -72,10 +72,10 @@
   line-height: 1;
 }
 
-/* Content area */
+/* widget body scrolls only when real web component content overflows */
 .widget-body {
   flex: 1;
-  overflow: auto;
+  overflow: hidden;
 }
 
 /* Placeholder in original position while dragging */

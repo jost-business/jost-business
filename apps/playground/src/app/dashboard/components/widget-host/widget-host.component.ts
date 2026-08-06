@@ -7,50 +7,8 @@ import { Component, input, OnInit, inject, ElementRef } from '@angular/core';
 @Component({
   selector: 'app-widget-host',
   standalone: true,
-  template: `
-    @if (customElements.get(tag())) {
-      <!-- real web component is mounted in ngOnInit -->
-    } @else {
-      <div class="placeholder">
-        @if (image()) {
-          <img class="preview-img" [src]="image()" [alt]="label()" />
-        }
-        <code class="tag">{{ tag() }}</code>
-      </div>
-    }
-  `,
-  styles: [`
-    :host { display: flex; height: 100%; }
-
-    .placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      height: 100%;
-      padding: 12px;
-      overflow: hidden;
-    }
-
-    .preview-img {
-      max-width: 100%;
-      max-height: calc(100% - 28px);
-      object-fit: contain;
-      border-radius: 6px;
-    }
-
-    .tag {
-      font-size: 10px;
-      font-family: monospace;
-      background: #f3f4f6;
-      padding: 2px 8px;
-      border-radius: 4px;
-      color: #6366f1;
-      flex-shrink: 0;
-    }
-  `],
+  templateUrl: './widget-host.component.html',
+  styleUrl: './widget-host.component.scss',
 })
 export class WidgetHostComponent implements OnInit {
   readonly tag = input.required<string>();

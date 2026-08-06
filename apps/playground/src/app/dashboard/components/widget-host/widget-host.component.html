@@ -1,0 +1,10 @@
+@if (customElements.get(tag())) {
+  <!-- real web component is mounted in ngOnInit -->
+} @else {
+  <div class="placeholder">
+    @if (image()) {
+      <img class="preview-img" [src]="image()" [alt]="label()" />
+    }
+    <!-- <code class="tag">{{ tag() }}</code>   -->
+  </div>
+}
