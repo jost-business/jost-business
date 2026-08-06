@@ -10,7 +10,7 @@ export class WidgetRegistryService {
       icon: '🥗',
       tag: 'wc-nutrition',
       description: 'Ernährungstipps und persönliches Tracking',
-      image: '/assets/images/widgets/nutrition.png',
+      image: 'assets/images/widgets/nutrition.png',
       defaultW: 8, defaultH: 4, minW: 4, minH: 3,
     },
     {
@@ -19,7 +19,7 @@ export class WidgetRegistryService {
       icon: '🏠',
       tag: 'wc-my-products',
       description: 'Übersicht meiner Versicherungsprodukte',
-      image: '/assets/images/widgets/myProducts.png',
+      image: 'assets/images/widgets/myProducts.png',
       defaultW: 2, defaultH: 2, minW: 2, minH: 2,
     },
     {
@@ -28,7 +28,7 @@ export class WidgetRegistryService {
       icon: '⚖️',
       tag: 'wc-insurance-compare',
       description: 'Alle Grundversicherungsmodelle vergleichen',
-      image: '/assets/images/widgets/insurances.png',
+      image: 'assets/images/widgets/insurances.png',
       defaultW: 6, defaultH: 4, minW: 6, minH: 3,
     },
     {
@@ -37,7 +37,7 @@ export class WidgetRegistryService {
       icon: '🏥',
       tag: 'wc-medical-contact',
       description: 'Hausarzt und Erstkontakt verwalten',
-      image: '/assets/images/widgets/initialContact.png',
+      image: 'assets/images/widgets/initialContact.png',
       defaultW: 3, defaultH: 3, minW: 3, minH: 3,
     },
     
@@ -47,7 +47,7 @@ export class WidgetRegistryService {
       icon: '🏦',
       tag: 'wc-bank-account',
       description: 'Leistungsverlauf einsehen',
-      image: '/assets/images/widgets/history.png',
+      image: 'assets/images/widgets/history.png',
       defaultW: 4, defaultH: 2, minW: 3, minH: 2,
     },
     {
@@ -56,7 +56,7 @@ export class WidgetRegistryService {
       icon: '📋',
       tag: 'wc-orders',
       description: 'Laufende und abgeschlossene Aufträge',
-      image: '/assets/images/widgets/orders.png',
+      image: 'assets/images/widgets/orders.png',
       defaultW: 4, defaultH: 3, minW: 4, minH: 2,
     },
     {
@@ -65,7 +65,7 @@ export class WidgetRegistryService {
       icon: '📄',
       tag: 'wc-documents',
       description: 'Dokumente einsehen und herunterladen',
-      image: '/assets/images/widgets/documents.png',
+      image: 'assets/images/widgets/documents.png',
       defaultW: 4, defaultH: 3, minW: 3, minH: 2,
     },
     {
@@ -74,7 +74,7 @@ export class WidgetRegistryService {
       icon: '🧾',
       tag: 'wc-invoices',
       description: 'Rechnungen einsehen und bezahlen',
-      image: '/assets/images/widgets/invoices.png',
+      image: 'assets/images/widgets/invoices.png',
       defaultW: 6, defaultH: 3, minW: 4, minH: 2,
     },
   ];
