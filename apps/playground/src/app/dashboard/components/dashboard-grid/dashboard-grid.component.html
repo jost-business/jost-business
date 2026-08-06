@@ -1,0 +1,40 @@
+<div class="grid-container" #gridContainer>
+
+  <!-- Drop-target highlight shown while dragging -->
+  @if (dropHighlight(); as hl) {
+    <div
+      class="drop-highlight"
+      [style.grid-column]="(hl.col + 1) + ' / span ' + hl.w"
+      [style.grid-row]="(hl.row + 1) + ' / span ' + hl.h"
+    ></div>
+  }
+
+  @for (widget of visibleWidgets(); track widget.id) {
+    <div
+      class="widget-cell"
+      [class.is-dragging]="draggingId() === widget.id"
+      [style.grid-column]="gridColumn(widget)"
+      [style.grid-row]="gridRow(widget)"
+      cdkDrag
+      [cdkDragData]="widget"
+      (cdkDragStarted)="onDragStarted($event, widget)"
+      (cdkDragMoved)="onDragMoved($event, widget)"
+      (cdkDragEnded)="onDragEnded($event, widget)"
+    >
+      <!-- Drag handle – only this area initiates the drag -->
+      <div class="widget-header" cdkDragHandle>
+        <span class="widget-icon">{{ widget.icon }}</span>
+        <span class="widget-label">{{ widget.label }}</span>
+        <span class="drag-dots" title="Verschieben">⠿</span>
+      </div>
+
+      <div class="widget-body">
+        <app-widget-host [tag]="widget.tag" [label]="widget.label" [image]="widget.image" />
+      </div>
+
+      <!-- Placeholder shown in the original cell while dragging -->
+      <div *cdkDragPlaceholder class="drag-placeholder"></div>
+    </div>
+  }
+
+</div>
