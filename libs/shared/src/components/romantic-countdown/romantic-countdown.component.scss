@@ -132,3 +132,30 @@ $text-muted:  rgba(255, 255, 255, 0.55);
   color: rgba(255, 255, 255, 0.35);
   letter-spacing: 1px;
 }
+
+@media (max-width: 420px) {
+  :host {
+    padding: 24px 10px;
+    gap: 20px;
+  }
+
+  ::ng-deep .countdown-grid {
+    gap: 4px;
+
+    .countdown-unit .countdown-value {
+      font-size: clamp(28px, 7.5vw, 48px);
+      min-width: clamp(56px, 15vw, 80px);
+      padding: 10px 6px;
+    }
+
+    .countdown-unit .countdown-value.seconds {
+      font-size: clamp(20px, 5vw, 30px);
+      min-width: clamp(40px, 11vw, 56px);
+    }
+
+    .sep {
+      font-size: 22px;
+      padding-top: 8px;
+    }
+  }
+}
