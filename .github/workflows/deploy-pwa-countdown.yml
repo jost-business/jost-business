@@ -6,6 +6,7 @@ on:
     paths:
       - 'apps/pwa-countdown/**'
       - 'libs/ui/countdown/**'
+      - 'libs/shared/src/components/romantic-countdown/**'
   workflow_dispatch:
 
 permissions:
