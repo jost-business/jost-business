@@ -1,3 +1,5 @@
+export type WidgetCategory = 'public' | 'private';
+
 export interface WidgetDefinition {
   id: string;
   label: string;
@@ -5,6 +7,7 @@ export interface WidgetDefinition {
   tag: string; // custom element tag name for the web component
   description: string;
   image: string;
+  category: WidgetCategory;
   defaultW: number; // default column span (out of 12)
   defaultH: number; // default row span
   minW: number;

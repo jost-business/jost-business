@@ -4,24 +4,43 @@
     <p class="picker-subtitle">Wähle deine Widgets</p>
   </div>
 
-  <ul class="widget-list">
-    @for (widget of layoutService.allWidgets(); track widget.id) {
-      <li class="widget-row" [class.active]="widget.visible">
-        <button
-          class="toggle-btn"
-          [attr.aria-pressed]="widget.visible"
-          (click)="toggle(widget.id)"
-        >
-          <span class="widget-icon">{{ widget.icon }}</span>
-          <span class="widget-info">
-            <span class="widget-name">{{ widget.label }}</span>
-            <span class="widget-desc">{{ widget.description }}</span>
-          </span>
-          <span class="checkmark" [class.visible]="widget.visible">✓</span>
-        </button>
-      </li>
-    }
-  </ul>
+  <div class="widget-list">
+    <div class="category-label">
+      <span class="category-badge public">Ohne Login</span>
+    </div>
+    <ul>
+      @for (widget of publicWidgets(); track widget.id) {
+        <li class="widget-row" [class.active]="widget.visible">
+          <button class="toggle-btn" [attr.aria-pressed]="widget.visible" (click)="toggle(widget.id)">
+            <span class="widget-icon">{{ widget.icon }}</span>
+            <span class="widget-info">
+              <span class="widget-name">{{ widget.label }}</span>
+              <span class="widget-desc">{{ widget.description }}</span>
+            </span>
+            <span class="checkmark" [class.visible]="widget.visible">✓</span>
+          </button>
+        </li>
+      }
+    </ul>
+
+    <div class="category-label">
+      <span class="category-badge private">Eingeloggt</span>
+    </div>
+    <ul>
+      @for (widget of privateWidgets(); track widget.id) {
+        <li class="widget-row" [class.active]="widget.visible">
+          <button class="toggle-btn" [attr.aria-pressed]="widget.visible" (click)="toggle(widget.id)">
+            <span class="widget-icon">{{ widget.icon }}</span>
+            <span class="widget-info">
+              <span class="widget-name">{{ widget.label }}</span>
+              <span class="widget-desc">{{ widget.description }}</span>
+            </span>
+            <span class="checkmark" [class.visible]="widget.visible">✓</span>
+          </button>
+        </li>
+      }
+    </ul>
+  </div>
 
   <div class="picker-footer">
     <button class="reset-btn" (click)="reset()">Layout zurücksetzen</button>

@@ -11,6 +11,7 @@ export class WidgetRegistryService {
       tag: 'wc-nutrition',
       description: 'Ernährungstipps und persönliches Tracking',
       image: 'assets/images/widgets/nutrition.png',
+      category: 'public',
       defaultW: 8, defaultH: 4, minW: 4, minH: 3,
     },
     {
@@ -20,6 +21,7 @@ export class WidgetRegistryService {
       tag: 'wc-my-products',
       description: 'Übersicht meiner Versicherungsprodukte',
       image: 'assets/images/widgets/myProducts.png',
+      category: 'private',
       defaultW: 2, defaultH: 2, minW: 2, minH: 2,
     },
     {
@@ -29,6 +31,7 @@ export class WidgetRegistryService {
       tag: 'wc-insurance-compare',
       description: 'Alle Grundversicherungsmodelle vergleichen',
       image: 'assets/images/widgets/insurances.png',
+      category: 'public',
       defaultW: 6, defaultH: 4, minW: 6, minH: 3,
     },
     {
@@ -38,6 +41,7 @@ export class WidgetRegistryService {
       tag: 'wc-medical-contact',
       description: 'Hausarzt und Erstkontakt verwalten',
       image: 'assets/images/widgets/initialContact.png',
+      category: 'private',
       defaultW: 3, defaultH: 3, minW: 3, minH: 3,
     },
     
@@ -48,6 +52,7 @@ export class WidgetRegistryService {
       tag: 'wc-bank-account',
       description: 'Leistungsverlauf einsehen',
       image: 'assets/images/widgets/history.png',
+      category: 'private',
       defaultW: 4, defaultH: 2, minW: 3, minH: 2,
     },
     {
@@ -57,6 +62,7 @@ export class WidgetRegistryService {
       tag: 'wc-orders',
       description: 'Laufende und abgeschlossene Aufträge',
       image: 'assets/images/widgets/orders.png',
+      category: 'private',
       defaultW: 4, defaultH: 3, minW: 4, minH: 2,
     },
     {
@@ -66,6 +72,7 @@ export class WidgetRegistryService {
       tag: 'wc-documents',
       description: 'Dokumente einsehen und herunterladen',
       image: 'assets/images/widgets/documents.png',
+      category: 'private',
       defaultW: 4, defaultH: 3, minW: 3, minH: 2,
     },
     {
@@ -75,6 +82,7 @@ export class WidgetRegistryService {
       tag: 'wc-invoices',
       description: 'Rechnungen einsehen und bezahlen',
       image: 'assets/images/widgets/invoices.png',
+      category: 'private',
       defaultW: 6, defaultH: 3, minW: 4, minH: 2,
     },
   ];
