@@ -25,6 +25,17 @@ export class WidgetRegistryService {
       defaultW: 2, defaultH: 2, minW: 2, minH: 2,
     },
     {
+      id: 'medical-contact',
+      label: 'Medizinischer Erstkontakt',
+      icon: '🏥',
+      tag: 'wc-medical-contact',
+      description: 'Hausarzt und Erstkontakt verwalten',
+      image: 'assets/images/widgets/initialContact.png',
+      category: 'private',
+      defaultW: 3, defaultH: 2, minW: 3, minH: 2,
+    },
+    
+    {
       id: 'insurance-compare',
       label: 'Grundversicherungen Vergleich',
       icon: '⚖️',
@@ -34,23 +45,13 @@ export class WidgetRegistryService {
       category: 'public',
       defaultW: 6, defaultH: 4, minW: 6, minH: 3,
     },
-    {
-      id: 'medical-contact',
-      label: 'Medizinischer Erstkontakt',
-      icon: '🏥',
-      tag: 'wc-medical-contact',
-      description: 'Hausarzt und Erstkontakt verwalten',
-      image: 'assets/images/widgets/initialContact.png',
-      category: 'private',
-      defaultW: 3, defaultH: 3, minW: 3, minH: 3,
-    },
     
    {
       id: 'bank-account',
       label: 'Leistungsverlauf',
       icon: '🏦',
       tag: 'wc-bank-account',
-      description: 'Leistungsverlauf einsehen',
+      description: 'Einzahlungskonto ändern',
       image: 'assets/images/widgets/history.png',
       category: 'private',
       defaultW: 4, defaultH: 2, minW: 3, minH: 2,

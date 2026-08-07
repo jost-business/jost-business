@@ -39,18 +39,8 @@ export class LayoutService {
   private buildDefaultLayout(): WidgetItem[] {
     let x = 0, y = 0, rowH = 0;
     return this.registry.widgets.map(def => {
-      if (x + def.defaultW > COLS) {
-        x = 0;
-        y += rowH;
-        rowH = 0;
-      }
-      const item: WidgetItem = {
-        ...def,
-        x, y,
-        w: def.defaultW,
-        h: def.defaultH,
-        visible: true,
-      };
+      if (x + def.defaultW > COLS) { x = 0; y += rowH; rowH = 0; }
+      const item: WidgetItem = { ...def, x, y, w: def.defaultW, h: def.defaultH, visible: true };
       x += def.defaultW;
       rowH = Math.max(rowH, def.defaultH);
       return item;
