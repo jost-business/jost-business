@@ -1,0 +1,19 @@
+<div class="main-bar">
+  <a href="/" class="brand">Helsana</a>
+  <span class="spacer"></span>
+  <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</div>
+
+<nav class="nav-menu" [class.open]="menuOpen()">
+  <a href="/playground/dashboard" class="nav-link" (click)="closeMenu()">Dashboard</a>
+  <a href="/about-me/" class="nav-link" (click)="closeMenu()">About Me</a>
+  <a href="/travel/" class="nav-link" (click)="closeMenu()">Travel</a>
+  <div class="menu-divider"></div>
+  <a href="#" class="nav-link utility" (click)="closeMenu()">myHelsana</a>
+  <a href="#" class="nav-link utility" (click)="closeMenu()">Blog</a>
+</nav>
+<div class="overlay" [class.visible]="menuOpen()" (click)="closeMenu()"></div>
