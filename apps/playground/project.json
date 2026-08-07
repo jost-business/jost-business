@@ -5,17 +5,24 @@
   "prefix": "app",
   "targets": {
     "build": {
-      "executor": "@nx/angular:browser-esbuild",
+      "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/playground",
+        "outputPath": {
+          "base": "dist/apps/playground",
+          "browser": ""
+        },
         "index": "apps/playground/src/index.development.html",
-        "main": "apps/playground/src/main.ts",
+        "browser": "apps/playground/src/main.ts",
         "polyfills": [],
         "tsConfig": "apps/playground/tsconfig.app.json",
         "assets": [
           "apps/playground/src/favicon.ico",
           "apps/playground/src/assets",
+          {
+            "glob": "**/*",
+            "input": "apps/playground/public"
+          },
           {
             "glob": "**/*",
             "input": "libs/shared-assets/src/images",
@@ -29,20 +36,18 @@
           "libs/shared/src/styles/index.scss",
           "apps/playground/src/styles.scss"
         ],
-        "scripts": [],
-        "vendorChunk": true,
-        "extractLicenses": false,
-        "buildOptimizer": false,
-        "sourceMap": true,
-        "optimization": false,
-        "namedChunks": true
+        "scripts": []
       },
       "configurations": {
         "development": {
-          "index": "apps/playground/src/index.development.html"
+          "index": "apps/playground/src/index.development.html",
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false
         },
         "production": {
           "index": "apps/playground/src/index.production.html",
+          "serviceWorker": "apps/playground/ngsw-config.json",
           "budgets": [
             {
               "type": "initial",
@@ -57,12 +62,8 @@
           ],
           "outputHashing": "all",
           "optimization": true,
-          "buildOptimizer": true,
           "sourceMap": false,
-          "namedChunks": false,
-          "aot": true,
-          "extractLicenses": true,
-          "vendorChunk": false
+          "extractLicenses": true
         }
       },
       "defaultConfiguration": "production"
