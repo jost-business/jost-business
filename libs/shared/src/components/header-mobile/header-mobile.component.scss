@@ -88,6 +88,26 @@
   background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
 }
 
+.mobile-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-submenu {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255,255,255,0.04);
+}
+
+.mobile-submenu .nav-link {
+  background: transparent;
+  padding: 8px 12px;
+  font-weight: 500;
+  margin: 4px 0;
+}
+
 .nav-link {
   color: white;
   text-decoration: none;
