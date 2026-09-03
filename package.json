@@ -9,8 +9,7 @@
     "build": "nx build shell",
     "serve": "nx serve shell",
     "test": "nx test",
-    "ssh:server": "ssh root@167.86.87.165 -t \"cd /home/projects/jost-business && bash\"",
-    "renew:ssl": "ssh root@167.86.87.165 \"cd /home/projects/jost-business && docker-compose stop nginx && certbot certonly --standalone -d jost.business --non-interactive --agree-tos && cp /etc/letsencrypt/live/jost.business/fullchain.pem certs/cert.pem && cp /etc/letsencrypt/live/jost.business/privkey.pem certs/key.pem && docker-compose start nginx && echo 'SSL renewed successfully'\""
+    "ssh:server": "ssh root@167.86.87.165 -t \"cd /home/projects/jost-business && bash\""
   },
   "keywords": [],
   "author": "",
