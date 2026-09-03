@@ -76,6 +76,18 @@
   }
 }
 
+/* Mobile: style links like pill items for consistency */
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 999px;
+  margin: 6px 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+}
+
 .nav-link {
   color: white;
   text-decoration: none;
