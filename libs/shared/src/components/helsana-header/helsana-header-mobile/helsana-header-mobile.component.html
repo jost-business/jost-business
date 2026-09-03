@@ -1,5 +1,5 @@
 <div class="main-bar">
-  <a href="/" class="brand">Helsana</a>
+  <a href="/about-me/" class="brand">Helsana</a>
   <span class="spacer"></span>
   <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen()">
     <span></span>
@@ -10,7 +10,6 @@
 
 <nav class="nav-menu" [class.open]="menuOpen()">
   <a href="/playground/dashboard" class="nav-link" (click)="closeMenu()">Dashboard</a>
-  <a href="/about-me/" class="nav-link" (click)="closeMenu()">About Me</a>
   <a href="/travel/" class="nav-link" (click)="closeMenu()">Travel</a>
   <div class="menu-divider"></div>
   <a href="#" class="nav-link utility" (click)="closeMenu()">myHelsana</a>
