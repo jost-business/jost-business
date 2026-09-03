@@ -23,12 +23,13 @@
 .nav-pill {
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  /* darker glass background for contrast on light pages */
+  background: linear-gradient(90deg, rgba(6,30,40,0.85), rgba(10,60,80,0.7));
   border-radius: 44px;
   padding: 10px 18px;
-  backdrop-filter: blur(8px) saturate(120%);
-  -webkit-backdrop-filter: blur(8px) saturate(120%);
-  box-shadow: 0 8px 24px rgba(11, 30, 46, 0.45);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  box-shadow: 0 10px 30px rgba(7, 40, 67, 0.5);
   border: 1px solid rgba(255,255,255,0.06);
 }
 
@@ -39,7 +40,7 @@
 }
 
 .nav-link {
-  color: rgba(255,255,255,0.9);
+  color: #ffffff;
   text-decoration: none;
   padding: 10px 18px;
   border-radius: 999px;
