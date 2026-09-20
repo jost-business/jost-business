@@ -1,4 +1,0 @@
-services:
-  nginx:
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro

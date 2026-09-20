@@ -87,6 +87,8 @@ git clone https://github.com/jost-business/jost-business.git jost-business
 cd jost-business
 ```
 
+Production uses the default `/etc/letsencrypt` mount. No Compose override file or extra flags are required.
+
 ## Step 3: Set Up SSL Certificates
 
 ### Generate self-signed certificate (for testing)
@@ -121,13 +123,13 @@ Should resolve to your server IP: 167.86.87.165
 cd /home/projects/jost-business
 
 # Build all containers
-docker compose -f docker-compose.yml -f docker-compose.production.yml build
+docker compose build
 
 # Start all services
-docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
+docker compose up -d
 
 # Verify containers are running
-docker compose -f docker-compose.yml -f docker-compose.production.yml ps
+docker compose ps
 
 # View logs
 docker-compose logs -f
@@ -145,25 +147,25 @@ docker-compose logs -f
 
 ```bash
 # View logs
-docker compose -f docker-compose.yml -f docker-compose.production.yml logs -f shell
-docker compose -f docker-compose.yml -f docker-compose.production.yml logs -f finance
-docker compose -f docker-compose.yml -f docker-compose.production.yml logs -f nginx
+docker compose logs -f shell
+docker compose logs -f finance
+docker compose logs -f nginx
 
 # Stop all services
-docker compose -f docker-compose.yml -f docker-compose.production.yml stop
+docker compose stop
 
 # Start all services
-docker compose -f docker-compose.yml -f docker-compose.production.yml start
+docker compose start
 
 # Rebuild specific service
-docker compose -f docker-compose.yml -f docker-compose.production.yml build shell
-docker compose -f docker-compose.yml -f docker-compose.production.yml up -d shell
+docker compose build shell
+docker compose up -d shell
 
 # Remove all containers
-docker compose -f docker-compose.yml -f docker-compose.production.yml down
+docker compose down
 
 # Remove volumes (data) as well
-docker compose -f docker-compose.yml -f docker-compose.production.yml down -v
+docker compose down -v
 ```
 
 ## SSL Certificate Auto-Renewal (Let's Encrypt)
