@@ -1,6 +1,6 @@
 :host {
-  --header-mint: #b8f2dc;
-  --header-coral: #ff765f;
+  --header-mint: var(--jost-color-mint);
+  --header-coral: var(--jost-color-coral);
   display: block;
 }
 

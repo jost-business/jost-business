@@ -10,17 +10,18 @@
   padding: 0;
   font-size: 32px;
   font-weight: 500;
-  color: #333;
+  color: var(--jost-color-ink);
 }
 
 .region-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--jost-color-border);
+  box-shadow: var(--jost-shadow-card);
   border-radius: 8px;
   overflow: hidden;
 }
 
 .card-header {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--jost-color-border);
   padding: 16px;
 }
 
@@ -59,27 +60,27 @@
 }
 
 .table-header {
-  background-color: #f5f5f5;
+  background-color: var(--jost-color-surface-deep);
   font-weight: 600;
-  color: #333;
+  color: var(--jost-color-ink);
   padding: 12px;
   text-align: left;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid var(--jost-color-coral);
 }
 
 .header-row {
-  background-color: #f5f5f5;
+  background-color: var(--jost-color-surface-deep);
 }
 
 .data-row {
   transition: background-color 0.2s ease;
 
   &:nth-child(even) {
-    background-color: #fafafa;
+    background-color: rgba(255, 255, 255, 0.5);
   }
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: rgba(184, 242, 220, 0.2);
   }
 
   &.note {

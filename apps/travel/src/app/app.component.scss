@@ -1,7 +1,7 @@
 :host {
-  --primary: #1976d2;
-  --dark: #0d47a1;
-  --accent: #ff6f00;
+  --primary: var(--jost-color-petrol);
+  --dark: var(--jost-color-petrol-deep);
+  --accent: var(--jost-color-coral);
   --text: #1a1a1a;
   --gray: #555;
 }
