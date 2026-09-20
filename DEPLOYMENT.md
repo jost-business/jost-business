@@ -121,13 +121,13 @@ Should resolve to your server IP: 167.86.87.165
 cd /home/projects/jost-business
 
 # Build all containers
-docker-compose build
+docker compose -f docker-compose.yml -f docker-compose.production.yml build
 
 # Start all services
-docker-compose up -d
+docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
 
 # Verify containers are running
-docker-compose ps
+docker compose -f docker-compose.yml -f docker-compose.production.yml ps
 
 # View logs
 docker-compose logs -f
@@ -145,25 +145,25 @@ docker-compose logs -f
 
 ```bash
 # View logs
-docker-compose logs -f shell
-docker-compose logs -f finance
-docker-compose logs -f nginx
+docker compose -f docker-compose.yml -f docker-compose.production.yml logs -f shell
+docker compose -f docker-compose.yml -f docker-compose.production.yml logs -f finance
+docker compose -f docker-compose.yml -f docker-compose.production.yml logs -f nginx
 
 # Stop all services
-docker-compose stop
+docker compose -f docker-compose.yml -f docker-compose.production.yml stop
 
 # Start all services
-docker-compose start
+docker compose -f docker-compose.yml -f docker-compose.production.yml start
 
 # Rebuild specific service
-docker-compose build shell
-docker-compose up -d shell
+docker compose -f docker-compose.yml -f docker-compose.production.yml build shell
+docker compose -f docker-compose.yml -f docker-compose.production.yml up -d shell
 
 # Remove all containers
-docker-compose down
+docker compose -f docker-compose.yml -f docker-compose.production.yml down
 
 # Remove volumes (data) as well
-docker-compose down -v
+docker compose -f docker-compose.yml -f docker-compose.production.yml down -v
 ```
 
 ## SSL Certificate Auto-Renewal (Let's Encrypt)
