@@ -1,0 +1,27 @@
+{
+  "name": "travel-visa-free-element",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/travel-visa-free-element/src",
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/components/travel-visa-free",
+        "browser": "apps/travel-visa-free-element/src/main.ts",
+        "index": "apps/travel-visa-free-element/src/index.html",
+        "tsConfig": "apps/travel-visa-free-element/tsconfig.app.json",
+        "styles": ["libs/shared/src/styles/index.scss", "node_modules/leaflet/dist/leaflet.css"],
+        "stylePreprocessorOptions": { "includePaths": ["libs/shared/src/styles"] }
+      },
+      "configurations": {
+        "production": { "outputHashing": "none" },
+        "development": { "optimization": false, "sourceMap": true }
+      },
+      "defaultConfiguration": "production"
+    },
+    "lint": { "executor": "@nx/eslint:lint" }
+  },
+  "tags": ["type:element", "scope:travel"]
+}

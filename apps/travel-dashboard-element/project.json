@@ -1,0 +1,27 @@
+{
+  "name": "travel-dashboard-element",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/travel-dashboard-element/src",
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/components/travel-dashboard",
+        "browser": "apps/travel-dashboard-element/src/main.ts",
+        "index": "apps/travel-dashboard-element/src/index.html",
+        "tsConfig": "apps/travel-dashboard-element/tsconfig.app.json",
+        "styles": ["libs/shared/src/styles/index.scss"],
+        "stylePreprocessorOptions": { "includePaths": ["libs/shared/src/styles"] }
+      },
+      "configurations": {
+        "production": { "outputHashing": "none" },
+        "development": { "optimization": false, "sourceMap": true }
+      },
+      "defaultConfiguration": "production"
+    },
+    "lint": { "executor": "@nx/eslint:lint" }
+  },
+  "tags": ["type:element", "scope:travel"]
+}
