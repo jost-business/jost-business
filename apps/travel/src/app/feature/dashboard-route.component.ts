@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { TravelDashboardComponent } from '@jost/travel-dashboard';
+import { TravelDashboardComponent } from '@jost/travel/dashboard';
 
 @Component({
   selector: 'app-dashboard-route',

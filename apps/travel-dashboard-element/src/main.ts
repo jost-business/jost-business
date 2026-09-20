@@ -2,7 +2,7 @@ import { createCustomElement } from '@angular/elements';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { createApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { TravelDashboardComponent } from '@jost/travel-dashboard';
+import { TravelDashboardComponent } from '@jost/travel/dashboard';
 
 createApplication({
   providers: [provideZonelessChangeDetection(), provideRouter([])],

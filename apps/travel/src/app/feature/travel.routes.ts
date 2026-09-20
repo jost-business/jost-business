@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
-import { TravelVisaFreeComponent } from '@jost/travel-visa-free';
-import { TravelEVisaComponent } from '@jost/travel-e-visa';
+import { TravelVisaFreeComponent } from '@jost/travel/visa-free';
+import { TravelEVisaComponent } from '@jost/travel/e-visa';
 import { DashboardRouteComponent } from './dashboard-route.component';
 import { TravelDetailComponent } from './travel-detail.component';
 import { TripDefaultComponent } from './trip-default.component';

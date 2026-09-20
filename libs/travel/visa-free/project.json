@@ -1,7 +1,7 @@
 {
   "name": "travel-visa-free",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/travel-visa-free/src",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/travel/visa-free/src",
   "projectType": "library",
   "targets": {
     "lint": {

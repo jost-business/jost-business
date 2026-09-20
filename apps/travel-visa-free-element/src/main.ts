@@ -1,7 +1,7 @@
 import { createCustomElement } from '@angular/elements';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { createApplication } from '@angular/platform-browser';
-import { TravelVisaFreeComponent } from '@jost/travel-visa-free';
+import { TravelVisaFreeComponent } from '@jost/travel/visa-free';
 
 createApplication({
   providers: [provideZonelessChangeDetection()],

@@ -1,7 +1,7 @@
 {
-  "name": "travel-e-visa",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/travel-e-visa/src",
+  "name": "travel-dashboard",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/travel/dashboard/src",
   "projectType": "library",
   "targets": {
     "lint": {
