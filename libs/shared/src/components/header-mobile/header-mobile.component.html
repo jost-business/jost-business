@@ -1,12 +1,19 @@
 <header class="app-toolbar">
-  <h1 class="app-title">Jost</h1>
+  <a class="app-title" href="/about-me/" aria-label="Jost home">
+    <span class="brand-mark">J</span>
+    <span>Jost</span>
+  </a>
   <span class="spacer"></span>
-  <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen()">
+  <button class="hamburger" type="button" (click)="toggleMenu()" [class.open]="menuOpen()" [attr.aria-expanded]="menuOpen()" aria-label="Toggle navigation">
     <span></span>
     <span></span>
     <span></span>
   </button>
   <nav class="nav-menu" [class.open]="menuOpen()">
+    <div class="menu-heading">
+      <span>JOST / NAVIGATION</span>
+      <span>00 — 03</span>
+    </div>
     <a href="/about-me/" class="nav-link" (click)="closeMenu()">Home</a>
   <!--     <a href="/finance/" class="nav-link" (click)="closeMenu()">Finance</a> -->
     <a href="/playground/dashboard" class="nav-link" (click)="closeMenu()">Playground</a>
