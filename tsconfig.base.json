@@ -32,6 +32,7 @@
       "@jost/travel/dashboard": ["libs/travel/dashboard/src/index.ts"],
       "@jost/travel/visa-free": ["libs/travel/visa-free/src/index.ts"],
       "@jost/travel/e-visa": ["libs/travel/e-visa/src/index.ts"],
+      "@jost/travel/trip-detail": ["libs/travel/trip-detail/src/index.ts"],
       "ui-countdown": ["libs/ui/countdown/src/index.ts"]
     }
   },

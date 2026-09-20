@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Trip } from '@jost/shared';
 
 @Component({
-  selector: 'app-trip-detail-card',
+  selector: 'jost-trip-detail-card',
   standalone: true,
   imports: [DatePipe],
   templateUrl: './trip-detail-card.component.html',

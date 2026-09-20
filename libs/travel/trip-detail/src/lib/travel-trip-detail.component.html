@@ -1,0 +1,13 @@
+@if (trip(); as currentTrip) {
+<div class="detail-container">
+  <button type="button" class="back-link" (click)="backRequested.emit()">&larr; Back to overview</button>
+  <jost-trip-detail-card [trip]="currentTrip"></jost-trip-detail-card>
+  <ng-content></ng-content>
+  <jost-photo-gallery [trip]="currentTrip"></jost-photo-gallery>
+</div>
+} @else {
+<div class="detail-container">
+  <button type="button" class="back-link" (click)="backRequested.emit()">&larr; Back to overview</button>
+  <p class="not-found">Trip not found.</p>
+</div>
+}

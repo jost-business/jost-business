@@ -2,7 +2,7 @@ import { Component, Input, signal, HostListener, computed } from '@angular/core'
 import { Trip } from '@jost/shared';
 
 @Component({
-  selector: 'app-photo-gallery',
+  selector: 'jost-photo-gallery',
   standalone: true,
   templateUrl: './photo-gallery.component.html',
   styleUrl: './photo-gallery.component.scss',

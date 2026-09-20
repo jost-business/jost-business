@@ -2,7 +2,7 @@ import { Route } from '@angular/router';
 import { TravelVisaFreeComponent } from '@jost/travel/visa-free';
 import { TravelEVisaComponent } from '@jost/travel/e-visa';
 import { DashboardRouteComponent } from './dashboard-route.component';
-import { TravelDetailComponent } from './travel-detail.component';
+import { TripDetailRouteComponent } from './trip-detail-route.component';
 import { TripDefaultComponent } from './trip-default.component';
 import { Turkey2025Component } from './trips/2025-10-turkey.component';
 
@@ -26,7 +26,7 @@ export const TRAVEL_ROUTES: Route[] = [
   },
   {
     path: 'trip/2025-10-turkey',
-    component: TravelDetailComponent,
+    component: TripDetailRouteComponent,
     data: { tripId: '2025-10-turkey' },
     children: [
       {
@@ -37,7 +37,7 @@ export const TRAVEL_ROUTES: Route[] = [
   },
   {
     path: 'trip/:id',
-    component: TravelDetailComponent,
+    component: TripDetailRouteComponent,
     children: [
       {
         path: '',
