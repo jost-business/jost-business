@@ -2,16 +2,16 @@ import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TravelService } from '@jost/shared';
-import { AdventureCountdownComponent } from '../components/adventure-countdown/adventure-countdown.component';
+import { AdventureCountdownComponent } from './adventure-countdown/adventure-countdown.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [DatePipe, RouterModule, AdventureCountdownComponent],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  templateUrl: './travel-dashboard.component.html',
+  styleUrl: './travel-dashboard.component.scss',
 })
-export class DashboardComponent {
+export class TravelDashboardComponent {
   constructor(public travelService: TravelService) {}
 
   get nextTrip() {

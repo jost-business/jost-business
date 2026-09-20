@@ -29,10 +29,10 @@ const iconDefault = L.icon({
   selector: 'app-e-visa',
   standalone: true,
   imports: [],
-  templateUrl: './e-visa.component.html',
-  styleUrl: './e-visa.component.scss',
+  templateUrl: './travel-e-visa.component.html',
+  styleUrl: './travel-e-visa.component.scss',
 })
-export class EVisaComponent implements AfterViewInit, OnDestroy {
+export class TravelEVisaComponent implements AfterViewInit, OnDestroy {
   private maps: L.Map[] = [];
 
   readonly regions: Region[] = [

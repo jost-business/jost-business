@@ -29,10 +29,10 @@ const iconDefault = L.icon({
   selector: 'app-visa-free',
   standalone: true,
   imports: [],
-  templateUrl: './visa-free.component.html',
-  styleUrl: './visa-free.component.scss',
+  templateUrl: './travel-visa-free.component.html',
+  styleUrl: './travel-visa-free.component.scss',
 })
-export class VisaFreeComponent implements AfterViewInit, OnDestroy {
+export class TravelVisaFreeComponent implements AfterViewInit, OnDestroy {
   private maps: L.Map[] = [];
 
   readonly regions: Region[] = [

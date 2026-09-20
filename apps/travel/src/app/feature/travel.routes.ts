@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
-import { DashboardComponent } from './dashboard.component';
-import { VisaFreeComponent } from './visa-free.component';
-import { EVisaComponent } from './e-visa.component';
+import { TravelDashboardComponent } from '@jost/travel-dashboard';
+import { TravelVisaFreeComponent } from '@jost/travel-visa-free';
+import { TravelEVisaComponent } from '@jost/travel-e-visa';
 import { TravelDetailComponent } from './travel-detail.component';
 import { TripDefaultComponent } from './trip-default.component';
 import { Turkey2025Component } from './trips/2025-10-turkey.component';
@@ -14,15 +14,15 @@ export const TRAVEL_ROUTES: Route[] = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    component: TravelDashboardComponent,
   },
   {
     path: 'visa-free',
-    component: VisaFreeComponent,
+    component: TravelVisaFreeComponent,
   },
   {
     path: 'e-visa',
-    component: EVisaComponent,
+    component: TravelEVisaComponent,
   },
   {
     path: 'trip/2025-10-turkey',
