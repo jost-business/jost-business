@@ -39,12 +39,16 @@ export class App implements OnInit {
         if (trip.from > now) {
           this.target = trip.from;
           this.trip = trip;
-          return;
+          break;
         }
       }
+      if (this.trip) break; // Exit outer loop if trip found
     }
+
     // Fallback if no upcoming trip found
-    this.target = new Date(2026, 9, 23, 16, 5);
+    if (!this.trip) {
+      this.target = new Date(2026, 9, 23, 16, 5);
+    }
 
     this.trackAppOpen();
     this.initNotifications();
