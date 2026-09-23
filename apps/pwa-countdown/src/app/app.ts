@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RomanticCountdownComponent } from '@jost/shared';
 import { TravelService } from '@jost/shared';
 import { APP_VERSION } from './version';
@@ -10,7 +10,7 @@ const API = 'https://jost.business/api';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RomanticCountdownComponent],
+  imports: [DatePipe, RomanticCountdownComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
