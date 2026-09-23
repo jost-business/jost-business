@@ -91,6 +91,17 @@ services:
     networks:
       - jost-network
 
+  pwa-countdown:
+    build:
+      context: .
+      dockerfile: apps/pwa-countdown/Dockerfile
+    ports:
+      - "3007:3007"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - jost-network
+
   nginx:
     image: nginx:latest
     ports:
@@ -107,6 +118,7 @@ services:
       - travel
       - api
       - header
+      - pwa-countdown
     networks:
       - jost-network
 

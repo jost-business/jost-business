@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RomanticCountdownComponent } from '@jost/shared';
+import { TravelService } from '@jost/shared';
 import { APP_VERSION } from './version';
 
-const TARGET = new Date(2026, 7, 16, 16, 5); // August 16, 2026
 const API = 'https://jost.business/api';
 
 @Component({
@@ -14,10 +14,25 @@ const API = 'https://jost.business/api';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
-  readonly target = TARGET;
+  target: Date = new Date(); // Will be set in ngOnInit
   readonly version = APP_VERSION;
 
+  constructor(private travelService: TravelService) {}
+
   ngOnInit(): void {
+    // Get the first upcoming trip (next adventure)
+    const now = new Date();
+    for (const year of this.travelService.travelYears) {
+      for (const trip of year.trips) {
+        if (trip.from > now) {
+          this.target = trip.from;
+          return;
+        }
+      }
+    }
+    // Fallback if no upcoming trip found
+    this.target = new Date(2026, 9, 23, 16, 5);
+
     this.trackAppOpen();
     this.initNotifications();
   }
@@ -40,7 +55,7 @@ export class App implements OnInit {
       await Notification.requestPermission();
     }
     const now = new Date();
-    const isToday = now.toDateString() === TARGET.toDateString();
+    const isToday = now.toDateString() === this.target.toDateString();
     if (isToday && Notification.permission === 'granted') {
       new Notification('✈️ Today is the day!', {
         body: 'Casablanca is waiting for you both! 💕',
