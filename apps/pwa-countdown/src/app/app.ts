@@ -20,6 +20,15 @@ export class App implements OnInit {
   trip: Trip | null = null;
   readonly version = APP_VERSION;
 
+  get destinationCity(): string {
+    return this.trip?.destination.split(',')[0].trim() || '';
+  }
+
+  get destinationCountry(): string {
+    const parts = this.trip?.destination.split(',') || [];
+    return parts.length > 1 ? parts[1].trim() : '';
+  }
+
   constructor(private travelService: TravelService) {}
 
   ngOnInit(): void {

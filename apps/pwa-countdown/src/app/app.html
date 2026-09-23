@@ -1,7 +1,7 @@
 <main class="countdown-page">
   <header>
     <p class="eyebrow">✈️ Next Adventure</p>
-    <h1 *ngIf="trip">{{ trip.destination.split(',')[0] }}<span class="dest-sub" *ngIf="trip.destination.includes(','">, {{ trip.destination.split(',')[1] }}</span></h1>
+    <h1 *ngIf="trip">{{ destinationCity }}<span class="dest-sub" *ngIf="destinationCountry">, {{ destinationCountry }}</span></h1>
     <p class="subtitle" *ngIf="trip">{{ trip.from | date: 'MMMM d, y' }}</p>
   </header>
 
