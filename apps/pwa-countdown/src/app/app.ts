@@ -1,20 +1,23 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RomanticCountdownComponent } from '@jost/shared';
 import { TravelService } from '@jost/shared';
 import { APP_VERSION } from './version';
+import type { Trip } from '@jost/shared';
 
 const API = 'https://jost.business/api';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RomanticCountdownComponent],
+  imports: [CommonModule, RomanticCountdownComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
   target: Date = new Date(); // Will be set in ngOnInit
+  trip: Trip | null = null;
   readonly version = APP_VERSION;
 
   constructor(private travelService: TravelService) {}
@@ -26,6 +29,7 @@ export class App implements OnInit {
       for (const trip of year.trips) {
         if (trip.from > now) {
           this.target = trip.from;
+          this.trip = trip;
           return;
         }
       }
