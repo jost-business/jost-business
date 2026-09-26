@@ -51,6 +51,13 @@
 .trips-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+
+  .col-date { width: 20%; }
+  .col-destination { width: 30%; }
+  .col-duration { width: 15%; }
+  .col-between { width: 15%; }
+  .col-status { width: 20%; }
 }
 
 .table-header {
@@ -116,7 +123,19 @@
 
   .table-header,
   .table-cell {
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+
+  .card-content {
     padding: 8px;
-    font-size: 13px;
+  }
+
+  .trips-table {
+    .col-date { width: 88px; }
+    .col-destination { width: auto; }
+    .col-duration { width: 52px; }
+    .col-between { width: 52px; }
+    .col-status { width: 68px; }
   }
 }
