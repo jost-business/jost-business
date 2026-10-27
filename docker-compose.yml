@@ -1,7 +1,6 @@
-version: '3.8'
-
 services:
   shell:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/shell/Dockerfile
@@ -18,6 +17,7 @@ services:
       - jost-network
 
   finance:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/finance/Dockerfile
@@ -29,6 +29,7 @@ services:
       - jost-network
 
   about-me:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/about-me/Dockerfile
@@ -40,6 +41,7 @@ services:
       - jost-network
 
   playground:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/playground/Dockerfile
@@ -51,6 +53,7 @@ services:
       - jost-network
 
   travel:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/travel/Dockerfile
@@ -62,6 +65,7 @@ services:
       - jost-network
 
   api:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/api/Dockerfile
@@ -81,6 +85,7 @@ services:
       - jost-network
 
   header:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/header-element/Dockerfile
@@ -92,6 +97,7 @@ services:
       - jost-network
 
   pwa-countdown:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/pwa-countdown/Dockerfile
@@ -103,6 +109,7 @@ services:
       - jost-network
 
   nginx:
+    restart: unless-stopped
     image: nginx:latest
     ports:
       - "80:80"
@@ -126,7 +133,7 @@ services:
     image: postgres:17-alpine
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
