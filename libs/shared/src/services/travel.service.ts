@@ -57,13 +57,13 @@ export class TravelService {
     return undefined;
   }
 
-  /** The nearest trip that has not started yet, or null if there is none. */
-  getNextTrip(): Trip | null {
+  /** The nearest trip that has not started yet, or undefined if there is none. */
+  getNextTrip(): Trip | undefined {
     const now = new Date();
     return this.travelYears
       .flatMap(year => year.trips)
       .filter(trip => trip.from > now)
-      .sort((a, b) => a.from.getTime() - b.from.getTime())[0] ?? null;
+      .sort((a, b) => a.from.getTime() - b.from.getTime())[0];
   }
 
   /** Days between the end of the previous trip and the start of this one, or null for the first trip. */
