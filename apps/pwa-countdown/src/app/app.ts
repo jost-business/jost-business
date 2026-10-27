@@ -32,17 +32,10 @@ export class App implements OnInit {
   constructor(private travelService: TravelService) {}
 
   ngOnInit(): void {
-    // Get the first upcoming trip (next adventure)
-    const now = new Date();
-    for (const year of this.travelService.travelYears) {
-      for (const trip of year.trips) {
-        if (trip.from > now) {
-          this.target = trip.from;
-          this.trip = trip;
-          break;
-        }
-      }
-      if (this.trip) break; // Exit outer loop if trip found
+    const next = this.travelService.getNextTrip();
+    if (next) {
+      this.target = next.from;
+      this.trip = next;
     }
 
     // Fallback if no upcoming trip found
