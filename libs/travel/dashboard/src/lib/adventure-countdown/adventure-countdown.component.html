@@ -9,7 +9,7 @@
           <div class="countdown-header">
             <p>{{ trip.destination }} Adventure Countdown</p>
           </div>
-          <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="false" />
+          <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="false" (arrived)="onCountdownArrived()" />
         </div>
       }
     }

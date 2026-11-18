@@ -1,4 +1,4 @@
-import { Component, input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CountdownComponent } from 'ui-countdown';
 
 @Component({
@@ -13,4 +13,5 @@ export class RomanticCountdownComponent {
   readonly targetDate = input.required<Date>();
   readonly showSeconds = input<boolean>(false);
   readonly version = input<string>('');
+  readonly arrived = output<void>();
 }

@@ -1,4 +1,4 @@
-<lib-countdown [targetDate]="targetDate()" [showSeconds]="showSeconds()">
+<lib-countdown [targetDate]="targetDate()" [showSeconds]="showSeconds()" (arrived)="arrived.emit()">
   <div arrived>
     <ng-content select="[arrived]"></ng-content>
   </div>

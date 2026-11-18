@@ -16,8 +16,8 @@
       }
     </header>
 
-    <lib-romantic-countdown [targetDate]="target" [showSeconds]="true" [version]="version">
-      <!-- Shown when the countdown reaches zero while the page is open; the photo is rendered below by the component -->
+    <lib-romantic-countdown [targetDate]="target" [showSeconds]="true" [version]="version" (arrived)="onCountdownArrived()">
+      <!-- Fallback when the countdown reaches zero but no trip is in progress (e.g. the hardcoded fallback date) -->
       <div arrived class="celebration">
         <div class="heart">❤️</div>
         <h2>Today is the Day!</h2>

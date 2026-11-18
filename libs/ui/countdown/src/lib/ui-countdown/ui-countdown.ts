@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, OnDestroy, input, computed, signal,
+  Component, OnInit, OnDestroy, input, output, computed, signal,
   ChangeDetectionStrategy
 } from '@angular/core';
 
@@ -23,8 +23,11 @@ export interface CountdownState {
 export class CountdownComponent implements OnInit, OnDestroy {
   readonly targetDate = input.required<Date>();
   readonly showSeconds = input<boolean>(true);
+  /** Emits once when the countdown reaches zero while it is running. */
+  readonly arrived = output<void>();
 
   private timer?: ReturnType<typeof setInterval>;
+  private arrivedFor?: number;
   readonly now = signal(new Date());
 
   readonly state = computed((): CountdownState => {
@@ -41,7 +44,18 @@ export class CountdownComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.timer = setInterval(() => this.now.set(new Date()), 1000);
+    // A target already in the past at start is not a transition, so it does not emit
+    if (this.state().arrived) this.arrivedFor = this.targetDate().getTime();
+    this.timer = setInterval(() => this.tick(), 1000);
+  }
+
+  private tick(): void {
+    this.now.set(new Date());
+    const target = this.targetDate().getTime();
+    if (this.state().arrived && this.arrivedFor !== target) {
+      this.arrivedFor = target;
+      this.arrived.emit();
+    }
   }
 
   ngOnDestroy(): void {

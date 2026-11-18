@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, HostListener, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
 import { TravelService } from '@jost/shared';
@@ -16,6 +16,8 @@ const API = 'https://jost.business/api';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
+  private readonly travelService = inject(TravelService);
+
   target: Date = new Date(); // Will be set in ngOnInit
   trip: Trip | null = null;
   readonly version = APP_VERSION;
@@ -31,23 +33,29 @@ export class App implements OnInit {
     return parts.length > 1 ? parts[1].trim() : '';
   }
 
-  constructor(private travelService: TravelService) {}
-
   ngOnInit(): void {
-    const next = this.travelService.getCurrentOrNextTrip();
-    if (next) {
-      this.target = next.from;
-      this.trip = next;
-      this.together = this.travelService.isInProgress(next);
-    }
-
-    // Fallback if no upcoming trip found
-    if (!this.trip) {
-      this.target = new Date(2026, 9, 23, 16, 5);
-    }
-
+    this.refreshTrip();
     this.trackAppOpen();
     this.initNotifications();
+  }
+
+  /** Called by the countdown when it reaches zero, so the together card replaces it right away. */
+  onCountdownArrived(): void {
+    this.refreshTrip();
+  }
+
+  /** A PWA usually comes back from the background rather than reloading, so re-evaluate the trip then. */
+  @HostListener('document:visibilitychange')
+  onVisibilityChange(): void {
+    if (document.visibilityState === 'visible') this.refreshTrip();
+  }
+
+  private refreshTrip(): void {
+    const next = this.travelService.getCurrentOrNextTrip();
+    this.trip = next ?? null;
+    this.together = !!next && this.travelService.isInProgress(next);
+    // Fallback if no upcoming trip found
+    this.target = next?.from ?? new Date(2026, 9, 23, 16, 5);
   }
 
   private trackAppOpen(): void {
@@ -59,7 +67,9 @@ export class App implements OnInit {
         user_agent: navigator.userAgent,
         timestamp: new Date(),
       }),
-    }).catch(() => {});
+    }).catch(() => {
+      // Tracking is best-effort; never let it break the page
+    });
   }
 
   private async initNotifications(): Promise<void> {
@@ -69,10 +79,11 @@ export class App implements OnInit {
     }
     const now = new Date();
     const isToday = now.toDateString() === this.target.toDateString();
-    if (isToday && Notification.permission === 'granted') {
+    if (isToday && this.trip && Notification.permission === 'granted') {
       new Notification('✈️ Today is the day!', {
-        body: 'Casablanca is waiting for you both! 💕',
-        icon: '/icons/icon-192x192.png',
+        body: `${this.destinationCity} is waiting for you both! 💕`,
+        // Relative, so it resolves under the /countdown/ base href
+        icon: 'icons/icon-192x192.png',
       });
     }
   }
