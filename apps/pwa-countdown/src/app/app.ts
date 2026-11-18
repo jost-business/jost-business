@@ -24,12 +24,11 @@ export class App implements OnInit {
   together = false;
 
   get destinationCity(): string {
-    return this.trip?.destination.split(',')[0].trim() || '';
+    return this.trip ? this.travelService.getCity(this.trip) : '';
   }
 
   get destinationCountry(): string {
-    const parts = this.trip?.destination.split(',') || [];
-    return parts.length > 1 ? parts[1].trim() : '';
+    return this.trip ? this.travelService.getCountry(this.trip) : '';
   }
 
   ngOnInit(): void {

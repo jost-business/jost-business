@@ -19,6 +19,6 @@ export class TogetherCardComponent {
   readonly version = input<string>('');
 
   readonly progress = computed(() => this.travelService.getTripProgress(this.trip()));
-  readonly city = computed(() => this.trip().destination.split(',')[0].trim());
-  readonly country = computed(() => this.trip().destination.split(',')[1]?.trim() ?? '');
+  readonly city = computed(() => this.travelService.getCity(this.trip()));
+  readonly country = computed(() => this.travelService.getCountry(this.trip()));
 }

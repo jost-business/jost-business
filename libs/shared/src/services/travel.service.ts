@@ -77,6 +77,16 @@ export class TravelService {
       .find(trip => this.isInProgress(trip)) ?? this.getNextTrip();
   }
 
+  /** City part of a destination like "Casablanca, Morocco". */
+  getCity(trip: Trip): string {
+    return trip.destination.split(',')[0].trim();
+  }
+
+  /** Country part of a destination like "Casablanca, Morocco", or empty if there is none. */
+  getCountry(trip: Trip): string {
+    return trip.destination.split(',')[1]?.trim() ?? '';
+  }
+
   isInProgress(trip: Trip): boolean {
     const now = new Date();
     return trip.from <= now && now < trip.to;
