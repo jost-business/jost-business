@@ -1,0 +1,116 @@
+$rose:        #e91e63;
+$rose-light:  #f8bbd0;
+$rose-dim:    rgba(233, 30, 99, 0.12);
+$rose-border: rgba(233, 30, 99, 0.3);
+$text:        #ffffff;
+$text-muted:  rgba(255, 255, 255, 0.55);
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  text-align: center;
+  background: rgba(10, 0, 8, 0.88);
+  border: 1px solid $rose-border;
+  border-radius: 16px;
+  padding: 32px 24px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: $rose-light;
+  margin: 0;
+  opacity: 0.85;
+}
+
+h1 {
+  font-size: clamp(28px, 8vw, 40px);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+  color: $text;
+
+  .dest-sub {
+    font-weight: 300;
+    opacity: 0.6;
+  }
+}
+
+.subtitle {
+  font-size: 13px;
+  color: $text-muted;
+  margin: -8px 0 0;
+  letter-spacing: 0.5px;
+}
+
+.photo-frame {
+  width: 100%;
+  max-width: 240px;
+  aspect-ratio: 4 / 5;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid $rose-border;
+  box-shadow: 0 0 48px rgba(233, 30, 99, 0.2);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    // Both of us stand in the left part of el_hank_happy, so crop from the left instead of the centre
+    object-position: 10% center;
+    display: block;
+  }
+}
+
+.day-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+
+  .day-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: $rose-light;
+  }
+
+  .day-total {
+    font-size: 15px;
+    color: $text-muted;
+  }
+}
+
+.progress {
+  width: 100%;
+  max-width: 240px;
+  height: 6px;
+  border-radius: 3px;
+  background: $rose-dim;
+  overflow: hidden;
+
+  .progress-fill {
+    height: 100%;
+    background: $rose;
+    border-radius: 3px;
+  }
+}
+
+.enjoy {
+  font-size: 16px;
+  color: $rose-light;
+  margin: 0;
+}
+
+.build-version {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 1px;
+  margin: 0;
+}

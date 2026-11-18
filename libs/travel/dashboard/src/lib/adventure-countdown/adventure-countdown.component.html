@@ -1,13 +1,17 @@
 <section class="adventure-section">
-  <h2>Next Adventure</h2>
+  <h2>{{ inProgress() ? 'Current Adventure' : 'Next Adventure' }}</h2>
   <div class="adventure-content">
     @if (trip(); as trip) {
-    <div class="countdown-container">
-      <div class="countdown-header">
-        <p>{{ trip.destination }} Adventure Countdown</p>
-      </div>
-      <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="false" />
-    </div>
+      @if (inProgress()) {
+        <lib-together-card [trip]="trip" />
+      } @else {
+        <div class="countdown-container">
+          <div class="countdown-header">
+            <p>{{ trip.destination }} Adventure Countdown</p>
+          </div>
+          <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="false" />
+        </div>
+      }
     }
   </div>
 </section>

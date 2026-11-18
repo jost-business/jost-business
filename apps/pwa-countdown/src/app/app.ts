@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { RomanticCountdownComponent } from '@jost/shared';
+import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
 import { TravelService } from '@jost/shared';
 import { APP_VERSION } from './version';
 import type { Trip } from '@jost/shared';
@@ -10,7 +10,7 @@ const API = 'https://jost.business/api';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [DatePipe, RomanticCountdownComponent],
+  imports: [DatePipe, RomanticCountdownComponent, TogetherCardComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,6 +19,8 @@ export class App implements OnInit {
   target: Date = new Date(); // Will be set in ngOnInit
   trip: Trip | null = null;
   readonly version = APP_VERSION;
+
+  together = false;
 
   get destinationCity(): string {
     return this.trip?.destination.split(',')[0].trim() || '';
@@ -32,10 +34,11 @@ export class App implements OnInit {
   constructor(private travelService: TravelService) {}
 
   ngOnInit(): void {
-    const next = this.travelService.getNextTrip();
+    const next = this.travelService.getCurrentOrNextTrip();
     if (next) {
       this.target = next.from;
       this.trip = next;
+      this.together = this.travelService.isInProgress(next);
     }
 
     // Fallback if no upcoming trip found

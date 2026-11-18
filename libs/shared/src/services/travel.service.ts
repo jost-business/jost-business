@@ -1,6 +1,12 @@
 import { Injectable, signal } from '@angular/core';
 import { Trip, TravelYear } from '../models/travel.model';
 
+export interface TripProgress {
+  day: number;
+  totalDays: number;
+  percent: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class TravelService {
   private readonly now = signal(new Date());
@@ -64,6 +70,33 @@ export class TravelService {
       .flatMap(year => year.trips)
       .filter(trip => trip.from > now)
       .sort((a, b) => a.from.getTime() - b.from.getTime())[0];
+  }
+
+  /** The trip that is currently in progress, otherwise the next upcoming trip. */
+  getCurrentOrNextTrip(): Trip | undefined {
+    return this.travelYears
+      .flatMap(year => year.trips)
+      .find(trip => this.isInProgress(trip)) ?? this.getNextTrip();
+  }
+
+  isInProgress(trip: Trip): boolean {
+    const now = new Date();
+    return trip.from <= now && now < trip.to;
+  }
+
+  /** Current calendar day of the trip (1-based), its total days, and the elapsed share in percent. */
+  getTripProgress(trip: Trip): TripProgress {
+    const now = new Date();
+    const dayMs = 1000 * 60 * 60 * 24;
+    const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+    const totalDays = Math.round((startOfDay(trip.to) - startOfDay(trip.from)) / dayMs) + 1;
+    const day = Math.round((startOfDay(now) - startOfDay(trip.from)) / dayMs) + 1;
+    const elapsed = (now.getTime() - trip.from.getTime()) / (trip.to.getTime() - trip.from.getTime());
+    return {
+      day: Math.min(Math.max(day, 1), totalDays),
+      totalDays,
+      percent: Math.round(Math.min(Math.max(elapsed, 0), 1) * 100),
+    };
   }
 
   /** Days between the end of the previous trip and the start of this one, or null for the first trip. */

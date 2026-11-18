@@ -55,57 +55,40 @@ $text-muted:  rgba(255, 255, 255, 0.55);
 
 }
 
-// ── Today / Celebration page ────────────────────────────────────────
-.today-page {
+// ── Arrived message (inside the countdown card) ─────────────────────
+.celebration {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 32px 24px;
+  gap: 12px;
+  text-align: center;
 
-  .celebration {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    text-align: center;
+  .heart {
+    font-size: 56px;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
 
-    .heart {
-      font-size: 80px;
-      animation: pulse 1.6s ease-in-out infinite;
-    }
+  h2 {
+    font-size: clamp(26px, 7vw, 36px);
+    font-weight: 700;
+    margin: 0;
+    color: $text;
+  }
 
-    h1 {
-      font-size: clamp(28px, 7vw, 42px);
-      font-weight: 700;
-      margin: 0;
-      color: $text;
-    }
-
-    .sub {
-      font-size: 16px;
-      color: $text-muted;
-      margin: 0;
-    }
-
-    .photo-frame {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid $rose-border;
-      box-shadow: 0 0 48px rgba(233, 30, 99, 0.2);
-
-      img { width: 100%; height: auto; display: block; }
-    }
-
-    .enjoy {
-      font-size: 17px;
-      color: $rose-light;
-      margin: 0;
-    }
+  .sub {
+    font-size: 15px;
+    color: $text-muted;
+    margin: 0;
   }
 }
+
+// ── Together page (trip in progress) ────────────────────────────────
+.together-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px 56px;
+}
+
 
 @keyframes pulse {
   0%, 100% { transform: scale(1); }

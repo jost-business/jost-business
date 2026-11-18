@@ -1,0 +1,22 @@
+<p class="eyebrow">❤️ Together in ❤️</p>
+<h1>{{ city() }}@if (country()) {<span class="dest-sub">, {{ country() }}</span>}</h1>
+<p class="subtitle">{{ trip().from | date: 'MMM d' }} – {{ trip().to | date: 'MMM d, y' }}</p>
+
+<div class="photo-frame">
+  <img src="assets/images/el_hank_happy.JPEG" alt="Us, happy together" />
+</div>
+
+<div class="day-counter">
+  <span class="day-value">Day {{ progress().day }}</span>
+  <span class="day-total">of {{ progress().totalDays }}</span>
+</div>
+
+<div class="progress" role="progressbar" [attr.aria-valuenow]="progress().percent" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-fill" [style.width.%]="progress().percent"></div>
+</div>
+
+<p class="enjoy">Enjoy every single moment.</p>
+
+@if (version()) {
+  <p class="build-version">v{{ version() }}</p>
+}

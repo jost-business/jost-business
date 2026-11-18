@@ -20,6 +20,6 @@ export class TravelDashboardComponent {
   }
 
   get nextTrip() {
-    return this.travelService.getNextTrip();
+    return this.travelService.getCurrentOrNextTrip();
   }
 }
