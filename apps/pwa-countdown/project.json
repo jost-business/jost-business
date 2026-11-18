@@ -21,11 +21,6 @@
           },
           {
             "glob": "**/*",
-            "input": "apps/pwa-countdown/src/assets",
-            "output": "assets"
-          },
-          {
-            "glob": "**/*",
             "input": "libs/shared-assets/src/images",
             "output": "assets/images",
             "ignore": ["trips/**"]
