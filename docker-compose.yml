@@ -110,7 +110,8 @@ services:
 
   nginx:
     restart: unless-stopped
-    image: nginx:latest
+    # 'resolve' in nginx.conf upstreams needs >= 1.27.3; pinned so 'latest' cannot surprise us
+    image: nginx:1.29
     ports:
       - "80:80"
       - "443:443"
