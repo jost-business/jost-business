@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Trip, TravelYear } from '../models/travel.model';
 
 export interface TripProgress {
@@ -9,8 +9,6 @@ export interface TripProgress {
 
 @Injectable({ providedIn: 'root' })
 export class TravelService {
-  private readonly now = signal(new Date());
-
   readonly travelYears: TravelYear[] = [
     {
       year: 2026,
@@ -118,14 +116,17 @@ export class TravelService {
   }
 
   isCompleted(trip: Trip): boolean {
-    return this.now() > trip.to;
+    return new Date() >= trip.to;
   }
 
   getStatus(trip: Trip): string {
     if (this.isCompleted(trip)) {
       return 'Completed';
     }
-    const diffMs = trip.from.getTime() - this.now().getTime();
+    if (this.isInProgress(trip)) {
+      return 'Ongoing';
+    }
+    const diffMs = trip.from.getTime() - Date.now();
     const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     return `in ${days} days`;
   }
