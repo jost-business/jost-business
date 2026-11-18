@@ -53,31 +53,10 @@ $text-muted:  rgba(255, 255, 255, 0.55);
     }
   }
 
-}
-
-// ── Arrived message (inside the countdown card) ─────────────────────
-.celebration {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-
-  .heart {
-    font-size: 56px;
-    animation: pulse 1.6s ease-in-out infinite;
-  }
-
-  h2 {
-    font-size: clamp(26px, 7vw, 36px);
-    font-weight: 700;
-    margin: 0;
-    color: $text;
-  }
-
-  .sub {
-    font-size: 15px;
-    color: $text-muted;
+  .build-version {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 1px;
     margin: 0;
   }
 }
@@ -87,10 +66,4 @@ $text-muted:  rgba(255, 255, 255, 0.55);
   display: flex;
   justify-content: center;
   padding: 40px 16px 56px;
-}
-
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.12); }
 }

@@ -18,7 +18,6 @@ const API = 'https://jost.business/api';
 export class App implements OnInit {
   private readonly travelService = inject(TravelService);
 
-  target: Date = new Date(); // Will be set in ngOnInit
   trip: Trip | null = null;
   readonly version = APP_VERSION;
 
@@ -54,8 +53,6 @@ export class App implements OnInit {
     const next = this.travelService.getCurrentOrNextTrip();
     this.trip = next ?? null;
     this.together = !!next && this.travelService.isInProgress(next);
-    // Fallback if no upcoming trip found
-    this.target = next?.from ?? new Date(2026, 9, 23, 16, 5);
   }
 
   private trackAppOpen(): void {
@@ -77,9 +74,8 @@ export class App implements OnInit {
     if (Notification.permission === 'default') {
       await Notification.requestPermission();
     }
-    const now = new Date();
-    const isToday = now.toDateString() === this.target.toDateString();
-    if (isToday && this.trip && Notification.permission === 'granted') {
+    const isToday = !!this.trip && new Date().toDateString() === this.trip.from.toDateString();
+    if (isToday && Notification.permission === 'granted') {
       new Notification('✈️ Today is the day!', {
         body: `${this.destinationCity} is waiting for you both! 💕`,
         // Relative, so it resolves under the /countdown/ base href

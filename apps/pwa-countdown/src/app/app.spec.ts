@@ -41,6 +41,18 @@ describe('App', () => {
     expect(el.querySelector('lib-romantic-countdown')).toBeNull();
   });
 
+  it('shows "coming soon" when no trip is planned anymore', () => {
+    const trips = TestBed.inject(TravelService).travelYears.flatMap(year => year.trips);
+    const lastEnd = Math.max(...trips.map(trip => trip.to.getTime()));
+    vi.setSystemTime(new Date(lastEnd + 60 * 60 * 1000));
+
+    const el = render();
+
+    expect(el.querySelector('h1')?.textContent).toContain('Coming soon');
+    expect(el.querySelector('lib-romantic-countdown')).toBeNull();
+    expect(el.querySelector('lib-together-card')).toBeNull();
+  });
+
   it('switches to the together card when the countdown reaches zero', () => {
     const trip = TestBed.inject(TravelService).travelYears[0].trips[0];
     vi.setSystemTime(new Date(trip.from.getTime() - 2000));
