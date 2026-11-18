@@ -15,9 +15,11 @@ export class AuthService {
   isAuthenticated = signal(false);
   isLoading = signal(false);
 
+  // Placeholder until a real login exists; the password is part of the future API signature
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   login(email: string, password: string): void {
     this.isLoading.set(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       const user: User = {
