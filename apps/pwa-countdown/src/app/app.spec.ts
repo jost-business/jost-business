@@ -1,20 +1,56 @@
 import { TestBed } from '@angular/core/testing';
+import { TravelService } from '@jost/shared';
 import { App } from './app';
-import { NxWelcome } from './nx-welcome';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App, NxWelcome],
-    }).compileComponents();
+    vi.useFakeTimers();
+    // Keep the app-open tracking from hitting the real API
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(new Response())));
+    await TestBed.configureTestingModule({ imports: [App] }).compileComponents();
   });
 
-  it('should render title', async () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  function render(): HTMLElement {
     const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome pwa-countdown',
-    );
+    fixture.detectChanges();
+    return fixture.nativeElement as HTMLElement;
+  }
+
+  it('shows the countdown before the next trip starts', () => {
+    const trip = TestBed.inject(TravelService).travelYears[0].trips[0];
+    vi.setSystemTime(new Date(trip.from.getTime() - 24 * 60 * 60 * 1000));
+
+    const el = render();
+
+    expect(el.querySelector('lib-romantic-countdown')).not.toBeNull();
+    expect(el.querySelector('lib-together-card')).toBeNull();
+  });
+
+  it('shows the together card while a trip is in progress', () => {
+    const trip = TestBed.inject(TravelService).travelYears[0].trips[0];
+    vi.setSystemTime(new Date(trip.from.getTime() + 60 * 60 * 1000));
+
+    const el = render();
+
+    expect(el.querySelector('lib-together-card')).not.toBeNull();
+    expect(el.querySelector('lib-romantic-countdown')).toBeNull();
+  });
+
+  it('switches to the together card when the countdown reaches zero', () => {
+    const trip = TestBed.inject(TravelService).travelYears[0].trips[0];
+    vi.setSystemTime(new Date(trip.from.getTime() - 2000));
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+
+    vi.advanceTimersByTime(3000);
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('lib-together-card')).not.toBeNull();
   });
 });
