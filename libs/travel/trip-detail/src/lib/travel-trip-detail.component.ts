@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { Trip } from '@jost/shared';
 import { TripDetailCardComponent } from './trip-detail-card/trip-detail-card.component';
 import { PhotoGalleryComponent } from './photo-gallery/photo-gallery.component';
@@ -8,6 +8,7 @@ import { PhotoGalleryComponent } from './photo-gallery/photo-gallery.component';
   standalone: true,
   imports: [TripDetailCardComponent, PhotoGalleryComponent],
   templateUrl: './travel-trip-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './travel-trip-detail.component.scss',
 })
 export class TravelTripDetailComponent {

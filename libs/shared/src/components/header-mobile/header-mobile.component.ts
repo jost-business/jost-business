@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'jost-header-mobile',
   standalone: true,
   templateUrl: './header-mobile.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header-mobile.component.scss',
 })
 export class HeaderMobileComponent {

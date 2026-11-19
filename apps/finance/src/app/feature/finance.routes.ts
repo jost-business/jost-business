@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { AuthService } from '@jost/shared';
 
@@ -8,6 +8,7 @@ import { AuthService } from '@jost/shared';
   standalone: true,
   imports: [CurrencyPipe],
   templateUrl: './finance.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './finance.component.scss',
 })
 class FinanceListComponent {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterOutlet, ActivatedRoute } from '@angular/router';
 import { TravelService } from '@jost/shared';
 import { TravelTripDetailComponent } from '@jost/travel/trip-detail';
@@ -7,6 +7,7 @@ import { TravelTripDetailComponent } from '@jost/travel/trip-detail';
   selector: 'app-trip-detail-route',
   standalone: true,
   imports: [RouterOutlet, TravelTripDetailComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './trip-detail-route.component.html',
 })
 export class TripDetailRouteComponent {

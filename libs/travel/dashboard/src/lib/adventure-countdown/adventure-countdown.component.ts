@@ -1,4 +1,4 @@
-import { Component, input, computed, inject, signal } from '@angular/core';
+import { Component, input, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Trip, TravelService } from '@jost/shared';
 import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
 
@@ -7,6 +7,7 @@ import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared'
   standalone: true,
   imports: [RomanticCountdownComponent, TogetherCardComponent],
   templateUrl: './adventure-countdown.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './adventure-countdown.component.scss',
 })
 export class AdventureCountdownComponent {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Trip } from '@jost/shared';
 
@@ -7,6 +7,7 @@ import { Trip } from '@jost/shared';
   standalone: true,
   imports: [DatePipe],
   templateUrl: './trip-detail-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './trip-detail-card.component.scss',
 })
 export class TripDetailCardComponent {
