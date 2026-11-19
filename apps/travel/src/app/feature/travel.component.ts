@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TravelService } from '@jost/shared';
@@ -12,5 +12,5 @@ import { AdventureCountdownComponent } from '../components/adventure-countdown/a
   styleUrl: './travel.component.scss',
 })
 export class TravelListComponent {
-  constructor(public travelService: TravelService) {}
+  protected readonly travelService = inject(TravelService);
 }

@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { AuthService } from '@jost/shared';
 
@@ -11,13 +11,13 @@ import { AuthService } from '@jost/shared';
   styleUrl: './finance.component.scss',
 })
 class FinanceListComponent {
+  protected readonly authService = inject(AuthService);
+
   readonly transactions = [
     { date: '2026-02-22', description: 'Salary', amount: 5000 },
     { date: '2026-02-20', description: 'Utilities', amount: -150 },
     { date: '2026-02-15', description: 'Groceries', amount: -200 },
   ];
-
-  constructor(public authService: AuthService) {}
 }
 
 export const FINANCE_ROUTES: Route[] = [

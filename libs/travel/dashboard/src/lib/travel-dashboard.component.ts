@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, output, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TravelService } from '@jost/shared';
 import { AdventureCountdownComponent } from './adventure-countdown/adventure-countdown.component';
@@ -13,7 +13,7 @@ import { AdventureCountdownComponent } from './adventure-countdown/adventure-cou
 export class TravelDashboardComponent {
   readonly tripSelected = output<string>();
 
-  constructor(public travelService: TravelService) {}
+  protected readonly travelService = inject(TravelService);
 
   selectTrip(tripId: string): void {
     this.tripSelected.emit(tripId);
