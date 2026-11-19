@@ -20,6 +20,24 @@
   overflow: hidden;
 }
 
+.status-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  color: var(--jost-color-ink);
+}
+
+.retry-button {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--jost-color-coral);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--jost-color-coral);
+  cursor: pointer;
+}
+
 .card-header {
   border-bottom: 1px solid var(--jost-color-border);
   padding: 16px;

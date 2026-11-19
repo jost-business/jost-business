@@ -1,7 +1,18 @@
 <div class="travel-container">
   <h2 class="travel-title">Travel Dashboard</h2>
 
-  @for (year of travelService.travelYears; track year.year) {
+  @if (travelService.error()) {
+  <div class="travel-card status-card" role="alert">
+    <p>The trips could not be loaded.</p>
+    <button type="button" class="retry-button" (click)="travelService.reload()">Try again</button>
+  </div>
+  } @else if (travelService.isLoading() && !travelService.trips().length) {
+  <div class="travel-card status-card" aria-busy="true">
+    <p>Loading trips…</p>
+  </div>
+  }
+
+  @for (year of travelService.travelYears(); track year.year) {
   <div class="travel-card">
     <div class="card-header">
       <h3 class="card-title">{{ year.year }}</h3>

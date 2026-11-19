@@ -1,12 +1,9 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
-import { TravelService } from '@jost/shared';
+import { API_BASE_URL, RomanticCountdownComponent, TogetherCardComponent, TravelService } from '@jost/shared';
 import { APP_VERSION } from './version';
 import type { Trip } from '@jost/shared';
-
-const API = 'https://jost.business/api';
 
 @Component({
   selector: 'app-root',
@@ -18,14 +15,29 @@ const API = 'https://jost.business/api';
   },
 })
 export class App implements OnInit {
-  private readonly travelService = inject(TravelService);
+  protected readonly travelService = inject(TravelService);
   private readonly http = inject(HttpClient);
+  private readonly apiBaseUrl = inject(API_BASE_URL);
 
   readonly version = APP_VERSION;
 
-  readonly trip = signal<Trip | null>(null);
-  // Set together with trip: being in progress depends on the current time, which is not a signal
-  readonly together = signal(false);
+  /**
+   * Which trip is current depends on the time, which is not a signal. Bumping
+   * this when the time matters (the app comes back, the countdown hits zero)
+   * makes the computeds below evaluate again.
+   */
+  private readonly checkedAt = signal(Date.now());
+
+  readonly trip = computed<Trip | null>(() => {
+    this.checkedAt();
+    return this.travelService.getCurrentOrNextTrip() ?? null;
+  });
+
+  readonly together = computed(() => {
+    this.checkedAt();
+    const trip = this.trip();
+    return !!trip && this.travelService.isInProgress(trip);
+  });
 
   readonly destinationCity = computed(() => {
     const trip = this.trip();
@@ -37,31 +49,39 @@ export class App implements OnInit {
     return trip ? this.travelService.getCountry(trip) : '';
   });
 
+  private notifiedTripId: string | null = null;
+  private notificationPermission?: Promise<NotificationPermission>;
+
+  constructor() {
+    // A side effect, not derived state, so effect() is the right tool: once the
+    // trips have arrived, greet a trip that starts today with a notification
+    effect(() => {
+      const trip = this.trip();
+      if (trip && trip.id !== this.notifiedTripId && startsToday(trip)) {
+        this.notifiedTripId = trip.id;
+        void this.notifyTripDay(trip);
+      }
+    });
+  }
+
   ngOnInit(): void {
-    this.refreshTrip();
     this.trackAppOpen();
-    this.initNotifications();
+    void this.askNotificationPermission();
   }
 
   /** Called by the countdown when it reaches zero, so the together card replaces it right away. */
   onCountdownArrived(): void {
-    this.refreshTrip();
+    this.checkedAt.set(Date.now());
   }
 
   /** A PWA usually comes back from the background rather than reloading, so re-evaluate the trip then. */
   onVisibilityChange(): void {
-    if (document.visibilityState === 'visible') this.refreshTrip();
-  }
-
-  private refreshTrip(): void {
-    const next = this.travelService.getCurrentOrNextTrip();
-    this.trip.set(next ?? null);
-    this.together.set(!!next && this.travelService.isInProgress(next));
+    if (document.visibilityState === 'visible') this.checkedAt.set(Date.now());
   }
 
   private trackAppOpen(): void {
     this.http
-      .post(`${API}/pwa/notification`, {
+      .post(`${this.apiBaseUrl}/pwa/notification`, {
         event: 'app_open',
         user_agent: navigator.userAgent,
         timestamp: new Date(),
@@ -73,19 +93,24 @@ export class App implements OnInit {
       });
   }
 
-  private async initNotifications(): Promise<void> {
-    if (!('Notification' in window)) return;
-    if (Notification.permission === 'default') {
-      await Notification.requestPermission();
-    }
-    const trip = this.trip();
-    const isToday = !!trip && new Date().toDateString() === trip.from.toDateString();
-    if (isToday && Notification.permission === 'granted') {
-      new Notification('✈️ Today is the day!', {
-        body: `${this.destinationCity()} is waiting for you both! 💕`,
-        // Relative, so it resolves under the /countdown/ base href
-        icon: 'icons/icon-192x192.png',
-      });
-    }
+  /** Asks at most once; later callers wait for the same answer. */
+  private askNotificationPermission(): Promise<NotificationPermission> {
+    if (!('Notification' in window)) return Promise.resolve('denied');
+    this.notificationPermission ??=
+      Notification.permission === 'default' ? Notification.requestPermission() : Promise.resolve(Notification.permission);
+    return this.notificationPermission;
   }
+
+  private async notifyTripDay(trip: Trip): Promise<void> {
+    if ((await this.askNotificationPermission()) !== 'granted') return;
+    new Notification('✈️ Today is the day!', {
+      body: `${this.travelService.getCity(trip)} is waiting for you both! 💕`,
+      // Relative, so it resolves under the /countdown/ base href
+      icon: 'icons/icon-192x192.png',
+    });
+  }
+}
+
+function startsToday(trip: Trip): boolean {
+  return new Date().toDateString() === trip.from.toDateString();
 }

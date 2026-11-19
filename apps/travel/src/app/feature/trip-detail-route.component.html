@@ -1,3 +1,7 @@
-<jost-travel-trip-detail [trip]="trip" (backRequested)="goBack()">
-  <router-outlet></router-outlet>
-</jost-travel-trip-detail>
+@if (travelService.isLoading() && !trip()) {
+  <p class="loading" aria-busy="true">Loading trip…</p>
+} @else {
+  <jost-travel-trip-detail [trip]="trip()" (backRequested)="goBack()">
+    <router-outlet></router-outlet>
+  </jost-travel-trip-detail>
+}

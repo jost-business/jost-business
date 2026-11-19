@@ -1,10 +1,11 @@
 import { createCustomElement } from '@angular/elements';
 import { createApplication } from '@angular/platform-browser';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { TravelDashboardComponent } from '@jost/travel/dashboard';
 
 createApplication({
-  providers: [provideRouter([])],
+  providers: [provideRouter([]), provideHttpClient(withFetch())],
 })
   .then(({ injector }) => {
     const element = createCustomElement(TravelDashboardComponent, { injector });

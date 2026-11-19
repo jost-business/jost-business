@@ -1,4 +1,4 @@
-import { Component, input, signal, computed } from '@angular/core';
+import { Component, input, linkedSignal, computed } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { Trip } from '@jost/shared';
 
@@ -16,7 +16,18 @@ import { Trip } from '@jost/shared';
 export class PhotoGalleryComponent {
   readonly trip = input.required<Trip>();
 
-  readonly selectedIndex = signal<number | null>(null);
+  /**
+   * The photo open in the lightbox. Writable like a signal, but linked to the
+   * trip: when another trip is shown it resets to closed, so an index from
+   * the previous trip never points into the new trip's photos.
+   *
+   * The source is the id rather than the trip itself: reloading the trips
+   * creates new objects for the same trip, which should not close the photo.
+   */
+  readonly selectedIndex = linkedSignal<string, number | null>({
+    source: () => this.trip().id,
+    computation: () => null,
+  });
 
   readonly photoUrls = computed(() => {
     const trip = this.trip();

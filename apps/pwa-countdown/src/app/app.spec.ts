@@ -1,78 +1,130 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { TravelService } from '@jost/shared';
+import type { TripDto } from '@jost/shared';
 import { App } from './app';
 
+const HOUR = 60 * 60 * 1000;
+const DAY = 24 * HOUR;
+
+// Fixed trips, so the tests do not depend on the real travel plans
+const PAST: TripDto = {
+  id: 'past',
+  destination: 'Lisbon, Portugal',
+  startsAt: '2030-01-01T10:00:00.000Z',
+  endsAt: '2030-01-10T10:00:00.000Z',
+  photos: [],
+};
+const NEXT: TripDto = {
+  id: 'next',
+  destination: 'Casablanca, Morocco',
+  startsAt: '2030-06-02T10:00:00.000Z',
+  endsAt: '2030-06-10T10:00:00.000Z',
+  photos: [],
+};
+const TRIPS = [NEXT, PAST];
+const nextStart = Date.parse(NEXT.startsAt);
+
 describe('App', () => {
+  let http: HttpTestingController;
+
   beforeEach(async () => {
     vi.useFakeTimers();
-    // The testing backend keeps the app-open tracking from hitting the real API
+    // The testing backend answers every request the app makes
     await TestBed.configureTestingModule({
       imports: [App],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
+    http = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  function render(): HTMLElement {
+  /** Creates the app at the given time, without answering the trips request yet. */
+  function create(now: number): ComponentFixture<App> {
+    vi.setSystemTime(now);
     const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  /** Lets the resource take in the response and renders the result. */
+  async function settle(fixture: ComponentFixture<App>): Promise<HTMLElement> {
+    await vi.runOnlyPendingTimersAsync();
     fixture.detectChanges();
     return fixture.nativeElement as HTMLElement;
   }
 
-  it('shows the countdown before the next trip starts', () => {
-    const trip = TestBed.inject(TravelService).travelYears[0].trips[0];
-    vi.setSystemTime(new Date(trip.from.getTime() - 24 * 60 * 60 * 1000));
+  async function render(now: number): Promise<HTMLElement> {
+    const fixture = create(now);
+    http.expectOne('/api/trips').flush(TRIPS);
+    return settle(fixture);
+  }
 
-    const el = render();
+  it('shows the countdown before the next trip starts', async () => {
+    const el = await render(nextStart - DAY);
 
+    expect(el.querySelector('h1')?.textContent).toContain('Casablanca');
     expect(el.querySelector('lib-romantic-countdown')).not.toBeNull();
     expect(el.querySelector('lib-together-card')).toBeNull();
   });
 
-  it('shows the together card while a trip is in progress', () => {
-    const trip = TestBed.inject(TravelService).travelYears[0].trips[0];
-    vi.setSystemTime(new Date(trip.from.getTime() + 60 * 60 * 1000));
-
-    const el = render();
+  it('shows the together card while a trip is in progress', async () => {
+    const el = await render(nextStart + HOUR);
 
     expect(el.querySelector('lib-together-card')).not.toBeNull();
     expect(el.querySelector('lib-romantic-countdown')).toBeNull();
   });
 
-  it('shows "coming soon" when no trip is planned anymore', () => {
-    const trips = TestBed.inject(TravelService).travelYears.flatMap(year => year.trips);
-    const lastEnd = Math.max(...trips.map(trip => trip.to.getTime()));
-    vi.setSystemTime(new Date(lastEnd + 60 * 60 * 1000));
-
-    const el = render();
+  it('shows "coming soon" when no trip is planned anymore', async () => {
+    const el = await render(Date.parse(NEXT.endsAt) + HOUR);
 
     expect(el.querySelector('h1')?.textContent).toContain('Coming soon');
     expect(el.querySelector('lib-romantic-countdown')).toBeNull();
     expect(el.querySelector('lib-together-card')).toBeNull();
   });
 
-  it('switches to the together card when the countdown reaches zero', () => {
-    const trip = TestBed.inject(TravelService).travelYears[0].trips[0];
-    vi.setSystemTime(new Date(trip.from.getTime() - 2000));
-    const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
+  it('switches to the together card when the countdown reaches zero', async () => {
+    const fixture = create(nextStart - 2000);
+    http.expectOne('/api/trips').flush(TRIPS);
+    await settle(fixture);
 
     vi.advanceTimersByTime(3000);
-    fixture.detectChanges();
+    const el = await settle(fixture);
 
-    const el = fixture.nativeElement as HTMLElement;
     expect(el.querySelector('lib-together-card')).not.toBeNull();
   });
 
-  it('reports the app open to the API once', () => {
-    render();
+  it('shows a loading state instead of "coming soon" while the trips are on their way', async () => {
+    const fixture = create(nextStart - DAY);
+    const el = fixture.nativeElement as HTMLElement;
 
-    const request = TestBed.inject(HttpTestingController).expectOne('https://jost.business/api/pwa/notification');
+    expect(el.querySelector('[aria-busy="true"]')).not.toBeNull();
+    expect(el.textContent).not.toContain('Coming soon');
+    http.expectOne('/api/trips').flush(TRIPS);
+  });
+
+  it('offers a retry when the trips cannot be loaded, and loads them again', async () => {
+    const fixture = create(nextStart - DAY);
+    http.expectOne('/api/trips').flush('down', { status: 503, statusText: 'Service Unavailable' });
+    let el = await settle(fixture);
+
+    expect(el.querySelector('h1')?.textContent).toContain('No connection');
+
+    el.querySelector<HTMLButtonElement>('.retry-button')?.click();
+    await settle(fixture);
+    http.expectOne('/api/trips').flush(TRIPS);
+    el = await settle(fixture);
+
+    expect(el.querySelector('lib-romantic-countdown')).not.toBeNull();
+  });
+
+  it('reports the app open to the API once', async () => {
+    create(nextStart - DAY);
+
+    const request = http.expectOne('/api/pwa/notification');
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toMatchObject({ event: 'app_open' });
   });

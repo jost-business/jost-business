@@ -67,6 +67,9 @@
         "development": {
           "buildTarget": "pwa-countdown:build:development"
         }
+      },
+      "options": {
+        "proxyConfig": "proxy.conf.json"
       }
     },
     "test": {

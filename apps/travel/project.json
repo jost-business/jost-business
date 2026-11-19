@@ -71,7 +71,8 @@
     "serve": {
       "executor": "@nx/angular:dev-server",
       "options": {
-        "buildTarget": "travel:build:development"
+        "buildTarget": "travel:build:development",
+        "proxyConfig": "proxy.conf.json"
       },
       "configurations": {
         "production": {

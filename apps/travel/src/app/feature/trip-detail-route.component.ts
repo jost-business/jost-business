@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterOutlet, ActivatedRoute } from '@angular/router';
 import { TravelService } from '@jost/shared';
 import { TravelTripDetailComponent } from '@jost/travel/trip-detail';
@@ -11,14 +11,13 @@ import { TravelTripDetailComponent } from '@jost/travel/trip-detail';
 export class TripDetailRouteComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly travelService = inject(TravelService);
+  protected readonly travelService = inject(TravelService);
 
-  readonly trip = this.resolveTrip();
+  private readonly tripId: string | undefined =
+    this.route.snapshot.paramMap.get('id') ?? this.route.snapshot.data['tripId'];
 
-  private resolveTrip() {
-    const id = this.route.snapshot.paramMap.get('id') || this.route.snapshot.data['tripId'];
-    return id ? this.travelService.getTripById(id) : undefined;
-  }
+  // A computed, because the trips arrive from the API after this component is created
+  readonly trip = computed(() => (this.tripId ? this.travelService.getTripById(this.tripId) : undefined));
 
   goBack(): void {
     this.router.navigate(['/']);

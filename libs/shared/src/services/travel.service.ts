@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Trip, TravelYear } from '../models/travel.model';
+import { Injectable, computed, inject } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+import { Trip, TravelYear, TripDto } from '../models/travel.model';
+import { API_BASE_URL } from './api';
 
 export interface TripProgress {
   day: number;
@@ -9,71 +11,53 @@ export interface TripProgress {
 
 @Injectable({ providedIn: 'root' })
 export class TravelService {
-  readonly travelYears: TravelYear[] = [
-    {
-      year: 2026,
-      trips: [
-        { id: '2026-12-casablanca', from: new Date(2026, 11, 23, 12, 15), to: new Date(2027, 0, 6, 7, 5), destination: 'Casablanca, Morocco', photos: [] },
-        { id: '2026-11-casablanca', from: new Date(2026, 10, 25, 14, 0), to: new Date(2026, 11, 2, 8, 10), destination: 'Casablanca, Morocco', photos: [] },
-        { id: '2026-10-casablanca', from: new Date(2026, 9, 16, 15, 5), to: new Date(2026, 9, 25, 8, 40), destination: 'Casablanca, Morocco', photos: [] },
-        { id: '2026-08-casablanca', from: new Date(2026, 7, 16, 16, 5), to: new Date(2026, 8, 2, 8, 40), destination: 'Casablanca, Morocco', photos: [] },
-        { id: '2026-07-casablanca', from: new Date(2026, 6, 3, 16, 5), to: new Date(2026, 6, 12, 8, 40), destination: 'Casablanca, Morocco', photos: [] },
-        { id: '2026-06-casablanca', from: new Date(2026, 5, 5, 16, 5), to: new Date(2026, 5, 14, 8, 40), destination: 'Casablanca, Morocco', photos: [] },
-        { id: '2026-04-casablanca', from: new Date(2026, 3, 1), to: new Date(2026, 3, 8), destination: 'Casablanca, Morocco', photos: [] },
-      ],
-    },
-    {
-      year: 2025,
-      trips: [
-        { id: '2025-12-cabo-verde', from: new Date(2025, 11, 21), to: new Date(2026, 0, 12), destination: 'Cabo Verde', photos: [] },
-        { id: '2025-10-turkey', from: new Date(2025, 9, 11), to: new Date(2025, 9, 30), destination: 'Turkey', photos: [
-          'alanya_love.jpeg',
-          'hera-hotel.jpeg',
-          'hera-pool.jpeg',
-          'alanya.jpeg',
-          'alanya_cable_car.jpeg',
-          'black_party.jpeg',
-          'coast.jpeg',
-          'dinner.jpeg',
-          'kiss.jpeg',
-          'land_of_legends_castle.jpeg',
-          'laugh.jpeg',
-          'pure_fear.jpeg',
-          'robinson_black_party.jpeg',
-          'robinson_swing.jpeg',
-          'shoes.jpeg',
-          'suluada-island.jpeg',
-          'suluada-swim.jpeg',
-          'tschiggi.jpeg',
-          'view.jpeg',
-          'white_party.jpeg',
-        ] },
-         {id: '2025-03-dakla', from: new Date(2025, 2, 22), to: new Date(2025, 3, 23), destination: 'Dakhla', photos: [] },
-      ],
-    },
-  ];
+  private readonly apiBaseUrl = inject(API_BASE_URL);
+
+  // Fetched once when something first reads it; the request runs again only on reload()
+  private readonly tripsResource = httpResource(() => `${this.apiBaseUrl}/trips`, {
+    parse: toTrips,
+  });
+
+  /**
+   * All trips, newest first. Empty while loading or after an error: value()
+   * throws while the resource is in its error state, so it is only read once
+   * hasValue() confirms there is one.
+   */
+  readonly trips = computed(() => (this.tripsResource.hasValue() ? this.tripsResource.value() : []));
+
+  readonly isLoading = this.tripsResource.isLoading;
+  readonly error = this.tripsResource.error;
+
+  /** The trips grouped by the year they start in, newest year first. */
+  readonly travelYears = computed<TravelYear[]>(() => {
+    const years = new Map<number, Trip[]>();
+    for (const trip of this.trips()) {
+      const year = trip.from.getFullYear();
+      years.set(year, [...(years.get(year) ?? []), trip]);
+    }
+    return [...years].map(([year, trips]) => ({ year, trips })).sort((a, b) => b.year - a.year);
+  });
+
+  /** Loads the trips again, for example after a failed request. */
+  reload(): void {
+    this.tripsResource.reload();
+  }
 
   getTripById(id: string): Trip | undefined {
-    for (const year of this.travelYears) {
-      const trip = year.trips.find(t => t.id === id);
-      if (trip) return trip;
-    }
-    return undefined;
+    return this.trips().find(trip => trip.id === id);
   }
 
   /** The nearest trip that has not started yet, or undefined if there is none. */
   getNextTrip(): Trip | undefined {
     const now = new Date();
-    return this.travelYears
-      .flatMap(year => year.trips)
+    return this.trips()
       .filter(trip => trip.from > now)
       .sort((a, b) => a.from.getTime() - b.from.getTime())[0];
   }
 
   /** The trip that is currently in progress, otherwise the next upcoming trip. */
   getCurrentOrNextTrip(): Trip | undefined {
-    return this.travelYears
-      .flatMap(year => year.trips)
+    return this.trips()
       .find(trip => this.isInProgress(trip)) ?? this.getNextTrip();
   }
 
@@ -109,8 +93,7 @@ export class TravelService {
 
   /** Days between the end of the previous trip and the start of this one, or null for the first trip. */
   getDaysBetween(trip: Trip): number | null {
-    const previous = this.travelYears
-      .flatMap(y => y.trips)
+    const previous = this.trips()
       .filter(t => t.from < trip.from)
       .sort((a, b) => b.from.getTime() - a.from.getTime())[0];
     if (!previous) return null;
@@ -140,4 +123,18 @@ export class TravelService {
     const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     return `in ${days} days`;
   }
+}
+
+/** Turns the API's JSON into trips, newest first, with real Date objects. */
+function toTrips(raw: unknown): Trip[] {
+  if (!Array.isArray(raw)) throw new Error('Expected a list of trips from the API');
+  return (raw as TripDto[])
+    .map(dto => ({
+      id: dto.id,
+      destination: dto.destination,
+      from: new Date(dto.startsAt),
+      to: new Date(dto.endsAt),
+      photos: dto.photos,
+    }))
+    .sort((a, b) => b.from.getTime() - a.from.getTime());
 }
