@@ -1,4 +1,4 @@
-import { Component, Input, signal, HostListener, computed } from '@angular/core';
+import { Component, input, signal, HostListener, computed } from '@angular/core';
 import { Trip } from '@jost/shared';
 
 @Component({
@@ -8,18 +8,19 @@ import { Trip } from '@jost/shared';
   styleUrl: './photo-gallery.component.scss',
 })
 export class PhotoGalleryComponent {
-  @Input({ required: true }) trip!: Trip;
+  readonly trip = input.required<Trip>();
 
-  selectedIndex = signal<number | null>(null);
+  readonly selectedIndex = signal<number | null>(null);
 
-  selectedPhoto = computed(() => {
-    const i = this.selectedIndex();
-    return i !== null ? this.photoUrls[i] : null;
+  readonly photoUrls = computed(() => {
+    const trip = this.trip();
+    return trip.photos.map(p => `assets/images/trips/${trip.id}/${p}`);
   });
 
-  get photoUrls(): string[] {
-    return this.trip.photos.map(p => `assets/images/trips/${this.trip.id}/${p}`);
-  }
+  readonly selectedPhoto = computed(() => {
+    const i = this.selectedIndex();
+    return i !== null ? this.photoUrls()[i] : null;
+  });
 
   openPhoto(index: number): void {
     this.selectedIndex.set(index);
@@ -32,13 +33,13 @@ export class PhotoGalleryComponent {
   prev(): void {
     const i = this.selectedIndex();
     if (i === null) return;
-    this.selectedIndex.set((i - 1 + this.photoUrls.length) % this.photoUrls.length);
+    this.selectedIndex.set((i - 1 + this.photoUrls().length) % this.photoUrls().length);
   }
 
   next(): void {
     const i = this.selectedIndex();
     if (i === null) return;
-    this.selectedIndex.set((i + 1) % this.photoUrls.length);
+    this.selectedIndex.set((i + 1) % this.photoUrls().length);
   }
 
   @HostListener('document:keydown.escape')

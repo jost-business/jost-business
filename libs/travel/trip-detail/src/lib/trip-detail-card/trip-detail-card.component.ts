@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Trip } from '@jost/shared';
 
@@ -10,10 +10,10 @@ import { Trip } from '@jost/shared';
   styleUrl: './trip-detail-card.component.scss',
 })
 export class TripDetailCardComponent {
-  @Input({ required: true }) trip!: Trip;
+  readonly trip = input.required<Trip>();
 
-  get duration(): number {
-    const diffMs = this.trip.to.getTime() - this.trip.from.getTime();
-    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  }
+  readonly duration = computed(() => {
+    const { from, to } = this.trip();
+    return Math.ceil((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24));
+  });
 }
