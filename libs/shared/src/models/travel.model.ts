@@ -11,9 +11,15 @@ export interface TravelYear {
   trips: Trip[];
 }
 
-export interface TravelEntry {
+/**
+ * A trip as the API sends it over the wire (GET /trips). JSON has no date
+ * type, so the instants arrive as ISO 8601 strings and the frontend turns
+ * them into a Trip.
+ */
+export interface TripDto {
   id: string;
   destination: string;
-  from_date: string;
-  to_date: string;
+  startsAt: string;
+  endsAt: string;
+  photos: string[];
 }
