@@ -1,11 +1,14 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
+import { realpathSync } from 'node:fs';
 import angular from '@analogjs/vite-plugin-angular';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 
 export default defineConfig(() => ({
-  root: import.meta.dirname,
+  // Canonical drive-letter case: on Windows a 'd:' vs 'D:' mismatch loads Angular twice
+  // and TestBed is never initialized when vitest is started with a lowercase path.
+  root: realpathSync.native(import.meta.dirname),
   cacheDir: '../../../node_modules/.vite/libs/ui/countdown',
   plugins: [angular(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
   // Uncomment this if you are using workers.

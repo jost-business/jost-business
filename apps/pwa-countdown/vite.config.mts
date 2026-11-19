@@ -1,16 +1,20 @@
 /// <reference types='vitest' />
 import { defineConfig, normalizePath } from 'vite';
 import { resolve } from 'node:path';
+import { realpathSync } from 'node:fs';
 import angular from '@analogjs/vite-plugin-angular';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
+// Canonical drive-letter case: on Windows a 'd:' vs 'D:' mismatch loads Angular twice
+// and TestBed is never initialized when vitest is started with a lowercase path.
+const root = realpathSync.native(import.meta.dirname);
+
 // On Windows nxViteTsPaths resolves aliases to backslash paths that the Analog compiler
 // does not match, so those modules come out empty. Resolve the libs we use with normalized paths.
-const lib = (path: string) =>
-  normalizePath(resolve(import.meta.dirname, '../../libs', path));
+const lib = (path: string) => normalizePath(resolve(root, '../../libs', path));
 
 export default defineConfig(() => ({
-  root: import.meta.dirname,
+  root,
   cacheDir: '../../node_modules/.vite/apps/pwa-countdown',
   plugins: [angular(), nxViteTsPaths()],
   resolve: {

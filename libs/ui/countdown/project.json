@@ -7,10 +7,12 @@
   "tags": [],
   "targets": {
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": [
+        "{projectRoot}/{options.coverage.reportsDirectory}",
+        "{workspaceRoot}/coverage/libs/ui/countdown"
+      ],
       "options": {
-        "reportsDirectory": "coverage/libs/ui/countdown"
+        "coverage.reportsDirectory": "../../../coverage/libs/ui/countdown"
       }
     },
     "lint": {
