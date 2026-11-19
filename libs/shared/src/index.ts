@@ -1,5 +1,6 @@
 export * from './services/auth.service';
-export * from './services/travel.service';
+export * from './state/trips.store';
+export * from './utils/trip';
 export * from './services/api';
 export * from './services/clock';
 export * from './components/header.component';

@@ -1,7 +1,15 @@
 import { Component, OnInit, computed, effect, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { API_BASE_URL, Clock, RomanticCountdownComponent, TogetherCardComponent, TravelService } from '@jost/shared';
+import {
+  API_BASE_URL,
+  RomanticCountdownComponent,
+  TogetherCardComponent,
+  TripsStore,
+  isTripInProgress,
+  tripCity,
+  tripCountry,
+} from '@jost/shared';
 import { APP_VERSION } from './version';
 import type { Trip } from '@jost/shared';
 
@@ -12,29 +20,28 @@ import type { Trip } from '@jost/shared';
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
-  protected readonly travelService = inject(TravelService);
+  protected readonly store = inject(TripsStore);
   private readonly http = inject(HttpClient);
   private readonly apiBaseUrl = inject(API_BASE_URL);
-  private readonly clock = inject(Clock);
 
   readonly version = APP_VERSION;
 
-  // Both depend on the time; the service's clock signal re-evaluates them when it matters
-  readonly trip = computed<Trip | null>(() => this.travelService.currentOrNextTrip() ?? null);
+  // Both depend on the time; the store's clock signal re-evaluates them when it matters
+  readonly trip = computed<Trip | null>(() => this.store.currentOrNextTrip() ?? null);
 
   readonly together = computed(() => {
     const trip = this.trip();
-    return !!trip && this.travelService.isInProgress(trip);
+    return !!trip && isTripInProgress(trip, this.store.now());
   });
 
   readonly destinationCity = computed(() => {
     const trip = this.trip();
-    return trip ? this.travelService.getCity(trip) : '';
+    return trip ? tripCity(trip) : '';
   });
 
   readonly destinationCountry = computed(() => {
     const trip = this.trip();
-    return trip ? this.travelService.getCountry(trip) : '';
+    return trip ? tripCountry(trip) : '';
   });
 
   private notifiedTripId: string | null = null;
@@ -45,7 +52,7 @@ export class App implements OnInit {
     // trip that starts today, also when the app stays open past midnight
     effect(() => {
       const trip = this.trip();
-      if (trip && trip.id !== this.notifiedTripId && startsOn(trip, this.clock.now())) {
+      if (trip && trip.id !== this.notifiedTripId && startsOn(trip, this.store.now())) {
         this.notifiedTripId = trip.id;
         void this.notifyTripDay(trip);
       }
@@ -82,7 +89,7 @@ export class App implements OnInit {
   private async notifyTripDay(trip: Trip): Promise<void> {
     if ((await this.askNotificationPermission()) !== 'granted') return;
     new Notification('✈️ Today is the day!', {
-      body: `${this.travelService.getCity(trip)} is waiting for you both! 💕`,
+      body: `${tripCity(trip)} is waiting for you both! 💕`,
       // Relative, so it resolves under the /countdown/ base href
       icon: 'icons/icon-192x192.png',
     });

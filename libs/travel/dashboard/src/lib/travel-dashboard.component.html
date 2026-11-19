@@ -1,18 +1,28 @@
 <div class="travel-container">
-  <h2 class="travel-title">Travel Dashboard</h2>
+  <div class="travel-header">
+    <h2 class="travel-title">Travel Dashboard</h2>
+    <div class="filter" role="group" aria-label="Show trips">
+      @for (option of filters; track option.value) {
+      <button type="button" class="filter-button"
+              [class.active]="store.filter() === option.value"
+              [attr.aria-pressed]="store.filter() === option.value"
+              (click)="store.setFilter(option.value)">{{ option.label }}</button>
+      }
+    </div>
+  </div>
 
-  @if (travelService.error()) {
+  @if (store.error()) {
   <div class="travel-card status-card" role="alert">
     <p>The trips could not be loaded.</p>
-    <button type="button" class="retry-button" (click)="travelService.reload()">Try again</button>
+    <button type="button" class="retry-button" (click)="store.reload()">Try again</button>
   </div>
-  } @else if (travelService.isLoading() && !travelService.trips().length) {
+  } @else if (store.isLoading() && !store.trips().length) {
   <div class="travel-card status-card" aria-busy="true">
     <p>Loading trips…</p>
   </div>
   }
 
-  @for (year of travelService.travelYears(); track year.year) {
+  @for (year of store.years(); track year.year) {
   <div class="travel-card">
     <div class="card-header">
       <h3 class="card-title">{{ year.year }}</h3>
@@ -36,24 +46,28 @@
           </tr>
         </thead>
         <tbody>
-          @for (trip of year.trips; track trip.id) {
+          @for (row of year.rows; track row.trip.id) {
           <tr class="data-row"
-              [class.clickable]="travelService.isCompleted(trip)"
-              [attr.tabindex]="travelService.isCompleted(trip) ? 0 : null"
-              (click)="travelService.isCompleted(trip) && selectTrip(trip.id)"
-              (keydown.enter)="travelService.isCompleted(trip) && selectTrip(trip.id)">
-            <td class="table-cell">{{ trip.from | date:'dd.MM' }} - {{ trip.to | date:'dd.MM' }}</td>
-            <td class="table-cell">{{ trip.destination }}</td>
-            <td class="table-cell">{{ travelService.getDuration(trip) }}</td>
-            <td class="table-cell">{{ travelService.getDaysBetween(trip) === null ? '–' : travelService.getDaysBetween(trip) + 'd' }}</td>
-            <td class="table-cell status"[class.completed]="travelService.isCompleted(trip)" [class.upcoming]="!travelService.isCompleted(trip)">{{ travelService.getStatus(trip) }}</td>
+              [class.clickable]="row.completed"
+              [attr.tabindex]="row.completed ? 0 : null"
+              (click)="row.completed && selectTrip(row.trip.id)"
+              (keydown.enter)="row.completed && selectTrip(row.trip.id)">
+            <td class="table-cell">{{ row.trip.from | date:'dd.MM' }} - {{ row.trip.to | date:'dd.MM' }}</td>
+            <td class="table-cell">{{ row.trip.destination }}</td>
+            <td class="table-cell">{{ row.duration }}</td>
+            <td class="table-cell">{{ row.daysBetween === null ? '–' : row.daysBetween + 'd' }}</td>
+            <td class="table-cell status" [class.completed]="row.completed" [class.upcoming]="!row.completed">{{ row.status }}</td>
           </tr>
           }
         </tbody>
       </table>
     </div>
   </div>
+  } @empty {
+  @if (!store.isLoading() && !store.error()) {
+  <p class="empty-filter">No trips match this filter.</p>
+  }
   }
 </div>
 
-<app-adventure-countdown [trip]="travelService.currentOrNextTrip()"></app-adventure-countdown>
+<app-adventure-countdown [trip]="store.currentOrNextTrip()"></app-adventure-countdown>

@@ -1,4 +1,4 @@
-@if (travelService.isLoading() && !trip()) {
+@if (store.isLoading() && !trip()) {
   <p class="loading" aria-busy="true">Loading trip…</p>
 } @else {
   <jost-travel-trip-detail [trip]="trip()" (backRequested)="goBack()">

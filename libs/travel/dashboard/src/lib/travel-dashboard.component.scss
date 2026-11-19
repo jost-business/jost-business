@@ -5,6 +5,46 @@
   padding: 16px;
 }
 
+.travel-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.filter {
+  display: inline-flex;
+  border: 1px solid var(--jost-color-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.filter-button {
+  padding: 6px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--jost-color-ink);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+
+  & + & {
+    border-left: 1px solid var(--jost-color-border);
+  }
+
+  &.active {
+    background: var(--jost-color-coral);
+    color: #fff;
+  }
+}
+
+.empty-filter {
+  margin: 0;
+  color: var(--jost-color-ink);
+  opacity: 0.7;
+}
+
 .travel-title {
   margin: 0;
   padding: 0;

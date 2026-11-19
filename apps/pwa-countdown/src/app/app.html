@@ -19,17 +19,17 @@
       <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="true" [version]="version" />
     </main>
   }
-} @else if (travelService.error()) {
+} @else if (store.error()) {
   <main class="countdown-page">
     <header>
       <p class="eyebrow">✈️ Next Adventure</p>
       <h1>No connection</h1>
       <p class="subtitle">The trips could not be loaded 💔</p>
     </header>
-    <button type="button" class="retry-button" (click)="travelService.reload()">Try again</button>
+    <button type="button" class="retry-button" (click)="store.reload()">Try again</button>
     <p class="build-version">v{{ version }}</p>
   </main>
-} @else if (travelService.isLoading()) {
+} @else if (store.isLoading()) {
   <main class="countdown-page" aria-busy="true">
     <header>
       <p class="eyebrow">✈️ Next Adventure</p>

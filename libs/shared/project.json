@@ -17,6 +17,12 @@
           "externalDependencies": ["eslint"]
         }
       ]
+    },
+    "test": {
+      "outputs": ["{workspaceRoot}/coverage/libs/shared"],
+      "options": {
+        "coverage.reportsDirectory": "../../coverage/libs/shared"
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Component, input, computed, inject } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
-import { TravelService } from '../../services/travel.service';
+import { Clock } from '../../services/clock';
+import { tripCity, tripCountry, tripProgress } from '../../utils/trip';
 import { Trip } from '../../models/travel.model';
 
 /** Shown instead of the countdown while a trip is in progress. */
@@ -11,12 +12,12 @@ import { Trip } from '../../models/travel.model';
   styleUrl: './together-card.component.scss',
 })
 export class TogetherCardComponent {
-  private readonly travelService = inject(TravelService);
+  private readonly clock = inject(Clock);
 
   readonly trip = input.required<Trip>();
   readonly version = input<string>('');
 
-  readonly progress = computed(() => this.travelService.getTripProgress(this.trip()));
-  readonly city = computed(() => this.travelService.getCity(this.trip()));
-  readonly country = computed(() => this.travelService.getCountry(this.trip()));
+  readonly progress = computed(() => tripProgress(this.trip(), this.clock.now()));
+  readonly city = computed(() => tripCity(this.trip()));
+  readonly country = computed(() => tripCountry(this.trip()));
 }
