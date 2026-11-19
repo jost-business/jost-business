@@ -3,25 +3,47 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/travel-visa-free-element/src",
+  "tags": ["type:element", "scope:travel"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/components/travel-visa-free",
         "browser": "apps/travel-visa-free-element/src/main.ts",
         "index": "apps/travel-visa-free-element/src/index.html",
         "tsConfig": "apps/travel-visa-free-element/tsconfig.app.json",
-        "styles": ["libs/shared/src/styles/index.scss", "node_modules/leaflet/dist/leaflet.css"],
-        "stylePreprocessorOptions": { "includePaths": ["libs/shared/src/styles"] }
+        "styles": [
+          "libs/shared/src/styles/index.scss",
+          "node_modules/leaflet/dist/leaflet.css"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/shared/src/styles"]
+        }
       },
       "configurations": {
-        "production": { "outputHashing": "none" },
-        "development": { "optimization": false, "sourceMap": true }
-      },
-      "defaultConfiguration": "production"
+        "production": {
+          "outputHashing": "none"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        }
+      }
     },
-    "lint": { "executor": "@nx/eslint:lint" }
-  },
-  "tags": ["type:element", "scope:travel"]
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/.eslintignore",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ]
+    }
+  }
 }

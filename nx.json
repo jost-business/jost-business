@@ -18,24 +18,31 @@
       "cache": true,
       "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
     },
-    "lint": {
-      "cache": true
-    },
+    "lint": [
+      {
+        "cache": true
+      },
+      {
+        "filter": {
+          "plugin": "@nx/eslint/plugin"
+        },
+        "inputs": [
+          "default",
+          "^default",
+          "{workspaceRoot}/.eslintrc.json",
+          "{workspaceRoot}/.eslintignore",
+          "{workspaceRoot}/eslint.config.mjs",
+          "{workspaceRoot}/tools/eslint-rules/**/*",
+          {
+            "externalDependencies": ["eslint"]
+          }
+        ]
+      }
+    ],
     "@angular/build:application": {
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["default", "^default"]
-    },
-    "@nx/eslint:lint": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*"
-      ]
     },
     "@angular/build:unit-test": {
       "cache": true,
@@ -61,6 +68,31 @@
         "testMode": "watch",
         "testTargetName": "test"
       }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      },
+      "include": [
+        "eslint.config.mjs",
+        "apps/about-me/**/*",
+        "apps/finance/**/*",
+        "apps/header-element/**/*",
+        "apps/playground/**/*",
+        "apps/pwa-countdown/**/*",
+        "apps/shell/**/*",
+        "apps/travel/**/*",
+        "apps/travel-dashboard-element/**/*",
+        "apps/travel-e-visa-element/**/*",
+        "apps/travel-visa-free-element/**/*",
+        "libs/shared/**/*",
+        "libs/travel/dashboard/**/*",
+        "libs/travel/e-visa/**/*",
+        "libs/travel/trip-detail/**/*",
+        "libs/travel/visa-free/**/*",
+        "libs/ui/countdown/**/*"
+      ]
     }
   ],
   "affected": {

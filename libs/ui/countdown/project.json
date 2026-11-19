@@ -14,9 +14,6 @@
       "options": {
         "coverage.reportsDirectory": "../../../coverage/libs/ui/countdown"
       }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
     }
   }
 }

@@ -3,10 +3,12 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/about-me/src",
   "prefix": "app",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/angular:browser-esbuild",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/about-me",
         "index": "apps/about-me/src/index.development.html",
@@ -64,8 +66,7 @@
           "extractLicenses": true,
           "vendorChunk": false
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
       "executor": "@nx/angular:dev-server",
@@ -79,8 +80,17 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/.eslintignore",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ]
     }
-  },
-  "tags": []
+  }
 }
