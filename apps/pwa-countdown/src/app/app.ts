@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
 import { TravelService } from '@jost/shared';
 import { APP_VERSION } from './version';
@@ -18,6 +19,7 @@ const API = 'https://jost.business/api';
 })
 export class App implements OnInit {
   private readonly travelService = inject(TravelService);
+  private readonly http = inject(HttpClient);
 
   readonly version = APP_VERSION;
 
@@ -58,17 +60,17 @@ export class App implements OnInit {
   }
 
   private trackAppOpen(): void {
-    fetch(`${API}/pwa/notification`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    this.http
+      .post(`${API}/pwa/notification`, {
         event: 'app_open',
         user_agent: navigator.userAgent,
         timestamp: new Date(),
-      }),
-    }).catch(() => {
-      // Tracking is best-effort; never let it break the page
-    });
+      })
+      .subscribe({
+        error: () => {
+          // Tracking is best-effort; never let it break the page
+        },
+      });
   }
 
   private async initNotifications(): Promise<void> {

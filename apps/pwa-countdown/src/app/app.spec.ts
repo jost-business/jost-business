@@ -1,18 +1,21 @@
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TravelService } from '@jost/shared';
 import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
     vi.useFakeTimers();
-    // Keep the app-open tracking from hitting the real API
-    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(new Response())));
-    await TestBed.configureTestingModule({ imports: [App] }).compileComponents();
+    // The testing backend keeps the app-open tracking from hitting the real API
+    await TestBed.configureTestingModule({
+      imports: [App],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    }).compileComponents();
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    vi.unstubAllGlobals();
   });
 
   function render(): HTMLElement {
@@ -64,5 +67,13 @@ describe('App', () => {
 
     const el = fixture.nativeElement as HTMLElement;
     expect(el.querySelector('lib-together-card')).not.toBeNull();
+  });
+
+  it('reports the app open to the API once', () => {
+    render();
+
+    const request = TestBed.inject(HttpTestingController).expectOne('https://jost.business/api/pwa/notification');
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toMatchObject({ event: 'app_open' });
   });
 });
