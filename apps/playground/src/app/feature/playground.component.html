@@ -2,56 +2,57 @@
   <h2 class="playground-title">Playground</h2>
   <div class="signals-card">
     <div class="card-header">
-      <h3 class="card-title">Interactive Signals Demo</h3>
+      <h3 class="card-title">Signal Forms Demo</h3>
     </div>
-    <div class="card-content">
+    <form class="card-content" (submit)="onSubmit($event)" novalidate>
       <p class="description">
-        Experiment with Angular 21 Signals and zoneless change detection!
+        The form is built from a signal with <code>form()</code>; validation rules live in the schema,
+        not in the template.
       </p>
 
       <div class="input-field">
-        <label>Enter text</label>
-        <input [(ngModel)]="inputValue" placeholder="Type something..." class="input-element" />
+        <label for="signup-name">Name</label>
+        <input id="signup-name" [formField]="signupForm.name" placeholder="Type your name..." class="input-element" />
+        @if (signupForm.name().touched() && signupForm.name().invalid()) {
+          @for (error of signupForm.name().errors(); track error.kind) {
+            <small class="field-error">{{ error.message }}</small>
+          }
+        }
+      </div>
+
+      <div class="input-field">
+        <label for="signup-email">Email</label>
+        <input id="signup-email" type="email" [formField]="signupForm.email" placeholder="you@example.com" class="input-element" />
+        @if (signupForm.email().touched() && signupForm.email().invalid()) {
+          @for (error of signupForm.email().errors(); track error.kind) {
+            <small class="field-error">{{ error.message }}</small>
+          }
+        }
       </div>
 
       <div class="output-section">
         <p class="output-row">
-          <span class="output-label">Input value:</span>
-          <strong class="output-value">{{ inputValue }}</strong>
-        </p>
-        <p class="output-row">
           <span class="output-label">Character count:</span>
-          <strong class="output-value">{{ inputValue.length }}</strong>
+          <strong class="output-value">{{ nameLength() }}</strong>
         </p>
         <p class="output-row">
           <span class="output-label">Uppercase:</span>
-          <strong class="output-value">{{ inputValue.toUpperCase() }}</strong>
+          <strong class="output-value">{{ greeting() }}</strong>
+        </p>
+        <p class="output-row">
+          <span class="output-label">Form valid:</span>
+          <strong class="output-value">{{ signupForm().valid() ? 'yes' : 'no' }}</strong>
         </p>
       </div>
 
-      <button
-        (click)="resetInput()"
-        class="reset-button"
-      >
-        Reset
-      </button>
-    </div>
-  </div>
-
-  <div class="state-card">
-    <div class="card-header">
-      <h3 class="card-title">Cross-App State</h3>
-    </div>
-    <div class="card-content">
-      @if (authService.isAuthenticated()) {
-        <p class="state-text">
-          You are logged in as: <strong class="user-name">{{ authService.currentUser()?.name }}</strong>
-        </p>
-      } @else {
-        <p class="state-text">
-          Not logged in yet. Try logging in from other apps to see state synchronization!
-        </p>
+      @if (submitted(); as data) {
+        <p class="submit-result">Submitted: {{ data.name }} &lt;{{ data.email }}&gt;</p>
       }
-    </div>
+
+      <div class="actions">
+        <button type="submit" class="submit-button">Submit</button>
+        <button type="button" (click)="reset()" class="reset-button">Reset</button>
+      </div>
+    </form>
   </div>
 </div>

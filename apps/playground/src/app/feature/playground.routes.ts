@@ -11,5 +11,10 @@ export const PLAYGROUND_ROUTES: Route[] = [
     loadComponent: () =>
       import('../dashboard/dashboard.component').then(m => m.DashboardComponent),
   },
+  {
+    path: 'signals',
+    loadComponent: () =>
+      import('./playground.component').then(m => m.PlaygroundComponent),
+  },
 ];
 
