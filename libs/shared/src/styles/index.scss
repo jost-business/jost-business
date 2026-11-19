@@ -1,5 +1,5 @@
-@import './_tailwind.css';
-@import './reset.scss';
-@import './theme.scss';
+@use './tailwind';
+@use './reset';
+@use './theme';
 
-// Import other shared styles here if needed
+// Add other shared styles here with @use if needed
