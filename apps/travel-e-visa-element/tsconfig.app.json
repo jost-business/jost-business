@@ -1,5 +1,15 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": { "outDir": "../../dist/out-tsc", "types": [] },
-  "files": ["src/main.ts"]
+  "files": [
+    "src/main.ts"
+  ],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }
