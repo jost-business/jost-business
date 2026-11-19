@@ -57,6 +57,9 @@
       "continuous": true,
       "executor": "@angular/build:dev-server",
       "defaultConfiguration": "development",
+      "readyWhen": {
+        "signal": true
+      },
       "configurations": {
         "production": {
           "buildTarget": "pwa-countdown:build:production"
@@ -64,9 +67,6 @@
         "development": {
           "buildTarget": "pwa-countdown:build:development"
         }
-      },
-      "readyWhen": {
-        "signal": true
       }
     },
     "test": {
@@ -85,7 +85,11 @@
         "buildTarget": "pwa-countdown:build",
         "staticFilePath": "dist/apps/pwa-countdown/browser",
         "spa": true
-      }
+      },
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"]
     }
   }
 }
