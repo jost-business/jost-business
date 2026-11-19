@@ -2,7 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "files": [],
   "include": [],
-  "references": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "strict": true,

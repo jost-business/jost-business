@@ -2,9 +2,12 @@
   "extends": "../../tsconfig.base.json",
   "files": [],
   "include": [],
-  "references": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ],
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
