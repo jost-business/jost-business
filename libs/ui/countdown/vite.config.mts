@@ -1,19 +1,25 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import { realpathSync } from 'node:fs';
+import { resolve } from 'node:path';
 import angular from '@analogjs/vite-plugin-angular';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+
+// Canonical drive-letter case: on Windows a 'd:' vs 'D:' mismatch loads Angular twice
+// and TestBed is never initialized when vitest is started with a lowercase path.
+const root = realpathSync.native(import.meta.dirname);
 
 export default defineConfig(() => ({
-  // Canonical drive-letter case: on Windows a 'd:' vs 'D:' mismatch loads Angular twice
-  // and TestBed is never initialized when vitest is started with a lowercase path.
-  root: realpathSync.native(import.meta.dirname),
+  resolve: {
+    tsconfigPaths: true,
+  },
+  root,
   cacheDir: '../../../node_modules/.vite/libs/ui/countdown',
-  plugins: [angular(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
+  // This library is only run through Vitest (no Vite build), so point Analog at the spec
+  // tsconfig; otherwise loading the config outside test mode looks for a missing tsconfig.app.json.
+  plugins: [angular({ tsconfig: resolve(root, 'tsconfig.spec.json') })],
   // Uncomment this if you are using workers.
   // worker: {
-  //   plugins: () => [ nxViteTsPaths() ],
+  //  plugins: [],
   // },
   test: {
     name: 'ui-countdown',
