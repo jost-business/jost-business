@@ -3,16 +3,20 @@
   <h3 class="gallery-title">Photos</h3>
   <div class="gallery-grid">
     @for (url of photoUrls(); track url; let i = $index) {
-      <img [src]="url" [alt]="trip().destination" class="gallery-image" (click)="openPhoto(i)" />
+      <button type="button" class="gallery-item" (click)="openPhoto(i)" [attr.aria-label]="'Open photo ' + (i + 1)">
+        <img [ngSrc]="url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" />
+      </button>
     }
   </div>
 </div>
 }
 
-@if (selectedPhoto()) {
+@if (selectedPhoto(); as photo) {
 <div class="lightbox-backdrop" (click)="closePhoto()">
   <button class="lightbox-arrow lightbox-arrow--left" (click)="$event.stopPropagation(); prev()" aria-label="Previous">&#8249;</button>
-  <img [src]="selectedPhoto()!" [alt]="trip().destination" class="lightbox-image" (click)="$event.stopPropagation()" />
+  <div class="lightbox-frame">
+    <img [ngSrc]="photo" fill sizes="80vw" [alt]="trip().destination" class="lightbox-image" (click)="$event.stopPropagation()" />
+  </div>
   <button class="lightbox-arrow lightbox-arrow--right" (click)="$event.stopPropagation(); next()" aria-label="Next">&#8250;</button>
 </div>
 }

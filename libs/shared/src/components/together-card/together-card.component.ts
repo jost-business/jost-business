@@ -1,12 +1,12 @@
 import { Component, input, computed, inject } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { TravelService } from '../../services/travel.service';
 import { Trip } from '../../models/travel.model';
 
 /** Shown instead of the countdown while a trip is in progress. */
 @Component({
   selector: 'lib-together-card',
-  imports: [DatePipe],
+  imports: [DatePipe, NgOptimizedImage],
   templateUrl: './together-card.component.html',
   styleUrl: './together-card.component.scss',
 })

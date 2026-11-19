@@ -52,6 +52,7 @@ h1 {
 }
 
 .photo-frame {
+  position: relative; // fill images are absolutely positioned inside the frame
   width: 100%;
   max-width: 240px;
   aspect-ratio: 4 / 5;

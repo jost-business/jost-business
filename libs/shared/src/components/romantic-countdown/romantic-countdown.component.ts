@@ -1,9 +1,10 @@
 import { Component, input, output } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { CountdownComponent } from 'ui-countdown';
 
 @Component({
   selector: 'lib-romantic-countdown',
-  imports: [CountdownComponent],
+  imports: [CountdownComponent, NgOptimizedImage],
   templateUrl: './romantic-countdown.component.html',
   styleUrl: './romantic-countdown.component.scss',
 })

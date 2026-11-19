@@ -3,7 +3,9 @@
 } @else {
   <div class="placeholder">
     @if (image()) {
-      <img class="preview-img" [src]="image()" [alt]="label()" />
+      <div class="preview">
+        <img class="preview-img" [ngSrc]="image()" fill sizes="(max-width: 600px) 100vw, 33vw" [alt]="label()" />
+      </div>
     }
     <!-- <code class="tag">{{ tag() }}</code>   -->
   </div>

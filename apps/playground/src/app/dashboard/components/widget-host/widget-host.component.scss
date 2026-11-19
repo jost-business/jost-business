@@ -15,9 +15,15 @@
   overflow: hidden;
 }
 
-.preview-img {
-  max-width: 100%;
+// Widget previews have different sizes, so the image fills this frame
+.preview {
+  position: relative;
+  flex: 1;
+  width: 100%;
   max-height: calc(100% - 28px);
+}
+
+.preview-img {
   object-fit: contain;
   border-radius: 6px;
 }

@@ -17,11 +17,14 @@
   gap: 1rem;
 }
 
-.gallery-image {
-  width: 100%;
+// Photo sizes are unknown, so each tile is a positioned frame and the image fills it
+.gallery-item {
+  position: relative;
   height: 200px;
-  object-fit: cover;
+  padding: 0;
+  border: none;
   border-radius: 8px;
+  overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
   cursor: pointer;
@@ -29,6 +32,10 @@
   &:hover {
     transform: scale(1.02);
   }
+}
+
+.gallery-image {
+  object-fit: cover;
 }
 
 .lightbox-backdrop {
@@ -43,12 +50,16 @@
   animation: fade-in 0.2s ease;
 }
 
+.lightbox-frame {
+  position: relative;
+  width: 80vw;
+  height: 90vh;
+}
+
 .lightbox-image {
-  max-width: 80vw;
-  max-height: 90vh;
   object-fit: contain;
-  border-radius: 4px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  // drop-shadow follows the visible photo, not the letterboxed frame
+  filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.6));
   cursor: default;
 }
 
@@ -80,8 +91,8 @@
     grid-template-columns: 1fr;
   }
 
-  .gallery-image {
+  .gallery-item {
     height: auto;
-    max-height: 400px;
+    aspect-ratio: 4 / 3;
   }
 }

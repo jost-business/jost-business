@@ -1,4 +1,5 @@
 import { Component, input, OnInit, inject, ElementRef } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 
 /**
  * Renders a web component by tag name inside an Angular component.
@@ -6,6 +7,7 @@ import { Component, input, OnInit, inject, ElementRef } from '@angular/core';
  */
 @Component({
   selector: 'app-widget-host',
+  imports: [NgOptimizedImage],
   templateUrl: './widget-host.component.html',
   styleUrl: './widget-host.component.scss',
 })

@@ -1,8 +1,10 @@
 import { Component, input, signal, computed } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { Trip } from '@jost/shared';
 
 @Component({
   selector: 'jost-photo-gallery',
+  imports: [NgOptimizedImage],
   templateUrl: './photo-gallery.component.html',
   styleUrl: './photo-gallery.component.scss',
   host: {
