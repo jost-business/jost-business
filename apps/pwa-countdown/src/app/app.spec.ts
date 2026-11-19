@@ -50,9 +50,13 @@ describe('App', () => {
     return fixture;
   }
 
-  /** Lets the resource take in the response and renders the result. */
+  /**
+   * Lets the resource take in the response and renders the result. Advances by
+   * zero rather than running pending timers: those include the clock's wake-up
+   * at the next trip boundary, which would silently jump the time forward.
+   */
   async function settle(fixture: ComponentFixture<App>): Promise<HTMLElement> {
-    await vi.runOnlyPendingTimersAsync();
+    await vi.advanceTimersByTimeAsync(0);
     fixture.detectChanges();
     return fixture.nativeElement as HTMLElement;
   }
@@ -92,6 +96,19 @@ describe('App', () => {
     await settle(fixture);
 
     vi.advanceTimersByTime(3000);
+    const el = await settle(fixture);
+
+    expect(el.querySelector('lib-together-card')).not.toBeNull();
+  });
+
+  it('catches up when it comes back from the background after the trip started', async () => {
+    const fixture = create(nextStart - 2 * DAY);
+    http.expectOne('/api/trips').flush(TRIPS);
+    await settle(fixture);
+
+    // Time passes while the app is hidden, without any timer firing
+    vi.setSystemTime(nextStart + HOUR);
+    document.dispatchEvent(new Event('visibilitychange'));
     const el = await settle(fixture);
 
     expect(el.querySelector('lib-together-card')).not.toBeNull();

@@ -17,8 +17,4 @@ export class TravelDashboardComponent {
   selectTrip(tripId: string): void {
     this.tripSelected.emit(tripId);
   }
-
-  get nextTrip() {
-    return this.travelService.getCurrentOrNextTrip();
-  }
 }

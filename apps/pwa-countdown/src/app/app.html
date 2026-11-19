@@ -15,8 +15,8 @@
         <p class="subtitle">{{ trip.from | date: 'MMMM d, y' }}</p>
       </header>
 
-      <!-- When the countdown reaches zero the trip is in progress, so the together card takes over -->
-      <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="true" [version]="version" (arrived)="onCountdownArrived()" />
+      <!-- When the trip starts, the clock signal moves on and the together card takes over -->
+      <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="true" [version]="version" />
     </main>
   }
 } @else if (travelService.error()) {

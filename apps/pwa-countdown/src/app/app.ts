@@ -1,7 +1,7 @@
-import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, effect, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { API_BASE_URL, RomanticCountdownComponent, TogetherCardComponent, TravelService } from '@jost/shared';
+import { API_BASE_URL, Clock, RomanticCountdownComponent, TogetherCardComponent, TravelService } from '@jost/shared';
 import { APP_VERSION } from './version';
 import type { Trip } from '@jost/shared';
 
@@ -10,31 +10,19 @@ import type { Trip } from '@jost/shared';
   imports: [DatePipe, RomanticCountdownComponent, TogetherCardComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  host: {
-    '(document:visibilitychange)': 'onVisibilityChange()',
-  },
 })
 export class App implements OnInit {
   protected readonly travelService = inject(TravelService);
   private readonly http = inject(HttpClient);
   private readonly apiBaseUrl = inject(API_BASE_URL);
+  private readonly clock = inject(Clock);
 
   readonly version = APP_VERSION;
 
-  /**
-   * Which trip is current depends on the time, which is not a signal. Bumping
-   * this when the time matters (the app comes back, the countdown hits zero)
-   * makes the computeds below evaluate again.
-   */
-  private readonly checkedAt = signal(Date.now());
-
-  readonly trip = computed<Trip | null>(() => {
-    this.checkedAt();
-    return this.travelService.getCurrentOrNextTrip() ?? null;
-  });
+  // Both depend on the time; the service's clock signal re-evaluates them when it matters
+  readonly trip = computed<Trip | null>(() => this.travelService.currentOrNextTrip() ?? null);
 
   readonly together = computed(() => {
-    this.checkedAt();
     const trip = this.trip();
     return !!trip && this.travelService.isInProgress(trip);
   });
@@ -53,11 +41,11 @@ export class App implements OnInit {
   private notificationPermission?: Promise<NotificationPermission>;
 
   constructor() {
-    // A side effect, not derived state, so effect() is the right tool: once the
-    // trips have arrived, greet a trip that starts today with a notification
+    // A side effect, not derived state, so effect() is the right tool: greet a
+    // trip that starts today, also when the app stays open past midnight
     effect(() => {
       const trip = this.trip();
-      if (trip && trip.id !== this.notifiedTripId && startsToday(trip)) {
+      if (trip && trip.id !== this.notifiedTripId && startsOn(trip, this.clock.now())) {
         this.notifiedTripId = trip.id;
         void this.notifyTripDay(trip);
       }
@@ -67,16 +55,6 @@ export class App implements OnInit {
   ngOnInit(): void {
     this.trackAppOpen();
     void this.askNotificationPermission();
-  }
-
-  /** Called by the countdown when it reaches zero, so the together card replaces it right away. */
-  onCountdownArrived(): void {
-    this.checkedAt.set(Date.now());
-  }
-
-  /** A PWA usually comes back from the background rather than reloading, so re-evaluate the trip then. */
-  onVisibilityChange(): void {
-    if (document.visibilityState === 'visible') this.checkedAt.set(Date.now());
   }
 
   private trackAppOpen(): void {
@@ -111,6 +89,6 @@ export class App implements OnInit {
   }
 }
 
-function startsToday(trip: Trip): boolean {
-  return new Date().toDateString() === trip.from.toDateString();
+function startsOn(trip: Trip, day: number): boolean {
+  return new Date(day).toDateString() === trip.from.toDateString();
 }
