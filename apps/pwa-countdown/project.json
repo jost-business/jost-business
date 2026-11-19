@@ -64,6 +64,9 @@
         "development": {
           "buildTarget": "pwa-countdown:build:development"
         }
+      },
+      "readyWhen": {
+        "signal": true
       }
     },
     "test": {

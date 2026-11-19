@@ -78,6 +78,9 @@
         "production": {
           "buildTarget": "travel:build:production"
         }
+      },
+      "readyWhen": {
+        "signal": true
       }
     },
     "lint": {

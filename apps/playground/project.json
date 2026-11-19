@@ -78,6 +78,9 @@
         "production": {
           "buildTarget": "playground:build:production"
         }
+      },
+      "readyWhen": {
+        "signal": true
       }
     },
     "lint": {
