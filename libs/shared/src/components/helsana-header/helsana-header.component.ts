@@ -1,4 +1,4 @@
-import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -9,7 +9,6 @@ import { HelsanaHeaderMobileComponent } from './helsana-header-mobile/helsana-he
   selector: 'helsana-header',
   standalone: true,
   imports: [HelsanaHeaderDesktopComponent, HelsanaHeaderMobileComponent],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './helsana-header.component.html',
 })
 export class HelsanaHeaderComponent {

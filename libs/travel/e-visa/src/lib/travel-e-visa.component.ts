@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 
 interface Country {
@@ -30,7 +30,6 @@ const iconDefault = L.icon({
   standalone: true,
   imports: [],
   templateUrl: './travel-e-visa.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './travel-e-visa.component.scss',
 })
 export class TravelEVisaComponent implements AfterViewInit, OnDestroy {

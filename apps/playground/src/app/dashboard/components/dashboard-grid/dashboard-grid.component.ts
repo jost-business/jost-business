@@ -3,8 +3,7 @@ import {
   ElementRef,
   inject,
   signal,
-  viewChild,
-  ChangeDetectionStrategy
+  viewChild
 } from '@angular/core';
 import {
   CdkDrag,
@@ -34,7 +33,6 @@ const GAP = 16; // px
   standalone: true,
   imports: [CdkDrag, CdkDragHandle, CdkDragPlaceholder, WidgetHostComponent],
   templateUrl: './dashboard-grid.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard-grid.component.scss',
 })
 export class DashboardGridComponent {

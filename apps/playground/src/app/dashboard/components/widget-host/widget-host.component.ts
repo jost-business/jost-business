@@ -1,4 +1,4 @@
-import { Component, input, OnInit, inject, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, OnInit, inject, ElementRef } from '@angular/core';
 
 /**
  * Renders a web component by tag name inside an Angular component.
@@ -8,7 +8,6 @@ import { Component, input, OnInit, inject, ElementRef, ChangeDetectionStrategy }
   selector: 'app-widget-host',
   standalone: true,
   templateUrl: './widget-host.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './widget-host.component.scss',
 })
 export class WidgetHostComponent implements OnInit {

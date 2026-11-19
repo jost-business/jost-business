@@ -1,10 +1,9 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'helsana-header-mobile',
   standalone: true,
   templateUrl: './helsana-header-mobile.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './helsana-header-mobile.component.scss',
 })
 export class HelsanaHeaderMobileComponent {

@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { DashboardGridComponent } from './components/dashboard-grid/dashboard-grid.component';
 import { WidgetPickerComponent } from './components/widget-picker/widget-picker.component';
 
@@ -7,7 +7,6 @@ import { WidgetPickerComponent } from './components/widget-picker/widget-picker.
   standalone: true,
   imports: [DashboardGridComponent, WidgetPickerComponent],
   templateUrl: './dashboard.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {

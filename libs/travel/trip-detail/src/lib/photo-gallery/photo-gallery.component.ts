@@ -1,11 +1,10 @@
-import { Component, Input, signal, HostListener, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, signal, HostListener, computed } from '@angular/core';
 import { Trip } from '@jost/shared';
 
 @Component({
   selector: 'jost-photo-gallery',
   standalone: true,
   templateUrl: './photo-gallery.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './photo-gallery.component.scss',
 })
 export class PhotoGalleryComponent {

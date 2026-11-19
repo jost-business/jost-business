@@ -1,4 +1,4 @@
-import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { LayoutService } from '../../services/layout.service';
 
 @Component({
@@ -6,7 +6,6 @@ import { LayoutService } from '../../services/layout.service';
   standalone: true,
   imports: [],
   templateUrl: './widget-picker.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './widget-picker.component.scss',
 })
 export class WidgetPickerComponent {

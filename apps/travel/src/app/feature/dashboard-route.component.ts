@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TravelDashboardComponent } from '@jost/travel/dashboard';
 
@@ -6,7 +6,6 @@ import { TravelDashboardComponent } from '@jost/travel/dashboard';
   selector: 'app-dashboard-route',
   standalone: true,
   imports: [TravelDashboardComponent],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './dashboard-route.component.html',
 })
 export class DashboardRouteComponent {

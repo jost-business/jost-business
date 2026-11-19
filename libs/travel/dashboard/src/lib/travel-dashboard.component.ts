@@ -1,4 +1,4 @@
-import { Component, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TravelService } from '@jost/shared';
 import { AdventureCountdownComponent } from './adventure-countdown/adventure-countdown.component';
@@ -8,7 +8,6 @@ import { AdventureCountdownComponent } from './adventure-countdown/adventure-cou
   standalone: true,
   imports: [DatePipe, AdventureCountdownComponent],
   templateUrl: './travel-dashboard.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './travel-dashboard.component.scss',
 })
 export class TravelDashboardComponent {
