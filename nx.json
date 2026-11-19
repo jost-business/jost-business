@@ -59,7 +59,8 @@
   },
   "plugins": ["@nx/angular/plugin"],
   "affected": {
-    "defaultBase": "main"
+    "defaultBase": "main",
+    "legacy": true
   },
   "analytics": false,
   "generators": {
