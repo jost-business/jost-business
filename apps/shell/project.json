@@ -6,13 +6,16 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/angular:browser-esbuild",
+      "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/shell",
+        "outputPath": {
+          "base": "dist/apps/shell",
+          "browser": ""
+        },
         "index": "apps/shell/src/index.development.html",
-        "main": "apps/shell/src/main.ts",
+        "browser": "apps/shell/src/main.ts",
         "polyfills": [],
         "tsConfig": "apps/shell/tsconfig.app.json",
         "assets": [
@@ -32,9 +35,7 @@
           "apps/shell/src/styles.scss"
         ],
         "scripts": [],
-        "vendorChunk": true,
         "extractLicenses": false,
-        "buildOptimizer": false,
         "sourceMap": true,
         "optimization": false,
         "namedChunks": true
@@ -59,12 +60,10 @@
           ],
           "outputHashing": "all",
           "optimization": true,
-          "buildOptimizer": true,
           "sourceMap": false,
           "namedChunks": false,
           "aot": true,
-          "extractLicenses": true,
-          "vendorChunk": false
+          "extractLicenses": true
         }
       }
     },

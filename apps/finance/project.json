@@ -6,13 +6,16 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/angular:browser-esbuild",
+      "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/finance",
+        "outputPath": {
+          "base": "dist/apps/finance",
+          "browser": ""
+        },
         "index": "apps/finance/src/index.development.html",
-        "main": "apps/finance/src/main.ts",
+        "browser": "apps/finance/src/main.ts",
         "polyfills": [],
         "tsConfig": "apps/finance/tsconfig.app.json",
         "assets": [
@@ -32,9 +35,7 @@
           "apps/finance/src/styles.scss"
         ],
         "scripts": [],
-        "vendorChunk": true,
         "extractLicenses": false,
-        "buildOptimizer": false,
         "sourceMap": true,
         "optimization": false,
         "namedChunks": true
@@ -59,12 +60,10 @@
           ],
           "outputHashing": "all",
           "optimization": true,
-          "buildOptimizer": true,
           "sourceMap": false,
           "namedChunks": false,
           "aot": true,
-          "extractLicenses": true,
-          "vendorChunk": false
+          "extractLicenses": true
         }
       }
     },

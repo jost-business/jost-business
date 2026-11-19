@@ -6,13 +6,16 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/angular:browser-esbuild",
+      "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/travel",
+        "outputPath": {
+          "base": "dist/apps/travel",
+          "browser": ""
+        },
         "index": "apps/travel/src/index.development.html",
-        "main": "apps/travel/src/main.ts",
+        "browser": "apps/travel/src/main.ts",
         "polyfills": [],
         "tsConfig": "apps/travel/tsconfig.app.json",
         "assets": [
@@ -33,9 +36,7 @@
           "node_modules/leaflet/dist/leaflet.css"
         ],
         "scripts": [],
-        "vendorChunk": true,
         "extractLicenses": false,
-        "buildOptimizer": false,
         "sourceMap": true,
         "optimization": false,
         "namedChunks": true
@@ -60,12 +61,10 @@
           ],
           "outputHashing": "all",
           "optimization": true,
-          "buildOptimizer": true,
           "sourceMap": false,
           "namedChunks": false,
           "aot": true,
-          "extractLicenses": true,
-          "vendorChunk": false
+          "extractLicenses": true
         }
       }
     },
