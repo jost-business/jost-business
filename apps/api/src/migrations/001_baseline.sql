@@ -1,27 +1,14 @@
--- Drop and recreate all tables (safe to re-run)
+-- Baseline: the schema production already has. Written idempotently so it
+-- can be recorded on an existing database without touching its data.
 
-DROP VIEW  IF EXISTS notification_events_by_device;
-DROP TABLE IF EXISTS notification_events;
-DROP TABLE IF EXISTS travel_entries;
-
--- PWA app-open events logged by the API
-CREATE TABLE notification_events (
+CREATE TABLE IF NOT EXISTS notification_events (
   id         SERIAL PRIMARY KEY,
   event      TEXT        NOT NULL,
   user_agent TEXT,
   timestamp  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Travel entries (future: migrate from TravelService hardcoded data)
-CREATE TABLE travel_entries (
-  id          TEXT PRIMARY KEY,
-  destination TEXT NOT NULL,
-  from_date   DATE NOT NULL,
-  to_date     DATE NOT NULL
-);
-
--- Device summary view for notification_events
-CREATE VIEW notification_events_by_device AS
+CREATE OR REPLACE VIEW notification_events_by_device AS
 SELECT
   CASE
     WHEN user_agent LIKE '%iPhone%' AND user_agent LIKE '%CriOS%'  THEN 'iPhone – Chrome'

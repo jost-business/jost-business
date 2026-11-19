@@ -15,4 +15,4 @@ export default fp(async function (fastify: FastifyInstance) {
   const sql = postgres(url);
   fastify.decorate('sql', sql);
   fastify.addHook('onClose', () => sql.end());
-});
+}, { name: 'db' });

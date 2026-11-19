@@ -15,7 +15,10 @@
         "bundle": false,
         "main": "apps/api/src/main.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": ["apps/api/src/assets"],
+        "assets": [
+          "apps/api/src/assets",
+          { "input": "apps/api/src/migrations", "glob": "*.sql", "output": "migrations" }
+        ],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
