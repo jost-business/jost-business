@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, inject } from '@angular/core';
+import { Component, OnInit, HostListener, inject, signal, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
 import { TravelService } from '@jost/shared';
@@ -17,18 +17,21 @@ const API = 'https://jost.business/api';
 export class App implements OnInit {
   private readonly travelService = inject(TravelService);
 
-  trip: Trip | null = null;
   readonly version = APP_VERSION;
 
-  together = false;
+  readonly trip = signal<Trip | null>(null);
+  // Set together with trip: being in progress depends on the current time, which is not a signal
+  readonly together = signal(false);
 
-  get destinationCity(): string {
-    return this.trip ? this.travelService.getCity(this.trip) : '';
-  }
+  readonly destinationCity = computed(() => {
+    const trip = this.trip();
+    return trip ? this.travelService.getCity(trip) : '';
+  });
 
-  get destinationCountry(): string {
-    return this.trip ? this.travelService.getCountry(this.trip) : '';
-  }
+  readonly destinationCountry = computed(() => {
+    const trip = this.trip();
+    return trip ? this.travelService.getCountry(trip) : '';
+  });
 
   ngOnInit(): void {
     this.refreshTrip();
@@ -49,8 +52,8 @@ export class App implements OnInit {
 
   private refreshTrip(): void {
     const next = this.travelService.getCurrentOrNextTrip();
-    this.trip = next ?? null;
-    this.together = !!next && this.travelService.isInProgress(next);
+    this.trip.set(next ?? null);
+    this.together.set(!!next && this.travelService.isInProgress(next));
   }
 
   private trackAppOpen(): void {
@@ -72,10 +75,11 @@ export class App implements OnInit {
     if (Notification.permission === 'default') {
       await Notification.requestPermission();
     }
-    const isToday = !!this.trip && new Date().toDateString() === this.trip.from.toDateString();
+    const trip = this.trip();
+    const isToday = !!trip && new Date().toDateString() === trip.from.toDateString();
     if (isToday && Notification.permission === 'granted') {
       new Notification('✈️ Today is the day!', {
-        body: `${this.destinationCity} is waiting for you both! 💕`,
+        body: `${this.destinationCity()} is waiting for you both! 💕`,
         // Relative, so it resolves under the /countdown/ base href
         icon: 'icons/icon-192x192.png',
       });

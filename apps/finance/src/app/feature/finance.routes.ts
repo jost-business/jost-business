@@ -11,8 +11,7 @@ import { AuthService } from '@jost/shared';
   styleUrl: './finance.component.scss',
 })
 class FinanceListComponent {
-  displayedColumns = ['date', 'description', 'amount'];
-  transactions = [
+  readonly transactions = [
     { date: '2026-02-22', description: 'Salary', amount: 5000 },
     { date: '2026-02-20', description: 'Utilities', amount: -150 },
     { date: '2026-02-15', description: 'Groceries', amount: -200 },

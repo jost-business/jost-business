@@ -1,22 +1,24 @@
-@if (trip && together) {
-  <main class="together-page">
-    <lib-together-card [trip]="trip" [version]="version" />
-  </main>
-} @else if (trip) {
-  <main class="countdown-page">
-    <header>
-      <p class="eyebrow">✈️ Next Adventure</p>
-      <h1>{{ destinationCity }}<span class="dest-sub">
-        @if (destinationCountry) {
-          , {{ destinationCountry }}
-        }
-      </span></h1>
-      <p class="subtitle">{{ trip.from | date: 'MMMM d, y' }}</p>
-    </header>
+@if (trip(); as trip) {
+  @if (together()) {
+    <main class="together-page">
+      <lib-together-card [trip]="trip" [version]="version" />
+    </main>
+  } @else {
+    <main class="countdown-page">
+      <header>
+        <p class="eyebrow">✈️ Next Adventure</p>
+        <h1>{{ destinationCity() }}<span class="dest-sub">
+          @if (destinationCountry()) {
+            , {{ destinationCountry() }}
+          }
+        </span></h1>
+        <p class="subtitle">{{ trip.from | date: 'MMMM d, y' }}</p>
+      </header>
 
-    <!-- When the countdown reaches zero the trip is in progress, so the together card takes over -->
-    <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="true" [version]="version" (arrived)="onCountdownArrived()" />
-  </main>
+      <!-- When the countdown reaches zero the trip is in progress, so the together card takes over -->
+      <lib-romantic-countdown [targetDate]="trip.from" [showSeconds]="true" [version]="version" (arrived)="onCountdownArrived()" />
+    </main>
+  }
 } @else {
   <main class="countdown-page">
     <header>
