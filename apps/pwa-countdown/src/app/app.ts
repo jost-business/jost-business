@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, HostListener, inject } from '@angular/core';
+import { Component, OnInit, HostListener, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
 import { TravelService } from '@jost/shared';
@@ -13,7 +13,6 @@ const API = 'https://jost.business/api';
   imports: [DatePipe, RomanticCountdownComponent, TogetherCardComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
   private readonly travelService = inject(TravelService);

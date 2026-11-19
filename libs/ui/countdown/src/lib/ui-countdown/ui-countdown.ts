@@ -1,6 +1,5 @@
 import {
-  Component, OnInit, OnDestroy, input, output, computed, signal,
-  ChangeDetectionStrategy
+  Component, OnInit, OnDestroy, input, output, computed, signal
 } from '@angular/core';
 
 export interface CountdownState {
@@ -18,7 +17,6 @@ export interface CountdownState {
   imports: [],
   templateUrl: './ui-countdown.html',
   styleUrl: './ui-countdown.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CountdownComponent implements OnInit, OnDestroy {
   readonly targetDate = input.required<Date>();
