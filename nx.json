@@ -30,9 +30,11 @@
       "cache": true,
       "inputs": [
         "default",
+        "^default",
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs"
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/tools/eslint-rules/**/*"
       ]
     },
     "@angular/build:unit-test": {
@@ -49,7 +51,9 @@
       "inputs": [
         "default",
         "^default",
-        { "fileset": "{workspaceRoot}/tsconfig.json" }
+        {
+          "fileset": "{workspaceRoot}/tsconfig.json"
+        }
       ]
     }
   },
