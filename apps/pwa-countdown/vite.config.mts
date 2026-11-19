@@ -6,10 +6,11 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 // On Windows nxViteTsPaths resolves aliases to backslash paths that the Analog compiler
 // does not match, so those modules come out empty. Resolve the libs we use with normalized paths.
-const lib = (path: string) => normalizePath(resolve(__dirname, '../../libs', path));
+const lib = (path: string) =>
+  normalizePath(resolve(import.meta.dirname, '../../libs', path));
 
 export default defineConfig(() => ({
-  root: __dirname,
+  root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/apps/pwa-countdown',
   plugins: [angular(), nxViteTsPaths()],
   resolve: {
