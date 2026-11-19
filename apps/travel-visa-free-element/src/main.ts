@@ -1,11 +1,8 @@
 import { createCustomElement } from '@angular/elements';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { createApplication } from '@angular/platform-browser';
 import { TravelVisaFreeComponent } from '@jost/travel/visa-free';
 
-createApplication({
-  providers: [provideZonelessChangeDetection()],
-})
+createApplication()
   .then(({ injector }) => {
     const element = createCustomElement(TravelVisaFreeComponent, { injector });
     customElements.define('jost-travel-visa-free', element);

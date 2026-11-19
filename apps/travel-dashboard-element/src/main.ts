@@ -1,11 +1,10 @@
 import { createCustomElement } from '@angular/elements';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { createApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { TravelDashboardComponent } from '@jost/travel/dashboard';
 
 createApplication({
-  providers: [provideZonelessChangeDetection(), provideRouter([])],
+  providers: [provideRouter([])],
 })
   .then(({ injector }) => {
     const element = createCustomElement(TravelDashboardComponent, { injector });
