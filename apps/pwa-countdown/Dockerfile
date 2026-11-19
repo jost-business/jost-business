@@ -12,6 +12,10 @@ RUN npm ci --legacy-peer-deps
 # Copy app source
 COPY . .
 
+# Stamp the build date (Swiss time) as the version shown in the app; replaces the 'dev' placeholder
+RUN apk add --no-cache tzdata \
+  && echo "export const APP_VERSION = '$(TZ=Europe/Zurich date +%Y.%m.%d-%H%M)';" > apps/pwa-countdown/src/app/version.ts
+
 # Build the pwa-countdown app
 RUN npx nx build pwa-countdown --configuration production
 
