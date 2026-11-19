@@ -1,4 +1,4 @@
-import { Component, input, signal, HostListener, computed } from '@angular/core';
+import { Component, input, signal, computed } from '@angular/core';
 import { Trip } from '@jost/shared';
 
 @Component({
@@ -6,6 +6,11 @@ import { Trip } from '@jost/shared';
   standalone: true,
   templateUrl: './photo-gallery.component.html',
   styleUrl: './photo-gallery.component.scss',
+  host: {
+    '(document:keydown.escape)': 'closePhoto()',
+    '(document:keydown.arrowRight)': 'onArrowRight()',
+    '(document:keydown.arrowLeft)': 'onArrowLeft()',
+  },
 })
 export class PhotoGalleryComponent {
   readonly trip = input.required<Trip>();
@@ -42,12 +47,7 @@ export class PhotoGalleryComponent {
     this.selectedIndex.set((i + 1) % this.photoUrls().length);
   }
 
-  @HostListener('document:keydown.escape')
-  onEscape(): void { this.closePhoto(); }
-
-  @HostListener('document:keydown.arrowRight')
   onArrowRight(): void { if (this.selectedIndex() !== null) this.next(); }
 
-  @HostListener('document:keydown.arrowLeft')
   onArrowLeft(): void { if (this.selectedIndex() !== null) this.prev(); }
 }

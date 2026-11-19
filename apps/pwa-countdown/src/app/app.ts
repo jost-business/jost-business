@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
 import { TravelService } from '@jost/shared';
@@ -13,6 +13,9 @@ const API = 'https://jost.business/api';
   imports: [DatePipe, RomanticCountdownComponent, TogetherCardComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
+  host: {
+    '(document:visibilitychange)': 'onVisibilityChange()',
+  },
 })
 export class App implements OnInit {
   private readonly travelService = inject(TravelService);
@@ -45,7 +48,6 @@ export class App implements OnInit {
   }
 
   /** A PWA usually comes back from the background rather than reloading, so re-evaluate the trip then. */
-  @HostListener('document:visibilitychange')
   onVisibilityChange(): void {
     if (document.visibilityState === 'visible') this.refreshTrip();
   }
