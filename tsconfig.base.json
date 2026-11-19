@@ -34,7 +34,12 @@
       "@jost/travel/e-visa": ["libs/travel/e-visa/src/index.ts"],
       "@jost/travel/trip-detail": ["libs/travel/trip-detail/src/index.ts"],
       "ui-countdown": ["libs/ui/countdown/src/index.ts"]
-    }
+    },
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
