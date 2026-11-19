@@ -2,7 +2,6 @@ import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'helsana-header-mobile',
-  standalone: true,
   templateUrl: './helsana-header-mobile.component.html',
   styleUrl: './helsana-header-mobile.component.scss',
 })

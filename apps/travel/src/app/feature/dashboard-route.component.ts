@@ -4,7 +4,6 @@ import { TravelDashboardComponent } from '@jost/travel/dashboard';
 
 @Component({
   selector: 'app-dashboard-route',
-  standalone: true,
   imports: [TravelDashboardComponent],
   templateUrl: './dashboard-route.component.html',
 })

@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { HelsanaHeaderComponent } from '@jost/shared';
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterModule,
     HelsanaHeaderComponent

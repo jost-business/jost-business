@@ -9,7 +9,6 @@ const API = 'https://jost.business/api';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [DatePipe, RomanticCountdownComponent, TogetherCardComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',

@@ -7,7 +7,6 @@ import { HelsanaHeaderMobileComponent } from './helsana-header-mobile/helsana-he
 
 @Component({
   selector: 'helsana-header',
-  standalone: true,
   imports: [HelsanaHeaderDesktopComponent, HelsanaHeaderMobileComponent],
   templateUrl: './helsana-header.component.html',
 })

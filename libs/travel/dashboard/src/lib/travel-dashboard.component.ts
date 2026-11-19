@@ -5,7 +5,6 @@ import { AdventureCountdownComponent } from './adventure-countdown/adventure-cou
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
   imports: [DatePipe, AdventureCountdownComponent],
   templateUrl: './travel-dashboard.component.html',
   styleUrl: './travel-dashboard.component.scss',

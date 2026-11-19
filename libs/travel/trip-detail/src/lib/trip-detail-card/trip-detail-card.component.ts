@@ -4,7 +4,6 @@ import { Trip } from '@jost/shared';
 
 @Component({
   selector: 'jost-trip-detail-card',
-  standalone: true,
   imports: [DatePipe],
   templateUrl: './trip-detail-card.component.html',
   styleUrl: './trip-detail-card.component.scss',

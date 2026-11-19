@@ -6,7 +6,6 @@ import { AdventureCountdownComponent } from '../components/adventure-countdown/a
 
 @Component({
   selector: 'app-travel-list',
-  standalone: true,
   imports: [DatePipe, RouterModule, AdventureCountdownComponent],
   templateUrl: './travel.component.html',
   styleUrl: './travel.component.scss',

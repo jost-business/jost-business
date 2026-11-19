@@ -2,7 +2,6 @@ import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'jost-header-mobile',
-  standalone: true,
   templateUrl: './header-mobile.component.html',
   styleUrl: './header-mobile.component.scss',
 })

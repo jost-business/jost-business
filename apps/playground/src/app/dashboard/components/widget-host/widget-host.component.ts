@@ -6,7 +6,6 @@ import { Component, input, OnInit, inject, ElementRef } from '@angular/core';
  */
 @Component({
   selector: 'app-widget-host',
-  standalone: true,
   templateUrl: './widget-host.component.html',
   styleUrl: './widget-host.component.scss',
 })

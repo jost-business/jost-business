@@ -27,7 +27,6 @@ const iconDefault = L.icon({
 
 @Component({
   selector: 'app-e-visa',
-  standalone: true,
   imports: [],
   templateUrl: './travel-e-visa.component.html',
   styleUrl: './travel-e-visa.component.scss',

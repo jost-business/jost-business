@@ -7,7 +7,6 @@ import { HeaderMobileComponent } from './header-mobile/header-mobile.component';
 
 @Component({
   selector: 'jost-header',
-  standalone: true,
   imports: [HeaderDesktopComponent, HeaderMobileComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

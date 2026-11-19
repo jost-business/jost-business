@@ -3,7 +3,6 @@ import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-widget-picker',
-  standalone: true,
   imports: [],
   templateUrl: './widget-picker.component.html',
   styleUrl: './widget-picker.component.scss',

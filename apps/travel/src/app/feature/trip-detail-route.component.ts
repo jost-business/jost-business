@@ -5,7 +5,6 @@ import { TravelTripDetailComponent } from '@jost/travel/trip-detail';
 
 @Component({
   selector: 'app-trip-detail-route',
-  standalone: true,
   imports: [RouterOutlet, TravelTripDetailComponent],
   templateUrl: './trip-detail-route.component.html',
 })

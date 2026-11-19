@@ -4,7 +4,6 @@ import { WidgetPickerComponent } from './components/widget-picker/widget-picker.
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
   imports: [DashboardGridComponent, WidgetPickerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

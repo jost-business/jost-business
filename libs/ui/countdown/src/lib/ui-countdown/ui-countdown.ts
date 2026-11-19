@@ -13,7 +13,6 @@ export interface CountdownState {
 
 @Component({
   selector: 'lib-countdown',
-  standalone: true,
   imports: [],
   templateUrl: './ui-countdown.html',
   styleUrl: './ui-countdown.css',

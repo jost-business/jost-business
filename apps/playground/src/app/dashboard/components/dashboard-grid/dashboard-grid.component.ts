@@ -30,7 +30,6 @@ const GAP = 16; // px
 
 @Component({
   selector: 'app-dashboard-grid',
-  standalone: true,
   imports: [CdkDrag, CdkDragHandle, CdkDragPlaceholder, WidgetHostComponent],
   templateUrl: './dashboard-grid.component.html',
   styleUrl: './dashboard-grid.component.scss',

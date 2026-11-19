@@ -6,7 +6,6 @@ import { Trip } from '../../models/travel.model';
 /** Shown instead of the countdown while a trip is in progress. */
 @Component({
   selector: 'lib-together-card',
-  standalone: true,
   imports: [DatePipe],
   templateUrl: './together-card.component.html',
   styleUrl: './together-card.component.scss',

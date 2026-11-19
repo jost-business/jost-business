@@ -3,7 +3,6 @@ import { CountdownComponent } from 'ui-countdown';
 
 @Component({
   selector: 'lib-romantic-countdown',
-  standalone: true,
   imports: [CountdownComponent],
   templateUrl: './romantic-countdown.component.html',
   styleUrl: './romantic-countdown.component.scss',

@@ -5,7 +5,6 @@ import { AuthService } from '@jost/shared';
 
 @Component({
   selector: 'app-finance-list',
-  standalone: true,
   imports: [CurrencyPipe],
   templateUrl: './finance.component.html',
   styleUrl: './finance.component.scss',

@@ -4,7 +4,6 @@ import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared'
 
 @Component({
   selector: 'app-adventure-countdown',
-  standalone: true,
   imports: [RomanticCountdownComponent, TogetherCardComponent],
   templateUrl: './adventure-countdown.component.html',
   styleUrl: './adventure-countdown.component.scss',

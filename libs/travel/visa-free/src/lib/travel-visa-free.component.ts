@@ -27,7 +27,6 @@ const iconDefault = L.icon({
 
 @Component({
   selector: 'app-visa-free',
-  standalone: true,
   imports: [],
   templateUrl: './travel-visa-free.component.html',
   styleUrl: './travel-visa-free.component.scss',

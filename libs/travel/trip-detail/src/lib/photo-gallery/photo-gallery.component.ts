@@ -3,7 +3,6 @@ import { Trip } from '@jost/shared';
 
 @Component({
   selector: 'jost-photo-gallery',
-  standalone: true,
   templateUrl: './photo-gallery.component.html',
   styleUrl: './photo-gallery.component.scss',
   host: {
