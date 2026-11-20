@@ -1,4 +1,4 @@
-import { Trip } from '../models/travel.model';
+import { Trip } from '@jost/models';
 
 // Pure functions about a single trip. Anything that depends on the time takes
 // it as a parameter instead of reading the clock, so the caller decides which

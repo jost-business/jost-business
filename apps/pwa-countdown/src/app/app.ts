@@ -11,7 +11,7 @@ import {
   tripCountry,
 } from '@jost/shared';
 import { APP_VERSION } from './version';
-import type { Trip } from '@jost/shared';
+import type { Trip } from '@jost/models';
 
 @Component({
   selector: 'app-root',

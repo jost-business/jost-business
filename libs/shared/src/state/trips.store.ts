@@ -1,7 +1,7 @@
 import { computed, effect, inject } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { patchState, signalStore, withComputed, withHooks, withMethods, withProps, withState } from '@ngrx/signals';
-import { Trip, TripDto } from '../models/travel.model';
+import { Trip, TripDto } from '@jost/models';
 import { API_BASE_URL } from '../services/api';
 import { Clock } from '../services/clock';
 import {

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { TripDto } from '../models/travel.model';
+import { TripDto } from '@jost/models';
 import { TripsStore } from './trips.store';
 
 const HOUR = 60 * 60 * 1000;

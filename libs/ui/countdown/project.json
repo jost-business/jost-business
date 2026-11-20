@@ -4,7 +4,7 @@
   "sourceRoot": "libs/ui/countdown/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": [],
+  "tags": ["type:ui", "scope:shared"],
   "targets": {
     "test": {
       "outputs": [
@@ -13,6 +13,15 @@
       ],
       "options": {
         "coverage.reportsDirectory": "../../../coverage/libs/ui/countdown"
+      }
+    },
+    "typecheck": {
+      "options": {
+        "commands": [
+          "ngc -p libs/ui/countdown/tsconfig.lib.json --noEmit",
+          "tsc -p libs/ui/countdown/tsconfig.spec.json --noEmit"
+        ],
+        "parallel": false
       }
     }
   }

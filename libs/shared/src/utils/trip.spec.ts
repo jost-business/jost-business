@@ -1,4 +1,4 @@
-import { Trip } from '../models/travel.model';
+import { Trip } from '@jost/models';
 import {
   daysBetweenTrips,
   isTripCompleted,

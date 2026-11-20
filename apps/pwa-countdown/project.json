@@ -4,7 +4,7 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/pwa-countdown/src",
-  "tags": [],
+  "tags": ["type:app", "scope:pwa"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
@@ -93,6 +93,15 @@
         "signal": true
       },
       "dependsOn": ["build"]
+    },
+    "typecheck": {
+      "options": {
+        "commands": [
+          "ngc -p apps/pwa-countdown/tsconfig.app.json --noEmit",
+          "tsc -p apps/pwa-countdown/tsconfig.spec.json --noEmit"
+        ],
+        "parallel": false
+      }
     }
   }
 }

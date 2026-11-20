@@ -1,63 +1,49 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "jost",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "test", "lint", "e2e"]
-      }
-    }
+  "defaultBase": "main",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/tsconfig.base.json", "{workspaceRoot}/package-lock.json"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/*.spec.ts",
+      "!{projectRoot}/src/test-setup.ts",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/vite.config.mts",
+      "!{projectRoot}/README.md"
+    ]
   },
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
     "test": {
       "cache": true,
-      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
+      "inputs": ["default", "^production"]
     },
-    "lint": [
-      {
-        "cache": true
-      },
-      {
-        "filter": {
-          "plugin": "@nx/eslint/plugin"
-        },
-        "inputs": [
-          "default",
-          "^default",
-          "{workspaceRoot}/.eslintrc.json",
-          "{workspaceRoot}/.eslintignore",
-          "{workspaceRoot}/eslint.config.mjs",
-          "{workspaceRoot}/tools/eslint-rules/**/*",
-          {
-            "externalDependencies": ["eslint"]
-          }
-        ]
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": ["default", "^production", { "externalDependencies": ["typescript", "@angular/compiler-cli"] }],
+      "options": {
+        "cwd": "{workspaceRoot}"
       }
-    ],
+    },
+    "lint": {
+      "cache": true,
+      "inputs": ["default", "^production", "{workspaceRoot}/eslint.config.mjs", { "externalDependencies": ["eslint"] }]
+    },
     "@angular/build:application": {
       "cache": true,
       "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
-    },
-    "@angular/build:unit-test": {
-      "cache": true,
-      "inputs": ["default", "^default"]
+      "inputs": ["production", "^production"]
     },
     "@nx/esbuild:esbuild": {
       "cache": true,
       "dependsOn": ["^build"],
-      "inputs": [
-        "default",
-        "^default",
-        {
-          "fileset": "{workspaceRoot}/tsconfig.json"
-        }
-      ]
+      "inputs": ["production", "^production"]
     }
   },
   "plugins": [
@@ -73,32 +59,9 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
-      },
-      "include": [
-        "eslint.config.mjs",
-        "apps/about-me/**/*",
-        "apps/finance/**/*",
-        "apps/header-element/**/*",
-        "apps/playground/**/*",
-        "apps/pwa-countdown/**/*",
-        "apps/shell/**/*",
-        "apps/travel/**/*",
-        "apps/travel-dashboard-element/**/*",
-        "apps/travel-e-visa-element/**/*",
-        "apps/travel-visa-free-element/**/*",
-        "libs/shared/**/*",
-        "libs/travel/dashboard/**/*",
-        "libs/travel/e-visa/**/*",
-        "libs/travel/trip-detail/**/*",
-        "libs/travel/visa-free/**/*",
-        "libs/ui/countdown/**/*"
-      ]
+      }
     }
   ],
-  "affected": {
-    "defaultBase": "main",
-    "legacy": true
-  },
   "analytics": false,
   "generators": {
     "@nx/angular:application": {

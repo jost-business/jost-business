@@ -2,26 +2,23 @@
   "name": "shared",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/src",
+  "projectType": "library",
   "prefix": "lib",
-  "tags": ["type:lib", "scope:shared"],
+  "tags": ["type:core", "scope:shared"],
   "targets": {
-    "lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*",
-        {
-          "externalDependencies": ["eslint"]
-        }
-      ]
-    },
     "test": {
       "outputs": ["{workspaceRoot}/coverage/libs/shared"],
       "options": {
         "coverage.reportsDirectory": "../../coverage/libs/shared"
+      }
+    },
+    "typecheck": {
+      "options": {
+        "commands": [
+          "ngc -p libs/shared/tsconfig.lib.json --noEmit",
+          "tsc -p libs/shared/tsconfig.spec.json --noEmit"
+        ],
+        "parallel": false
       }
     }
   }

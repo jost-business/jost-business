@@ -2,8 +2,9 @@
   "name": "travel",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/travel/src",
+  "projectType": "application",
   "prefix": "app",
-  "tags": [],
+  "tags": ["type:app", "scope:travel"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
@@ -69,7 +70,7 @@
       }
     },
     "serve": {
-      "executor": "@nx/angular:dev-server",
+      "executor": "@angular/build:dev-server",
       "options": {
         "buildTarget": "travel:build:development",
         "proxyConfig": "proxy.conf.json"
@@ -79,22 +80,13 @@
           "buildTarget": "travel:build:production"
         }
       },
-      "readyWhen": {
-        "signal": true
-      }
+      "continuous": true
     },
-    "lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*",
-        {
-          "externalDependencies": ["eslint"]
-        }
-      ]
+    "typecheck": {
+      "options": {
+        "commands": ["ngc -p apps/travel/tsconfig.app.json --noEmit"],
+        "parallel": false
+      }
     }
   }
 }

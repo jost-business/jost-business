@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { Trip } from '@jost/shared';
+import { Trip } from '@jost/models';
 import { TripDetailCardComponent } from './trip-detail-card/trip-detail-card.component';
 import { PhotoGalleryComponent } from './photo-gallery/photo-gallery.component';
 

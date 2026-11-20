@@ -32,18 +32,13 @@
         }
       }
     },
-    "lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*",
-        {
-          "externalDependencies": ["eslint"]
-        }
-      ]
+    "typecheck": {
+      "options": {
+        "commands": [
+          "ngc -p apps/travel-visa-free-element/tsconfig.app.json --noEmit"
+        ],
+        "parallel": false
+      }
     }
   }
 }

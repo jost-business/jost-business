@@ -1,5 +1,6 @@
 import { Component, input, computed, inject } from '@angular/core';
-import { Trip, TripsStore, isTripInProgress } from '@jost/shared';
+import { Trip } from '@jost/models';
+import { TripsStore, isTripInProgress } from '@jost/shared';
 import { RomanticCountdownComponent, TogetherCardComponent } from '@jost/shared';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { CountdownComponent } from 'ui-countdown';
+import { CountdownComponent } from '@jost/ui/countdown';
 
 @Component({
   selector: 'lib-romantic-countdown',

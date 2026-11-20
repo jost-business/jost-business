@@ -1,6 +1,6 @@
 import { Component, input, linkedSignal, computed } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { Trip } from '@jost/shared';
+import { Trip } from '@jost/models';
 
 @Component({
   selector: 'jost-photo-gallery',

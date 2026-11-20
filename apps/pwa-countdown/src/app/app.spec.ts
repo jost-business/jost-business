@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import type { TripDto } from '@jost/shared';
+import type { TripDto } from '@jost/models';
 import { App } from './app';
 
 const HOUR = 60 * 60 * 1000;

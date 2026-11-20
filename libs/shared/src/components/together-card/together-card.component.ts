@@ -2,7 +2,7 @@ import { Component, input, computed, inject } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { Clock } from '../../services/clock';
 import { tripCity, tripCountry, tripProgress } from '../../utils/trip';
-import { Trip } from '../../models/travel.model';
+import { Trip } from '@jost/models';
 
 /** Shown instead of the countdown while a trip is in progress. */
 @Component({

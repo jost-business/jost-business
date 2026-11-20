@@ -2,8 +2,9 @@
   "name": "about-me",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/about-me/src",
+  "projectType": "application",
   "prefix": "app",
-  "tags": [],
+  "tags": ["type:app", "scope:about-me"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
@@ -68,7 +69,7 @@
       }
     },
     "serve": {
-      "executor": "@nx/angular:dev-server",
+      "executor": "@angular/build:dev-server",
       "options": {
         "buildTarget": "about-me:build:development"
       },
@@ -77,22 +78,13 @@
           "buildTarget": "about-me:build:production"
         }
       },
-      "readyWhen": {
-        "signal": true
-      }
+      "continuous": true
     },
-    "lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*",
-        {
-          "externalDependencies": ["eslint"]
-        }
-      ]
+    "typecheck": {
+      "options": {
+        "commands": ["ngc -p apps/about-me/tsconfig.app.json --noEmit"],
+        "parallel": false
+      }
     }
   }
 }

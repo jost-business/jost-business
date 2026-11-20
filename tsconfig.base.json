@@ -17,23 +17,12 @@
     "baseUrl": ".",
     "paths": {
       "@jost/shared": ["libs/shared/src/index.ts"],
-      "@jost/shared/*": ["libs/shared/src/*"],
-      "@jost/models": ["libs/shared/src/models/travel.model.ts"],
-      "@jost/finance/feature": [
-        "apps/finance/src/app/feature/finance.routes.ts"
-      ],
-      "@jost/about-me/feature": [
-        "apps/about-me/src/app/feature/about-me.routes.ts"
-      ],
-      "@jost/playground/feature": [
-        "apps/playground/src/app/feature/playground.routes.ts"
-      ],
-      "@jost/travel/feature": ["apps/travel/src/app/feature/travel.routes.ts"],
+      "@jost/models": ["libs/models/src/index.ts"],
       "@jost/travel/dashboard": ["libs/travel/dashboard/src/index.ts"],
       "@jost/travel/visa-free": ["libs/travel/visa-free/src/index.ts"],
       "@jost/travel/e-visa": ["libs/travel/e-visa/src/index.ts"],
       "@jost/travel/trip-detail": ["libs/travel/trip-detail/src/index.ts"],
-      "ui-countdown": ["libs/ui/countdown/src/index.ts"]
+      "@jost/ui/countdown": ["libs/ui/countdown/src/index.ts"]
     },
     "strict": false,
     "noUncheckedSideEffectImports": false,

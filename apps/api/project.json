@@ -17,7 +17,11 @@
         "tsConfig": "apps/api/tsconfig.app.json",
         "assets": [
           "apps/api/src/assets",
-          { "input": "apps/api/src/migrations", "glob": "*.sql", "output": "migrations" }
+          {
+            "input": "apps/api/src/migrations",
+            "glob": "*.sql",
+            "output": "migrations"
+          }
         ],
         "generatePackageJson": true,
         "esbuildOptions": {
@@ -81,7 +85,13 @@
           "buildTarget": "api:build:production"
         }
       }
+    },
+    "typecheck": {
+      "options": {
+        "commands": ["tsc -p apps/api/tsconfig.app.json --noEmit"],
+        "parallel": false
+      }
     }
   },
-  "tags": []
+  "tags": ["type:app", "scope:api"]
 }

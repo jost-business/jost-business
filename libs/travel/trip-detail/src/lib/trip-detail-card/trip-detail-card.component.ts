@@ -1,6 +1,6 @@
 import { Component, input, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Trip } from '@jost/shared';
+import { Trip } from '@jost/models';
 
 @Component({
   selector: 'jost-trip-detail-card',
