@@ -20,6 +20,16 @@
   }
 }
 
+// Reserves room so the page does not jump when the gallery arrives, and
+// gives the viewport trigger something to observe
+.gallery-placeholder {
+  min-height: 12rem;
+}
+
+.gallery-error {
+  color: var(--jost-color-ink-soft);
+}
+
 .not-found {
   color: var(--jost-color-ink-soft);
   font-size: 1.1rem;

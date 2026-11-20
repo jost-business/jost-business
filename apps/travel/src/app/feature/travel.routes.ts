@@ -1,11 +1,11 @@
 import { Route } from '@angular/router';
-import { TravelVisaFreeComponent } from '@jost/travel/visa-free';
-import { TravelEVisaComponent } from '@jost/travel/e-visa';
 import { DashboardRouteComponent } from './dashboard-route.component';
-import { TripDetailRouteComponent } from './trip-detail-route.component';
-import { TripDefaultComponent } from './trip-default.component';
-import { Turkey2025Component } from './trips/2025-10-turkey.component';
 
+/**
+ * The dashboard is the landing page, so it ships in the main bundle. Every
+ * other page is a lazy route: its code, and libraries only it uses (Leaflet
+ * for the visa-free map), load the first time someone opens it.
+ */
 export const TRAVEL_ROUTES: Route[] = [
   {
     path: '',
@@ -18,31 +18,27 @@ export const TRAVEL_ROUTES: Route[] = [
   },
   {
     path: 'visa-free',
-    component: TravelVisaFreeComponent,
+    loadComponent: () => import('@jost/travel/visa-free').then(m => m.TravelVisaFreeComponent),
   },
   {
     path: 'e-visa',
-    component: TravelEVisaComponent,
+    loadComponent: () => import('@jost/travel/e-visa').then(m => m.TravelEVisaComponent),
   },
   {
+    // A trip with its own page content. Static data binds to the same `id`
+    // input that the :id parameter fills on the generic route below.
     path: 'trip/2025-10-turkey',
-    component: TripDetailRouteComponent,
-    data: { tripId: '2025-10-turkey' },
+    loadComponent: () => import('./trip-detail-route.component').then(m => m.TripDetailRouteComponent),
+    data: { id: '2025-10-turkey' },
     children: [
       {
         path: '',
-        component: Turkey2025Component,
+        loadComponent: () => import('./trips/2025-10-turkey.component').then(m => m.Turkey2025Component),
       },
     ],
   },
   {
     path: 'trip/:id',
-    component: TripDetailRouteComponent,
-    children: [
-      {
-        path: '',
-        component: TripDefaultComponent,
-      },
-    ],
+    loadComponent: () => import('./trip-detail-route.component').then(m => m.TripDetailRouteComponent),
   },
 ];
