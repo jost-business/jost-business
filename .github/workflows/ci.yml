@@ -31,8 +31,23 @@ jobs:
       # Angular packages pin each other exactly, see the Nx/Angular version note
       - run: npm ci --legacy-peer-deps
 
+      # Unit tests (Vitest browser mode) and e2e tests (Playwright) run in Chromium
+      - run: npx playwright install --with-deps chromium
+
       # Sets NX_BASE (last green commit on main, or the PR base) and NX_HEAD
       - uses: nrwl/nx-set-shas@v5
 
-      # Only the projects a change can reach, and only the tasks whose inputs changed
-      - run: npx nx affected -t lint typecheck test build --outputStyle=static
+      # Only the projects a change can reach, and only the tasks whose inputs changed.
+      # (e2e-ci, the e2e target split per spec file, needs Nx Cloud, which we do not use.)
+      - run: npx nx affected -t lint typecheck test build e2e --outputStyle=static
+
+      # What failed tests saw: the Playwright report with traces, and the screenshots
+      # Vitest browser mode takes of failed unit tests
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: test-failures
+          path: |
+            dist/.playwright
+            **/.vitest/attachments
+          retention-days: 14

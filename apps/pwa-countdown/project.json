@@ -4,11 +4,16 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/pwa-countdown/src",
-  "tags": ["type:app", "scope:pwa"],
+  "tags": [
+    "type:app",
+    "scope:pwa"
+  ],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/pwa-countdown",
@@ -24,10 +29,14 @@
             "glob": "**/*",
             "input": "libs/shared-assets/src/images",
             "output": "assets/images",
-            "ignore": ["trips/**"]
+            "ignore": [
+              "trips/**"
+            ]
           }
         ],
-        "styles": ["apps/pwa-countdown/src/styles.scss"]
+        "styles": [
+          "apps/pwa-countdown/src/styles.scss"
+        ]
       },
       "configurations": {
         "production": {
@@ -73,12 +82,11 @@
       }
     },
     "test": {
-      "outputs": [
-        "{projectRoot}/{options.coverage.reportsDirectory}",
-        "{workspaceRoot}/coverage/apps/pwa-countdown"
-      ],
+      "executor": "@angular/build:unit-test",
       "options": {
-        "coverage.reportsDirectory": "../../coverage/apps/pwa-countdown"
+        "browsers": [
+          "ChromiumHeadless"
+        ]
       }
     },
     "serve-static": {
@@ -92,7 +100,9 @@
       "readyWhen": {
         "signal": true
       },
-      "dependsOn": ["build"]
+      "dependsOn": [
+        "build"
+      ]
     },
     "typecheck": {
       "options": {

@@ -4,11 +4,16 @@
   "sourceRoot": "apps/travel/src",
   "projectType": "application",
   "prefix": "app",
-  "tags": ["type:app", "scope:travel"],
+  "tags": [
+    "type:app",
+    "scope:travel"
+  ],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "outputPath": {
@@ -29,7 +34,9 @@
           }
         ],
         "stylePreprocessorOptions": {
-          "includePaths": ["libs/shared/src/styles"]
+          "includePaths": [
+            "libs/shared/src/styles"
+          ]
         },
         "styles": [
           "libs/shared/src/styles/index.scss",
@@ -73,7 +80,8 @@
       "executor": "@angular/build:dev-server",
       "options": {
         "buildTarget": "travel:build:development",
-        "proxyConfig": "proxy.conf.json"
+        "proxyConfig": "proxy.conf.json",
+        "port": 4310
       },
       "configurations": {
         "production": {
@@ -84,8 +92,19 @@
     },
     "typecheck": {
       "options": {
-        "commands": ["ngc -p apps/travel/tsconfig.app.json --noEmit"],
+        "commands": [
+          "ngc -p apps/travel/tsconfig.app.json --noEmit",
+          "tsc -p apps/travel/tsconfig.spec.json --noEmit"
+        ],
         "parallel": false
+      }
+    },
+    "test": {
+      "executor": "@angular/build:unit-test",
+      "options": {
+        "browsers": [
+          "ChromiumHeadless"
+        ]
       }
     }
   }

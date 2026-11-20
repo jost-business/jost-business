@@ -15,3 +15,5 @@ certs/
 __screenshots__/
 
 vitest.config.*.timestamp*
+# Vitest browser mode: screenshots of failed tests
+.vitest/

@@ -46,6 +46,8 @@ export default [
               onlyDependOnLibsWithTags: ['type:util'],
             },
             { sourceTag: 'type:assets', onlyDependOnLibsWithTags: [] },
+            // End-to-end tests drive the running app; they may share its types, not its code
+            { sourceTag: 'type:e2e', onlyDependOnLibsWithTags: ['type:util'] },
 
             // Domains: each may use its own code and the shared code
             { sourceTag: 'scope:shared', onlyDependOnLibsWithTags: ['scope:shared'] },

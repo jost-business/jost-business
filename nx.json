@@ -3,7 +3,10 @@
   "defaultBase": "main",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "sharedGlobals": ["{workspaceRoot}/tsconfig.base.json", "{workspaceRoot}/package-lock.json"],
+    "sharedGlobals": [
+      "{workspaceRoot}/tsconfig.base.json",
+      "{workspaceRoot}/package-lock.json"
+    ],
     "production": [
       "default",
       "!{projectRoot}/**/*.spec.ts",
@@ -26,14 +29,27 @@
     "typecheck": {
       "executor": "nx:run-commands",
       "cache": true,
-      "inputs": ["default", "^production", { "externalDependencies": ["typescript", "@angular/compiler-cli"] }],
+      "inputs": [
+        "default",
+        "^production",
+        {
+          "externalDependencies": ["typescript", "@angular/compiler-cli"]
+        }
+      ],
       "options": {
         "cwd": "{workspaceRoot}"
       }
     },
     "lint": {
       "cache": true,
-      "inputs": ["default", "^production", "{workspaceRoot}/eslint.config.mjs", { "externalDependencies": ["eslint"] }]
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/eslint.config.mjs",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ]
     },
     "@angular/build:application": {
       "cache": true,
@@ -44,6 +60,12 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "@angular/build:dev-server": {
+      "continuous": true,
+      "readyWhen": {
+        "port": "{options.port ?? 4200}"
+      }
     }
   },
   "plugins": [
@@ -59,6 +81,13 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e",
+        "ciTargetName": "e2e-ci"
       }
     }
   ],

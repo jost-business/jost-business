@@ -1,17 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node", "vitest"]
+    "outDir": "../../dist/out-tsc/spec",
+    "types": ["vitest/globals"]
   },
-  "include": [
-    "vite.config.mts",
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    // The Analog compiler only transforms files in this program, so workspace libs must be listed
-    "../../libs/shared/src/**/*.ts",
-    "../../libs/ui/countdown/src/**/*.ts"
-  ],
-  "exclude": ["../../libs/**/*.spec.ts"],
-  "files": ["src/test-setup.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }
