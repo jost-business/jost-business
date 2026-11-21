@@ -1,0 +1,23 @@
+.route-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  min-height: 2.2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem 0;
+}
+
+.action {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--jost-color-border);
+  border-radius: 6px;
+  color: var(--jost-color-ink);
+  text-decoration: none;
+
+  &.primary {
+    border-color: var(--jost-color-coral);
+    background: var(--jost-color-coral);
+    color: #fff;
+  }
+}

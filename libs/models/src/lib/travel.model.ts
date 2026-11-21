@@ -18,3 +18,20 @@ export interface TripDto {
   endsAt: string;
   photos: string[];
 }
+
+/** Body of PUT /trips/:id. The id is fixed once a trip exists. */
+export interface TripInput {
+  destination: string;
+  startsAt: string;
+  endsAt: string;
+}
+
+/** Body of POST /trips. */
+export interface NewTripRequest extends TripInput {
+  id: string;
+}
+
+/** GET /trips/availability?id=…: whether a new trip may use this id. */
+export interface TripIdAvailability {
+  available: boolean;
+}

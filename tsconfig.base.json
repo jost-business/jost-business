@@ -8,10 +8,9 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
-    "target": "ES2020",
+    "target": "ES2022",
     "module": "ESNext",
     "useDefineForClassFields": false,
-    "lib": ["ES2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
@@ -22,7 +21,8 @@
       "@jost/travel/visa-free": ["libs/travel/visa-free/src/index.ts"],
       "@jost/travel/e-visa": ["libs/travel/e-visa/src/index.ts"],
       "@jost/travel/trip-detail": ["libs/travel/trip-detail/src/index.ts"],
-      "@jost/ui/countdown": ["libs/ui/countdown/src/index.ts"]
+      "@jost/ui/countdown": ["libs/ui/countdown/src/index.ts"],
+      "@jost/travel/trip-editor": ["libs/travel/trip-editor/src/index.ts"]
     },
     "strict": false,
     "noUncheckedSideEffectImports": false,

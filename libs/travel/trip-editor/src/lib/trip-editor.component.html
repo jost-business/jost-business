@@ -1,0 +1,84 @@
+<!-- formRoot prevents the browser's own submit and runs the form's submission action -->
+<form class="trip-editor" [formRoot]="tripForm">
+  <h2 class="editor-title">{{ isEdit() ? 'Edit trip' : 'New trip' }}</h2>
+
+  <!-- Each label holds only the field's name; hints and errors are linked with
+       aria-describedby, so a screen reader announces them after the name -->
+  @let id = tripForm.id();
+  <div class="field">
+    <label class="field-label" for="trip-id">Id</label>
+    <input id="trip-id" type="text" [formField]="tripForm.id" autocomplete="off" spellcheck="false"
+           [attr.aria-invalid]="id.touched() && id.invalid()" aria-describedby="trip-id-hint trip-id-errors" />
+    <span class="field-hint" id="trip-id-hint">
+      @if (id.pending()) {
+        Checking whether the id is free…
+      } @else if (!isEdit()) {
+        Part of the address, like 2027-03-lisbon. It cannot be changed later.
+      }
+    </span>
+    <span class="field-errors" id="trip-id-errors" aria-live="polite">
+      @if (id.touched()) {
+        @for (error of id.errors(); track error.kind) {
+          <span class="field-error">{{ error.message }}</span>
+        }
+      }
+    </span>
+  </div>
+
+  @let destination = tripForm.destination();
+  <div class="field">
+    <label class="field-label" for="trip-destination">Destination</label>
+    <input id="trip-destination" type="text" [formField]="tripForm.destination" placeholder="City, Country"
+           [attr.aria-invalid]="destination.touched() && destination.invalid()"
+           aria-describedby="trip-destination-errors" />
+    <span class="field-errors" id="trip-destination-errors" aria-live="polite">
+      @if (destination.touched()) {
+        @for (error of destination.errors(); track error.kind) {
+          <span class="field-error">{{ error.message }}</span>
+        }
+      }
+    </span>
+  </div>
+
+  <div class="field-row">
+    @let startsAt = tripForm.startsAt();
+    <div class="field">
+      <label class="field-label" for="trip-starts">Departure</label>
+      <input id="trip-starts" type="datetime-local" [formField]="tripForm.startsAt"
+             [attr.aria-invalid]="startsAt.touched() && startsAt.invalid()" aria-describedby="trip-starts-errors" />
+      <span class="field-errors" id="trip-starts-errors" aria-live="polite">
+        @if (startsAt.touched()) {
+          @for (error of startsAt.errors(); track error.kind) {
+            <span class="field-error">{{ error.message }}</span>
+          }
+        }
+      </span>
+    </div>
+
+    @let endsAt = tripForm.endsAt();
+    <div class="field">
+      <label class="field-label" for="trip-ends">Return</label>
+      <input id="trip-ends" type="datetime-local" [formField]="tripForm.endsAt"
+             [attr.aria-invalid]="endsAt.touched() && endsAt.invalid()" aria-describedby="trip-ends-errors" />
+      <span class="field-errors" id="trip-ends-errors" aria-live="polite">
+        @if (endsAt.touched()) {
+          @for (error of endsAt.errors(); track error.kind) {
+            <span class="field-error">{{ error.message }}</span>
+          }
+        }
+      </span>
+    </div>
+  </div>
+
+  <!-- Errors of the whole form, like a failed save -->
+  @for (error of tripForm().errors(); track error.kind) {
+    <p class="form-error" role="alert">{{ error.message }}</p>
+  }
+
+  <div class="actions">
+    <button type="button" class="button secondary" (click)="cancelled.emit()">Cancel</button>
+    <button type="submit" class="button primary" [disabled]="tripForm().submitting()">
+      {{ tripForm().submitting() ? 'Saving…' : isEdit() ? 'Save changes' : 'Create trip' }}
+    </button>
+  </div>
+</form>

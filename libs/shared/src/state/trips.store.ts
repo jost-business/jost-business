@@ -1,7 +1,8 @@
-import { computed, effect, inject } from '@angular/core';
-import { httpResource } from '@angular/common/http';
+import { computed, effect, inject, type WritableResource } from '@angular/core';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { map, type Observable } from 'rxjs';
 import { patchState, signalStore, withComputed, withHooks, withMethods, withProps, withState } from '@ngrx/signals';
-import { Trip, TripDto } from '@jost/models';
+import type { NewTripRequest, Trip, TripDto, TripInput } from '@jost/models';
 import { API_BASE_URL } from '../services/api';
 import { Clock } from '../services/clock';
 import {
@@ -48,6 +49,8 @@ export const TripsStore = signalStore(
   withProps(() => {
     const apiBaseUrl = inject(API_BASE_URL);
     return {
+      _apiBaseUrl: apiBaseUrl,
+      _http: inject(HttpClient),
       _clock: inject(Clock),
       // Fetched once when something first reads it; the request runs again only on reload()
       _tripsResource: httpResource(() => `${apiBaseUrl}/trips`, { parse: toTrips }),
@@ -135,6 +138,23 @@ export const TripsStore = signalStore(
     tripById(id: string): Trip | undefined {
       return store.trips().find(trip => trip.id === id);
     },
+
+    /**
+     * Saves a new trip (needs a login) once subscribed to, and adds it to the
+     * list without loading everything again.
+     */
+    createTrip(request: NewTripRequest): Observable<Trip> {
+      return store._http
+        .post<TripDto>(`${store._apiBaseUrl}/trips`, request)
+        .pipe(map(dto => upsert(store._tripsResource, dto)));
+    },
+
+    /** Saves changes to a trip (needs a login) once subscribed to, and updates it in the list. */
+    updateTrip(id: string, input: TripInput): Observable<Trip> {
+      return store._http
+        .put<TripDto>(`${store._apiBaseUrl}/trips/${id}`, input)
+        .pipe(map(dto => upsert(store._tripsResource, dto)));
+    },
   })),
 
   withHooks({
@@ -149,13 +169,27 @@ export const TripsStore = signalStore(
 /** Turns the API's JSON into trips, newest first, with real Date objects. */
 function toTrips(raw: unknown): Trip[] {
   if (!Array.isArray(raw)) throw new Error('Expected a list of trips from the API');
-  return (raw as TripDto[])
-    .map(dto => ({
-      id: dto.id,
-      destination: dto.destination,
-      from: new Date(dto.startsAt),
-      to: new Date(dto.endsAt),
-      photos: dto.photos,
-    }))
-    .sort((a, b) => b.from.getTime() - a.from.getTime());
+  return sortNewestFirst((raw as TripDto[]).map(toTrip));
+}
+
+function toTrip(dto: TripDto): Trip {
+  return {
+    id: dto.id,
+    destination: dto.destination,
+    from: new Date(dto.startsAt),
+    to: new Date(dto.endsAt),
+    photos: dto.photos,
+  };
+}
+
+function sortNewestFirst(trips: Trip[]): Trip[] {
+  return trips.sort((a, b) => b.from.getTime() - a.from.getTime());
+}
+
+/** Puts a saved trip into the loaded list, replacing its old version if there is one. */
+function upsert(resource: WritableResource<Trip[] | undefined>, dto: TripDto): Trip {
+  const trip = toTrip(dto);
+  const others = resource.hasValue() ? (resource.value() ?? []).filter(t => t.id !== trip.id) : [];
+  resource.set(sortNewestFirst([...others, trip]));
+  return trip;
 }

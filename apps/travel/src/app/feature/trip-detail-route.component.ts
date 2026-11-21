@@ -1,16 +1,18 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { TripsStore } from '@jost/shared';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { AuthStore, TripsStore } from '@jost/shared';
 import { TravelTripDetailComponent } from '@jost/travel/trip-detail';
 
 @Component({
   selector: 'app-trip-detail-route',
-  imports: [RouterOutlet, TravelTripDetailComponent],
+  imports: [RouterOutlet, RouterLink, TravelTripDetailComponent],
+  styleUrl: './route-actions.scss',
   templateUrl: './trip-detail-route.component.html',
 })
 export class TripDetailRouteComponent {
   private readonly router = inject(Router);
   protected readonly store = inject(TripsStore);
+  protected readonly auth = inject(AuthStore);
 
   /**
    * Filled by the router (withComponentInputBinding) from the :id parameter

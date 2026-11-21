@@ -1,3 +1,8 @@
+@if (auth.isLoggedIn() && trip(); as trip) {
+  <nav class="route-actions" aria-label="Trip actions">
+    <a class="action" [routerLink]="['/trip', trip.id, 'edit']">Edit trip</a>
+  </nav>
+}
 @if (store.isLoading() && !trip()) {
   <p class="loading" aria-busy="true">Loading trip…</p>
 } @else {

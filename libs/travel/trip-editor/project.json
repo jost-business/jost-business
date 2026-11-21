@@ -1,0 +1,18 @@
+{
+  "name": "travel-trip-editor",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/travel/trip-editor/src",
+  "projectType": "library",
+  "tags": ["type:feature", "scope:travel"],
+  "targets": {
+    "typecheck": {
+      "options": {
+        "commands": [
+          "ngc -p libs/travel/trip-editor/tsconfig.lib.json --noEmit",
+          "tsc -p libs/travel/trip-editor/tsconfig.spec.json --noEmit"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}

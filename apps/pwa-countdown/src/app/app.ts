@@ -10,6 +10,7 @@ import {
   tripCity,
   tripCountry,
 } from '@jost/shared';
+import { defer, filter, from, type Observable, of, shareReplay } from 'rxjs';
 import { APP_VERSION } from './version';
 import type { Trip } from '@jost/models';
 
@@ -45,7 +46,15 @@ export class App implements OnInit {
   });
 
   private notifiedTripId: string | null = null;
-  private notificationPermission?: Promise<NotificationPermission>;
+
+  /**
+   * Asks for permission on the first subscription only; later subscribers get
+   * the same answer. defer() keeps the question from being asked before then.
+   */
+  private readonly notificationPermission$: Observable<NotificationPermission> = defer(() => {
+    if (!('Notification' in window)) return of<NotificationPermission>('denied');
+    return Notification.permission === 'default' ? from(Notification.requestPermission()) : of(Notification.permission);
+  }).pipe(shareReplay(1));
 
   constructor() {
     // A side effect, not derived state, so effect() is the right tool: greet a
@@ -54,14 +63,14 @@ export class App implements OnInit {
       const trip = this.trip();
       if (trip && trip.id !== this.notifiedTripId && startsOn(trip, this.store.now())) {
         this.notifiedTripId = trip.id;
-        void this.notifyTripDay(trip);
+        this.notifyTripDay(trip);
       }
     });
   }
 
   ngOnInit(): void {
     this.trackAppOpen();
-    void this.askNotificationPermission();
+    this.notificationPermission$.subscribe();
   }
 
   private trackAppOpen(): void {
@@ -78,20 +87,13 @@ export class App implements OnInit {
       });
   }
 
-  /** Asks at most once; later callers wait for the same answer. */
-  private askNotificationPermission(): Promise<NotificationPermission> {
-    if (!('Notification' in window)) return Promise.resolve('denied');
-    this.notificationPermission ??=
-      Notification.permission === 'default' ? Notification.requestPermission() : Promise.resolve(Notification.permission);
-    return this.notificationPermission;
-  }
-
-  private async notifyTripDay(trip: Trip): Promise<void> {
-    if ((await this.askNotificationPermission()) !== 'granted') return;
-    new Notification('✈️ Today is the day!', {
-      body: `${tripCity(trip)} is waiting for you both! 💕`,
-      // Relative, so it resolves under the /countdown/ base href
-      icon: 'icons/icon-192x192.png',
+  private notifyTripDay(trip: Trip): void {
+    this.notificationPermission$.pipe(filter(permission => permission === 'granted')).subscribe(() => {
+      new Notification('✈️ Today is the day!', {
+        body: `${tripCity(trip)} is waiting for you both! 💕`,
+        // Relative, so it resolves under the /countdown/ base href
+        icon: 'icons/icon-192x192.png',
+      });
     });
   }
 }

@@ -5,9 +5,9 @@
       <h3 class="card-title">Account Overview</h3>
     </div>
     <div class="card-content">
-      @if (authService.isAuthenticated()) {
+      @if (auth.isLoggedIn()) {
         <p class="user-greeting">
-          Welcome, {{ authService.currentUser()?.name }}!
+          Welcome, {{ auth.user()?.name }}!
         </p>
       } @else {
         <p class="login-prompt">

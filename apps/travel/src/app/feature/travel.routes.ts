@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { authGuard } from '@jost/shared';
 import { DashboardRouteComponent } from './dashboard-route.component';
 
 /**
@@ -17,12 +18,28 @@ export const TRAVEL_ROUTES: Route[] = [
     component: DashboardRouteComponent,
   },
   {
+    path: 'login',
+    loadComponent: () => import('./login-page.component').then(m => m.LoginPageComponent),
+  },
+  {
     path: 'visa-free',
     loadComponent: () => import('@jost/travel/visa-free').then(m => m.TravelVisaFreeComponent),
   },
   {
     path: 'e-visa',
     loadComponent: () => import('@jost/travel/e-visa').then(m => m.TravelEVisaComponent),
+  },
+  // Editing needs a login. canMatch keeps the editor's code from even loading
+  // for visitors; they are sent to /login instead.
+  {
+    path: 'trips/new',
+    canMatch: [authGuard],
+    loadComponent: () => import('./trip-editor-route.component').then(m => m.TripEditorRouteComponent),
+  },
+  {
+    path: 'trip/:id/edit',
+    canMatch: [authGuard],
+    loadComponent: () => import('./trip-editor-route.component').then(m => m.TripEditorRouteComponent),
   },
   {
     // A trip with its own page content. Static data binds to the same `id`

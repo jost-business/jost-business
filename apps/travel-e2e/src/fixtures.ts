@@ -40,6 +40,8 @@ export const test = base.extend<Fixtures>({
   page: async ({ page, tripsApi }, use) => {
     await page.clock.setFixedTime(NOW);
     await page.route('**/api/trips', route => tripsApi(route));
+    // Nobody is logged in unless a test says otherwise
+    await page.route('**/api/auth/session', route => route.fulfill({ json: { user: null } }));
     await use(page);
   },
 });

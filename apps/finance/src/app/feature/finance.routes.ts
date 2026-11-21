@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
 import { Component, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { AuthService } from '@jost/shared';
+import { AuthStore } from '@jost/shared';
 
 @Component({
   selector: 'app-finance-list',
@@ -10,7 +10,7 @@ import { AuthService } from '@jost/shared';
   styleUrl: './finance.component.scss',
 })
 class FinanceListComponent {
-  protected readonly authService = inject(AuthService);
+  protected readonly auth = inject(AuthStore);
 
   readonly transactions = [
     { date: '2026-02-22', description: 'Salary', amount: 5000 },

@@ -1,0 +1,48 @@
+<div class="login">
+  @if (auth.isLoggedIn()) {
+    <h2 class="login-title">Logged in</h2>
+    <p>You are logged in as {{ auth.user()?.name }}.</p>
+    <button type="button" class="button secondary" (click)="logout()">Log out</button>
+  } @else {
+    <form class="login-form" [formRoot]="loginForm">
+      <h2 class="login-title">Log in</h2>
+
+      @for (error of loginForm().errors(); track error.kind) {
+        <p class="form-error" role="alert">{{ error.message }}</p>
+      }
+
+      @let emailState = loginForm.email();
+      <div class="field">
+        <label class="field-label" for="login-email">E-mail</label>
+        <input id="login-email" type="email" autocomplete="username" [formField]="loginForm.email"
+               [attr.aria-invalid]="emailState.touched() && emailState.invalid()" aria-describedby="login-email-errors" />
+        <span class="field-errors" id="login-email-errors" aria-live="polite">
+          @if (emailState.touched()) {
+            @for (error of emailState.errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          }
+        </span>
+      </div>
+
+      @let passwordState = loginForm.password();
+      <div class="field">
+        <label class="field-label" for="login-password">Password</label>
+        <input id="login-password" type="password" autocomplete="current-password" [formField]="loginForm.password"
+               [attr.aria-invalid]="passwordState.touched() && passwordState.invalid()"
+               aria-describedby="login-password-errors" />
+        <span class="field-errors" id="login-password-errors" aria-live="polite">
+          @if (passwordState.touched()) {
+            @for (error of passwordState.errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          }
+        </span>
+      </div>
+
+      <button type="submit" class="button primary" [disabled]="loginForm().submitting()">
+        {{ loginForm().submitting() ? 'Logging in…' : 'Log in' }}
+      </button>
+    </form>
+  }
+</div>

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import type { TripDto } from '@jost/models';
 import { TRAVEL_ROUTES } from './travel.routes';
@@ -37,10 +37,15 @@ describe('travel routes', () => {
     http = TestBed.inject(HttpTestingController);
   });
 
-  /** Navigates, answers the trips request once it is made, and waits for the page to settle. */
+  /**
+   * Navigates, answers the trips and session requests once they are made, and
+   * waits for the page to settle. Open requests count as pending work, so
+   * whenStable() would wait for them forever.
+   */
   async function open(url: string): Promise<HTMLElement> {
     await harness.navigateByUrl(url);
     for (const request of http.match('/api/trips')) request.flush(TRIPS);
+    for (const request of http.match('/api/auth/session')) request.flush({ user: null });
     await harness.fixture.whenStable();
     return harness.routeNativeElement as HTMLElement;
   }
@@ -88,5 +93,81 @@ describe('travel routes', () => {
       await harness.fixture.whenStable();
       expect(page.querySelectorAll('.gallery-item')).toHaveLength(2);
     });
+  });
+});
+
+describe('editing trips', () => {
+  const USER = { id: 'u1', email: 'me@example.com', name: 'Me' };
+  let harness: RouterTestingHarness;
+  let http: HttpTestingController;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter(TRAVEL_ROUTES, withComponentInputBinding()),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
+    });
+    harness = await RouterTestingHarness.create();
+    http = TestBed.inject(HttpTestingController);
+  });
+
+  /** Answers a request once the app has made it. match() takes the request off the queue, so it is kept. */
+  async function answer(method: string, url: string, body: object): Promise<void> {
+    const request = await vi.waitFor(() => {
+      const [found] = http.match(r => r.method === method && r.url === url);
+      if (!found) throw new Error(`No ${method} ${url} yet`);
+      return found;
+    });
+    request.flush(body);
+  }
+
+  /** Starts a navigation, answers what the guard and the page ask for, and waits for it to finish. */
+  async function open(url: string, user: typeof USER | null): Promise<HTMLElement> {
+    const navigation = harness.navigateByUrl(url);
+    await answer('GET', '/api/auth/session', { user });
+    await navigation;
+    for (const request of http.match('/api/trips')) request.flush(TRIPS);
+    await harness.fixture.whenStable();
+    return harness.fixture.nativeElement as HTMLElement;
+  }
+
+  const router = () => TestBed.inject(Router);
+
+  it('sends visitors to the login and remembers where they wanted to go', async () => {
+    const page = await open('/trips/new', null);
+
+    expect(router().url).toBe('/login?returnUrl=%2Ftrips%2Fnew');
+    expect(page.querySelector('h2')?.textContent).toContain('Log in');
+  });
+
+  it('opens the editor with the trip for a logged-in user', async () => {
+    const page = await open('/trip/2024-05-morocco/edit', USER);
+
+    expect(page.querySelector('h2')?.textContent).toContain('Edit trip');
+    expect((page.querySelector('#trip-destination') as HTMLInputElement).value).toBe('Casablanca, Morocco');
+  });
+
+  it('goes on to the remembered page after logging in', async () => {
+    const page = await open('/login?returnUrl=%2Ftrips%2Fnew', null);
+    const input = (selector: string, value: string) => {
+      const element = page.querySelector(selector) as HTMLInputElement;
+      element.value = value;
+      element.dispatchEvent(new Event('input'));
+    };
+    input('#login-email', 'me@example.com');
+    input('#login-password', 'secret password');
+
+    (page.querySelector('button[type=submit]') as HTMLButtonElement).click();
+    const login = await vi.waitFor(() => http.expectOne('/api/auth/login'));
+    expect(login.request.body).toEqual({ email: 'me@example.com', password: 'secret password' });
+    login.flush({ user: USER });
+
+    await vi.waitFor(() => expect(router().url).toBe('/trips/new'));
+    // The editor's TripsStore loads the trips; the app is only stable once they are there
+    await answer('GET', '/api/trips', TRIPS);
+    await harness.fixture.whenStable();
+    expect(page.querySelector('h2')?.textContent).toContain('New trip');
   });
 });

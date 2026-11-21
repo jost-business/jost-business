@@ -35,8 +35,10 @@ export class PlaygroundComponent {
   protected onSubmit(event: Event): void {
     event.preventDefault();
     // submit() marks all fields as touched and only runs the action when the form is valid
-    submit(this.signupForm, async () => {
+    // The action must return a Promise; nothing here is asynchronous, so it is an already resolved one
+    submit(this.signupForm, () => {
       this.submitted.set(this.model());
+      return Promise.resolve(undefined);
     });
   }
 
