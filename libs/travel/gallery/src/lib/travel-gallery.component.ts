@@ -123,6 +123,19 @@ export class TravelGalleryComponent {
       .subscribe();
   }
 
+  /** Shows the new order at once; the store puts the old one back if saving fails. */
+  protected reorder(trip: Trip, photos: Photo[]): void {
+    this.problems.set([]);
+    this.store
+      .reorderPhotos(trip.id, photos.map(photo => photo.name))
+      .pipe(
+        tap({ error: (error: unknown) => this.report(`The new order could not be saved: ${this.describe(error)}`, error) }),
+        catchError(() => EMPTY),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+  }
+
   private report(problem: string, error: unknown): void {
     this.problems.update(problems => [...problems, problem]);
     // Only needed here; asking for it up front would ask the API for the session on every visit
@@ -136,6 +149,8 @@ export class TravelGalleryComponent {
         return 'your session has ended, please log in again.';
       case 413:
         return 'the file is too large (at most 25 MB).';
+      case 409:
+        return 'the photos have changed in the meantime, please reload the page.';
       case 415:
         return 'this is not an image the server can read.';
       case 0:

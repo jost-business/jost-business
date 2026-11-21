@@ -1,6 +1,6 @@
 import { computed, effect, inject, type WritableResource } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
-import { map, type Observable } from 'rxjs';
+import { defer, map, type Observable, tap } from 'rxjs';
 import { patchState, signalStore, withComputed, withHooks, withMethods, withProps, withState } from '@ngrx/signals';
 import type { NewTripRequest, Trip, TripDto, TripInput } from '@jost/models';
 import { API_BASE_URL } from '../services/api';
@@ -168,6 +168,26 @@ export const TripsStore = signalStore(
         .pipe(map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)));
     },
 
+    /**
+     * Saves a new order of a trip's photos (needs a login) once subscribed to.
+     * The list shows the new order right away; if saving fails, the trip goes
+     * back to how it was before.
+     */
+    reorderPhotos(tripId: string, photoNames: string[]): Observable<Trip> {
+      return defer(() => {
+        const before = store.trips().find(trip => trip.id === tripId);
+        if (before) {
+          const byName = new Map(before.photos.map(photo => [photo.name, photo]));
+          const photos = photoNames.flatMap(name => byName.get(name) ?? []);
+          replace(store._tripsResource, { ...before, photos });
+        }
+        return store._http.put<TripDto>(`${store._apiBaseUrl}/trips/${tripId}/photos`, { photos: photoNames }).pipe(
+          map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)),
+          tap({ error: () => before && replace(store._tripsResource, before) }),
+        );
+      });
+    },
+
     /** Deletes a photo of a trip (needs a login) once subscribed to. */
     deletePhoto(tripId: string, photoName: string): Observable<Trip> {
       return store._http
@@ -211,7 +231,10 @@ function sortNewestFirst(trips: Trip[]): Trip[] {
 
 /** Puts a saved trip into the loaded list, replacing its old version if there is one. */
 function upsert(resource: WritableResource<Trip[] | undefined>, dto: TripDto, apiBaseUrl: string): Trip {
-  const trip = toTrip(dto, apiBaseUrl);
+  return replace(resource, toTrip(dto, apiBaseUrl));
+}
+
+function replace(resource: WritableResource<Trip[] | undefined>, trip: Trip): Trip {
   const others = resource.hasValue() ? (resource.value() ?? []).filter(t => t.id !== trip.id) : [];
   resource.set(sortNewestFirst([...others, trip]));
   return trip;

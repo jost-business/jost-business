@@ -82,3 +82,32 @@ test('a logged-in user adds a photo to a trip and deletes it again', async ({ pa
   await page.getByRole('button', { name: 'Delete photo 4' }).click({ force: true });
   await expect(page.getByRole('button', { name: /Open photo/ })).toHaveCount(3);
 });
+
+test('a logged-in user drags a photo to a new place', async ({ page }) => {
+  const turkey = TRIPS.find(trip => trip.id === '2025-10-turkey');
+  if (!turkey) throw new Error('The fixtures have no Turkey trip');
+  let saved: string[] | undefined;
+  await page.route('**/api/auth/session', route => route.fulfill({ json: { user: USER } }));
+  await page.route('**/api/trips/2025-10-turkey/photos', async route => {
+    saved = route.request().postDataJSON().photos;
+    await route.fulfill({ json: { ...turkey, photos: saved } });
+  });
+  await page.goto('/gallery?trip=2025-10-turkey');
+  const tiles = page.locator('.gallery-image');
+  await expect(tiles).toHaveCount(3);
+
+  await page.getByRole('button', { name: 'Open photo 3' }).scrollIntoViewIfNeeded();
+  // The CDK follows the pointer, so move in steps like a real hand would
+  const from = await page.getByRole('button', { name: 'Open photo 1' }).boundingBox();
+  const to = await page.getByRole('button', { name: 'Open photo 3' }).boundingBox();
+  if (!from || !to) throw new Error('The photos are not on the screen');
+  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, { steps: 20 });
+  await page.mouse.up();
+
+  await expect.poll(() => saved).toEqual(['alanya_cable_car.jpeg', 'alanya_love.jpeg', 'alanya.jpeg']);
+  await expect(tiles.first()).toHaveAttribute('src', /alanya_cable_car/);
+  // A drag is not a click: no photo opened
+  await expect(page.locator('.lightbox-backdrop')).toHaveCount(0);
+});

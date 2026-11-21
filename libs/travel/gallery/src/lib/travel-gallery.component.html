@@ -43,7 +43,11 @@
       }
 
       @if (trip.photos.length) {
-        <jost-photo-gallery [trip]="trip" [deletable]="editable()" (deleteRequested)="deletePhoto(trip, $event)" />
+        @if (editable() && trip.photos.length > 1) {
+          <p class="hint">Drag the photos to change their order.</p>
+        }
+        <jost-photo-gallery [trip]="trip" [deletable]="editable()" [sortable]="editable()"
+                            (deleteRequested)="deletePhoto(trip, $event)" (reordered)="reorder(trip, $event)" />
       } @else {
         <p class="status">There are no photos of this trip yet.</p>
       }

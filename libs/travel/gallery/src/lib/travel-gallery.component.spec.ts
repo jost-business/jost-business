@@ -2,7 +2,9 @@ import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { page, userEvent } from 'vitest/browser';
-import type { TripDto } from '@jost/models';
+import { By } from '@angular/platform-browser';
+import type { Photo, TripDto } from '@jost/models';
+import { PhotoGalleryComponent } from '@jost/travel/ui';
 import { TravelGalleryComponent } from './travel-gallery.component';
 
 const trip = (id: string, destination: string, startsAt: string, endsAt: string, photos: string[]): TripDto => ({
@@ -175,6 +177,42 @@ describe('TravelGalleryComponent', () => {
       http.expectNone(r => r.method === 'DELETE');
       expect(photos().elements()).toHaveLength(2);
       confirm.mockRestore();
+    });
+
+    describe('changing the order', () => {
+      const photoSources = () =>
+        [...document.querySelectorAll<HTMLImageElement>('.gallery-image')].map(img => img.getAttribute('src'));
+
+      /** What the photo gallery reports after a photo was dragged to a new place. */
+      function dragged(names: string[]): void {
+        const gallery = fixture.debugElement.query(By.directive(PhotoGalleryComponent)).componentInstance as PhotoGalleryComponent;
+        const byName = new Map(gallery.trip().photos.map(photo => [photo.name, photo]));
+        gallery.reordered.emit(names.map(name => byName.get(name) as Photo));
+      }
+
+      it('shows the new order at once and saves it', async () => {
+        await open('2030-03-peru', true);
+        await expect.element(page.getByText('Drag the photos to change their order.')).toBeVisible();
+
+        dragged(['b.jpg', 'a.jpg']);
+
+        await vi.waitFor(() => expect(photoSources()).toEqual([expect.stringContaining('b.jpg'), expect.stringContaining('a.jpg')]));
+        const request = await nextRequest('PUT', '/api/trips/2030-03-peru/photos');
+        expect(request.request.body).toEqual({ photos: ['b.jpg', 'a.jpg'] });
+        request.flush(withPhotos(peru, ['b.jpg', 'a.jpg']));
+        await fixture.whenStable();
+        expect(page.getByRole('alert').elements()).toHaveLength(0);
+      });
+
+      it('goes back to the old order when it cannot be saved', async () => {
+        await open('2030-03-peru', true);
+
+        dragged(['b.jpg', 'a.jpg']);
+        (await nextRequest('PUT', '/api/trips/2030-03-peru/photos')).flush(null, { status: 409, statusText: 'Conflict' });
+
+        await expect.element(page.getByText(/^The new order could not be saved/)).toBeVisible();
+        expect(photoSources()).toEqual([expect.stringContaining('a.jpg'), expect.stringContaining('b.jpg')]);
+      });
     });
   });
 });

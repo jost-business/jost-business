@@ -1,10 +1,11 @@
 import { Component, input, linkedSignal, computed, output } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { type CdkDragDrop, CdkDrag, CdkDragPlaceholder, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import type { Photo, Trip } from '@jost/models';
 
 @Component({
   selector: 'jost-photo-gallery',
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, CdkDropList, CdkDrag, CdkDragPlaceholder],
   templateUrl: './photo-gallery.component.html',
   styleUrl: './photo-gallery.component.scss',
   host: {
@@ -21,6 +22,17 @@ export class PhotoGalleryComponent {
   readonly deletable = input(false);
   /** The delete button of a photo was clicked; deleting is up to the page. */
   readonly deleteRequested = output<Photo>();
+  /** Lets the photos be dragged into a new order (for a logged-in user). */
+  readonly sortable = input(false);
+  /** The photos in their new order after a drag; saving it is up to the page. */
+  readonly reordered = output<Photo[]>();
+
+  dropped(event: CdkDragDrop<unknown>): void {
+    if (event.previousIndex === event.currentIndex) return;
+    const photos = [...this.trip().photos];
+    moveItemInArray(photos, event.previousIndex, event.currentIndex);
+    this.reordered.emit(photos);
+  }
 
   /**
    * The photo open in the lightbox. Writable like a signal, but linked to the

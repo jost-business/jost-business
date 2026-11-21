@@ -49,6 +49,38 @@ export default async function (fastify: FastifyInstance) {
     return reply.code(201).send(trip);
   });
 
+  // A new order of the same photos. Only taken when it holds exactly the photos
+  // the trip has, so a stale page cannot drop or bring back a photo
+  fastify.put<{ Params: { id: string }; Body: { photos: string[] } }>('/trips/:id/photos', {
+    preHandler: fastify.requireUser,
+    schema: {
+      params: { type: 'object', required: ['id'], properties: { id: idSchema } },
+      body: {
+        type: 'object',
+        required: ['photos'],
+        additionalProperties: false,
+        properties: {
+          photos: { type: 'array', uniqueItems: true, maxItems: 2000, items: { type: 'string', pattern: PHOTO_NAME_PATTERN } },
+        },
+      },
+      response: { 200: tripSchema },
+    },
+  }, async (request, reply) => {
+    const { id } = request.params;
+    const { photos } = request.body;
+    const [trip] = await sql<TripDto[]>`
+      UPDATE trips SET photos = ${photos}::text[]
+      WHERE id = ${id}
+        AND cardinality(photos) = ${photos.length}
+        AND photos @> ${photos}::text[]
+      RETURNING ${columns}
+    `;
+    if (trip) return trip;
+    const [exists] = await sql`SELECT 1 FROM trips WHERE id = ${id}`;
+    if (!exists) return reply.notFound(`Trip ${id} does not exist`);
+    return reply.conflict('The photos of this trip have changed, reload the page and try again');
+  });
+
   fastify.delete<{ Params: { id: string; name: string } }>('/trips/:id/photos/:name', {
     preHandler: fastify.requireUser,
     schema: {

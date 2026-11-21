@@ -1,11 +1,14 @@
 @if (photoUrls().length > 0) {
 <div class="photo-gallery">
   <h3 class="gallery-title">{{ heading() }}</h3>
-  <div class="gallery-grid">
+  <!-- With sortable the tiles can be dragged into a new order; "mixed" lets them wrap like the grid -->
+  <div class="gallery-grid" cdkDropList cdkDropListOrientation="mixed" [cdkDropListDisabled]="!sortable()"
+       (cdkDropListDropped)="dropped($event)">
     @for (photo of trip().photos; track photo.name; let i = $index) {
-      <div class="gallery-tile">
+      <div class="gallery-tile" cdkDrag [cdkDragStartDelay]="{ touch: 300, mouse: 0 }" [class.sortable]="sortable()">
+        <div *cdkDragPlaceholder class="gallery-placeholder"></div>
         <button type="button" class="gallery-item" (click)="openPhoto(i)" [attr.aria-label]="'Open photo ' + (i + 1)">
-          <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" />
+          <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" draggable="false" />
         </button>
         @if (deletable()) {
           <button type="button" class="gallery-delete" (click)="deleteRequested.emit(photo)"
@@ -18,10 +21,12 @@
 }
 
 @if (selectedPhoto(); as photo) {
+<!-- A click anywhere but on the arrows closes it: on a phone the photo fills the screen, so there is no backdrop left to tap -->
 <div class="lightbox-backdrop" (click)="closePhoto()">
+  <button type="button" class="lightbox-close" (click)="closePhoto()" aria-label="Close photo">&times;</button>
   <button class="lightbox-arrow lightbox-arrow--left" (click)="$event.stopPropagation(); prev()" aria-label="Previous">&#8249;</button>
   <div class="lightbox-frame">
-    <img [ngSrc]="photo" fill sizes="80vw" [alt]="trip().destination" class="lightbox-image" (click)="$event.stopPropagation()" />
+    <img [ngSrc]="photo" fill sizes="80vw" [alt]="trip().destination" class="lightbox-image" />
   </div>
   <button class="lightbox-arrow lightbox-arrow--right" (click)="$event.stopPropagation(); next()" aria-label="Next">&#8250;</button>
 </div>

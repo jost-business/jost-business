@@ -19,6 +19,42 @@
 
 .gallery-tile {
   position: relative;
+
+  &.sortable .gallery-item {
+    cursor: grab;
+  }
+}
+
+// Where a dragged photo will land
+.gallery-placeholder {
+  height: 200px;
+  border: 2px dashed #9bb7ba;
+  border-radius: 8px;
+  background: #f3f8f8;
+}
+
+// The photo under the pointer while dragging; the CDK moves it to the end of <body>
+.gallery-tile.cdk-drag-preview {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  opacity: 0.9;
+  cursor: grabbing;
+
+  .gallery-item {
+    height: 200px;
+  }
+
+  .gallery-delete {
+    display: none;
+  }
+}
+
+// The other photos slide out of the way instead of jumping
+.gallery-grid.cdk-drop-list-dragging .gallery-tile:not(.cdk-drag-placeholder) {
+  transition: transform 0.2s ease;
+}
+
+.gallery-tile.cdk-drag-animating {
+  transition: transform 0.2s ease;
 }
 
 // Sits on the photo's corner; shown on hover, and always on touch screens
@@ -101,7 +137,31 @@
   object-fit: contain;
   // drop-shadow follows the visible photo, not the letterboxed frame
   filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.6));
-  cursor: default;
+}
+
+// Above the photo in the top corner, big enough for a thumb
+.lightbox-close {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 1;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.8);
+  }
 }
 
 .lightbox-arrow {

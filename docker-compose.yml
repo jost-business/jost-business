@@ -122,6 +122,8 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ${LETSENCRYPT_DIR:-/etc/letsencrypt}:/etc/letsencrypt:ro
+      # The API writes the trip photos, nginx serves them (see /api/photos/ in nginx.conf)
+      - photos_data:/srv/api/photos:ro
     depends_on:
       - shell
       - finance
