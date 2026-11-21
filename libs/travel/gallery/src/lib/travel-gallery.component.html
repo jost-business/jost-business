@@ -1,0 +1,42 @@
+<div class="gallery-page">
+  <h2 class="gallery-page-title">Gallery</h2>
+
+  @if (albums().length) {
+    <div class="filter" role="group" aria-label="Show photos of">
+      <button type="button" class="filter-button" [class.active]="!tripId()" [attr.aria-pressed]="!tripId()"
+              (click)="tripChange.emit(undefined)">All</button>
+      @for (album of albums(); track album.trip.id) {
+        <button type="button" class="filter-button"
+                [class.active]="tripId() === album.trip.id" [attr.aria-pressed]="tripId() === album.trip.id"
+                (click)="tripChange.emit(album.trip.id)">{{ album.label }}</button>
+      }
+    </div>
+  }
+
+  @if (store.error()) {
+    <div class="status" role="alert">
+      <p>The trips could not be loaded.</p>
+      <button type="button" class="retry-button" (click)="store.reload()">Try again</button>
+    </div>
+  } @else if (store.isLoading() && !store.trips().length) {
+    <p class="status" aria-busy="true">Loading photos…</p>
+  } @else if (tripId()) {
+    @if (selectedTrip(); as trip) {
+      <jost-trip-detail-card [trip]="trip" />
+      @if (trip.photos.length) {
+        <jost-photo-gallery [trip]="trip" />
+      } @else {
+        <p class="status">There are no photos of this trip yet.</p>
+      }
+    } @else {
+      <p class="status">Trip not found.</p>
+    }
+  } @else {
+    <!-- One gallery per trip: the lightbox pages through that trip's photos -->
+    @for (album of albums(); track album.trip.id) {
+      <jost-photo-gallery [trip]="album.trip" [heading]="album.label" />
+    } @empty {
+      <p class="status">There are no photos yet.</p>
+    }
+  }
+</div>

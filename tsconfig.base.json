@@ -20,9 +20,11 @@
       "@jost/travel/dashboard": ["libs/travel/dashboard/src/index.ts"],
       "@jost/travel/visa-free": ["libs/travel/visa-free/src/index.ts"],
       "@jost/travel/e-visa": ["libs/travel/e-visa/src/index.ts"],
+      "@jost/travel/gallery": ["libs/travel/gallery/src/index.ts"],
       "@jost/travel/trip-detail": ["libs/travel/trip-detail/src/index.ts"],
       "@jost/ui/countdown": ["libs/ui/countdown/src/index.ts"],
-      "@jost/travel/trip-editor": ["libs/travel/trip-editor/src/index.ts"]
+      "@jost/travel/trip-editor": ["libs/travel/trip-editor/src/index.ts"],
+      "@jost/travel/ui": ["libs/travel/ui/src/index.ts"]
     },
     "strict": false,
     "noUncheckedSideEffectImports": false,

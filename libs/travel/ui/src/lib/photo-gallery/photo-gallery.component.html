@@ -1,6 +1,6 @@
 @if (photoUrls().length > 0) {
 <div class="photo-gallery">
-  <h3 class="gallery-title">Photos</h3>
+  <h3 class="gallery-title">{{ heading() }}</h3>
   <div class="gallery-grid">
     @for (url of photoUrls(); track url; let i = $index) {
       <button type="button" class="gallery-item" (click)="openPhoto(i)" [attr.aria-label]="'Open photo ' + (i + 1)">

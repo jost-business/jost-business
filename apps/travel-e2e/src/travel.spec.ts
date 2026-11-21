@@ -1,19 +1,38 @@
 import { expect, test, TRIPS } from './fixtures';
 
 test.describe('travel app', () => {
-  test('opens a completed trip from the dashboard and comes back', async ({ page }) => {
+  test('opens a completed trip from the dashboard in the gallery and comes back', async ({ page }) => {
     await page.goto('/');
 
     await expect(page).toHaveURL(/\/dashboard$/);
     await expect(page.getByRole('row', { name: /Casablanca.*in 31 days/ })).toBeVisible();
 
-    await page.getByRole('row', { name: /Lima/ }).click();
+    await page.getByRole('row', { name: /Alanya/ }).click();
 
-    await expect(page).toHaveURL(/\/trip\/2030-03-peru$/);
-    await expect(page.getByRole('heading', { name: 'Lima, Peru' })).toBeVisible();
+    // The gallery opens with the trip's filter already set
+    await expect(page).toHaveURL(/\/gallery\?trip=2025-10-turkey$/);
+    await expect(page.getByRole('button', { name: 'Alanya October 2025' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('heading', { name: 'Alanya, Turkey' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Open photo/ })).toHaveCount(3);
 
-    await page.getByRole('button', { name: /Back to overview/ }).click();
+    await page.goBack();
     await expect(page).toHaveURL(/\/dashboard$/);
+  });
+
+  test('filters the gallery by trip, with the filter in the URL', async ({ page }) => {
+    await page.goto('/gallery');
+
+    // Only trips with photos get a filter; "All" groups the photos by trip
+    const filters = page.getByRole('group', { name: 'Show photos of' }).getByRole('button');
+    await expect(filters).toHaveText(['All', 'Alanya October 2025']);
+    await expect(page.getByRole('heading', { name: 'Alanya October 2025' })).toBeVisible();
+
+    await filters.filter({ hasText: 'Alanya' }).click();
+    await expect(page).toHaveURL(/\/gallery\?trip=2025-10-turkey$/);
+    await expect(page.getByRole('heading', { name: 'Alanya, Turkey' })).toBeVisible();
+
+    await filters.filter({ hasText: 'All' }).click();
+    await expect(page).toHaveURL(/\/gallery$/);
   });
 
   test('filters the dashboard', async ({ page }) => {

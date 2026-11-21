@@ -3,7 +3,7 @@ import { expect, test, TRIPS } from './fixtures';
 
 const USER: UserDto = { id: 'u1', email: 'me@example.com', name: 'Me' };
 
-test('logs in, creates a trip and finds it on its own page', async ({ page }) => {
+test('logs in, creates a trip and finds it in the gallery', async ({ page }) => {
   // A small stand-in for the API that remembers the login and new trips
   let user: UserDto | null = null;
   const trips: TripDto[] = [...TRIPS];
@@ -51,7 +51,8 @@ test('logs in, creates a trip and finds it on its own page', async ({ page }) =>
   await page.getByLabel('Return').fill('2031-02-08T18:30');
   await page.getByRole('button', { name: 'Create trip' }).click();
 
-  await expect(page).toHaveURL(/\/trip\/2031-02-lisbon$/);
+  // A saved trip is shown in the gallery, like a click on it in the dashboard
+  await expect(page).toHaveURL(/\/gallery\?trip=2031-02-lisbon$/);
   await expect(page.getByRole('heading', { name: 'Lisbon, Portugal' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Edit trip' })).toBeVisible();
 });

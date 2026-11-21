@@ -15,6 +15,8 @@ import { Trip } from '@jost/models';
 })
 export class PhotoGalleryComponent {
   readonly trip = input.required<Trip>();
+  /** The heading above the photos. */
+  readonly heading = input('Photos');
 
   /**
    * The photo open in the lightbox. Writable like a signal, but linked to the

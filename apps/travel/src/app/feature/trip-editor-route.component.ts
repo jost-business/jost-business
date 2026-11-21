@@ -35,12 +35,14 @@ export class TripEditorRouteComponent {
     return id ? this.store.tripById(id) : undefined;
   });
 
+  /** After saving, the trip is shown in the gallery, like a click on it in the dashboard. */
   protected open(trip: Trip): void {
-    this.router.navigate(['/trip', trip.id]);
+    this.router.navigate(['/gallery'], { queryParams: { trip: trip.id } });
   }
 
   protected back(): void {
     const id = this.id();
-    this.router.navigate(id ? ['/trip', id] : ['/dashboard']);
+    if (id) this.router.navigate(['/gallery'], { queryParams: { trip: id } });
+    else this.router.navigate(['/dashboard']);
   }
 }

@@ -1,0 +1,18 @@
+{
+  "name": "travel-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/travel/ui/src",
+  "projectType": "library",
+  "tags": ["type:ui", "scope:travel"],
+  "targets": {
+    "typecheck": {
+      "options": {
+        "commands": [
+          "ngc -p libs/travel/ui/tsconfig.lib.json --noEmit",
+          "tsc -p libs/travel/ui/tsconfig.spec.json --noEmit"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}

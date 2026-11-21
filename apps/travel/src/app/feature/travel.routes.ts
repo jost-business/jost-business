@@ -18,6 +18,10 @@ export const TRAVEL_ROUTES: Route[] = [
     component: DashboardRouteComponent,
   },
   {
+    path: 'gallery',
+    loadComponent: () => import('./gallery-route.component').then(m => m.GalleryRouteComponent),
+  },
+  {
     path: 'login',
     loadComponent: () => import('./login-page.component').then(m => m.LoginPageComponent),
   },

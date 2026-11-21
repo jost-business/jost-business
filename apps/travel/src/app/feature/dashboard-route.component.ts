@@ -13,7 +13,8 @@ export class DashboardRouteComponent {
   private readonly router = inject(Router);
   protected readonly auth = inject(AuthStore);
 
+  /** A trip opens in the gallery, with its filter already set. */
   openTrip(tripId: string): void {
-    this.router.navigate(['/trip', tripId]);
+    this.router.navigate(['/gallery'], { queryParams: { trip: tripId } });
   }
 }
