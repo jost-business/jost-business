@@ -1,6 +1,6 @@
-import { Component, input, linkedSignal, computed } from '@angular/core';
+import { Component, input, linkedSignal, computed, output } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { Trip } from '@jost/models';
+import type { Photo, Trip } from '@jost/models';
 
 @Component({
   selector: 'jost-photo-gallery',
@@ -17,6 +17,10 @@ export class PhotoGalleryComponent {
   readonly trip = input.required<Trip>();
   /** The heading above the photos. */
   readonly heading = input('Photos');
+  /** Shows a delete button on every photo (for a logged-in user). */
+  readonly deletable = input(false);
+  /** The delete button of a photo was clicked; deleting is up to the page. */
+  readonly deleteRequested = output<Photo>();
 
   /**
    * The photo open in the lightbox. Writable like a signal, but linked to the
@@ -31,10 +35,7 @@ export class PhotoGalleryComponent {
     computation: () => null,
   });
 
-  readonly photoUrls = computed(() => {
-    const trip = this.trip();
-    return trip.photos.map(p => `assets/images/trips/${trip.id}/${p}`);
-  });
+  readonly photoUrls = computed(() => this.trip().photos.map(photo => photo.url));
 
   readonly selectedPhoto = computed(() => {
     const i = this.selectedIndex();

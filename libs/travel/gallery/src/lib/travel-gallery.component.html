@@ -23,8 +23,27 @@
   } @else if (tripId()) {
     @if (selectedTrip(); as trip) {
       <jost-trip-detail-card [trip]="trip" />
+
+      @if (editable()) {
+        <!-- A label around the hidden file input: click or keyboard opens the file picker -->
+        <label class="upload" [class.dragging]="dragging()" [class.busy]="upload()"
+               (dragover)="$event.preventDefault(); dragging.set(true)" (dragleave)="dragging.set(false)"
+               (drop)="dropped($event)">
+          <input #fileInput type="file" accept="image/*,.heic,.heif" multiple class="upload-input" [disabled]="!!upload()"
+                 (change)="filesChosen(fileInput)" />
+          @if (uploadText(); as text) {
+            <span aria-live="polite">{{ text }}</span>
+          } @else {
+            <span><strong>Add photos</strong> – choose them or drop them here</span>
+          }
+        </label>
+        @for (problem of problems(); track $index) {
+          <p class="problem" role="alert">{{ problem }}</p>
+        }
+      }
+
       @if (trip.photos.length) {
-        <jost-photo-gallery [trip]="trip" />
+        <jost-photo-gallery [trip]="trip" [deletable]="editable()" (deleteRequested)="deletePhoto(trip, $event)" />
       } @else {
         <p class="status">There are no photos of this trip yet.</p>
       }

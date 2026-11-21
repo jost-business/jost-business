@@ -60,7 +60,6 @@
     "playwright": "^1.65.1",
     "prettier": "^3.10.1",
     "sass": "^1.108.2",
-    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.5",
     "typescript": "6.0.3",
     "typescript-eslint": "^8.73.0",
@@ -82,14 +81,18 @@
     "@fastify/autoload": "^6.6.0",
     "@fastify/cookie": "^11.1.5",
     "@fastify/cors": "^11.4.3",
+    "@fastify/multipart": "^10.1.9",
     "@fastify/rate-limit": "^11.3.0",
     "@fastify/sensible": "^6.0.8",
+    "@fastify/static": "^10.1.12",
     "@ngrx/signals": "^22.0.1",
     "fastify": "^5.12.8",
     "fastify-plugin": "^6.0.1",
+    "heic-decode": "^2.1.0",
     "leaflet": "^1.9.4",
     "postgres": "^3.4.9",
     "rxjs": "^7.8.2",
+    "sharp": "^0.35.5",
     "tslib": "^2.9.1"
   }
 }

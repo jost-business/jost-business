@@ -53,7 +53,7 @@ export const TripsStore = signalStore(
       _http: inject(HttpClient),
       _clock: inject(Clock),
       // Fetched once when something first reads it; the request runs again only on reload()
-      _tripsResource: httpResource(() => `${apiBaseUrl}/trips`, { parse: toTrips }),
+      _tripsResource: httpResource(() => `${apiBaseUrl}/trips`, { parse: raw => toTrips(raw, apiBaseUrl) }),
     };
   }),
 
@@ -146,14 +146,33 @@ export const TripsStore = signalStore(
     createTrip(request: NewTripRequest): Observable<Trip> {
       return store._http
         .post<TripDto>(`${store._apiBaseUrl}/trips`, request)
-        .pipe(map(dto => upsert(store._tripsResource, dto)));
+        .pipe(map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)));
     },
 
     /** Saves changes to a trip (needs a login) once subscribed to, and updates it in the list. */
     updateTrip(id: string, input: TripInput): Observable<Trip> {
       return store._http
         .put<TripDto>(`${store._apiBaseUrl}/trips/${id}`, input)
-        .pipe(map(dto => upsert(store._tripsResource, dto)));
+        .pipe(map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)));
+    },
+
+    /**
+     * Uploads one photo to a trip (needs a login) once subscribed to. The API
+     * shrinks it and answers with the trip, which replaces the one in the list.
+     */
+    uploadPhoto(tripId: string, file: File): Observable<Trip> {
+      const body = new FormData();
+      body.append('photo', file);
+      return store._http
+        .post<TripDto>(`${store._apiBaseUrl}/trips/${tripId}/photos`, body)
+        .pipe(map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)));
+    },
+
+    /** Deletes a photo of a trip (needs a login) once subscribed to. */
+    deletePhoto(tripId: string, photoName: string): Observable<Trip> {
+      return store._http
+        .delete<TripDto>(`${store._apiBaseUrl}/trips/${tripId}/photos/${encodeURIComponent(photoName)}`)
+        .pipe(map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)));
     },
   })),
 
@@ -167,18 +186,22 @@ export const TripsStore = signalStore(
 );
 
 /** Turns the API's JSON into trips, newest first, with real Date objects. */
-function toTrips(raw: unknown): Trip[] {
+function toTrips(raw: unknown, apiBaseUrl: string): Trip[] {
   if (!Array.isArray(raw)) throw new Error('Expected a list of trips from the API');
-  return sortNewestFirst((raw as TripDto[]).map(toTrip));
+  return sortNewestFirst((raw as TripDto[]).map(dto => toTrip(dto, apiBaseUrl)));
 }
 
-function toTrip(dto: TripDto): Trip {
+/** The API sends photo names; the photos themselves are at /photos/<trip>/<name>. */
+function toTrip(dto: TripDto, apiBaseUrl: string): Trip {
   return {
     id: dto.id,
     destination: dto.destination,
     from: new Date(dto.startsAt),
     to: new Date(dto.endsAt),
-    photos: dto.photos,
+    photos: dto.photos.map(name => ({
+      name,
+      url: `${apiBaseUrl}/photos/${encodeURIComponent(dto.id)}/${encodeURIComponent(name)}`,
+    })),
   };
 }
 
@@ -187,8 +210,8 @@ function sortNewestFirst(trips: Trip[]): Trip[] {
 }
 
 /** Puts a saved trip into the loaded list, replacing its old version if there is one. */
-function upsert(resource: WritableResource<Trip[] | undefined>, dto: TripDto): Trip {
-  const trip = toTrip(dto);
+function upsert(resource: WritableResource<Trip[] | undefined>, dto: TripDto, apiBaseUrl: string): Trip {
+  const trip = toTrip(dto, apiBaseUrl);
   const others = resource.hasValue() ? (resource.value() ?? []).filter(t => t.id !== trip.id) : [];
   resource.set(sortNewestFirst([...others, trip]));
   return trip;

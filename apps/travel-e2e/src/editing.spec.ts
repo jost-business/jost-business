@@ -56,3 +56,29 @@ test('logs in, creates a trip and finds it in the gallery', async ({ page }) => 
   await expect(page.getByRole('heading', { name: 'Lisbon, Portugal' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Edit trip' })).toBeVisible();
 });
+
+test('a logged-in user adds a photo to a trip and deletes it again', async ({ page }) => {
+  const turkey = TRIPS.find(trip => trip.id === '2025-10-turkey');
+  if (!turkey) throw new Error('The fixtures have no Turkey trip');
+  let photos = [...turkey.photos];
+  await page.route('**/api/auth/session', route => route.fulfill({ json: { user: USER } }));
+  await page.route('**/api/trips', route => route.fulfill({ json: TRIPS.map(t => (t.id === turkey.id ? { ...t, photos } : t)) }));
+  await page.route('**/api/trips/2025-10-turkey/photos', async route => {
+    photos = [...photos, 'new-photo.webp'];
+    await route.fulfill({ status: 201, json: { ...turkey, photos } });
+  });
+  await page.route('**/api/trips/2025-10-turkey/photos/*', async route => {
+    expect(route.request().method()).toBe('DELETE');
+    photos = photos.filter(name => !route.request().url().endsWith(`/${name}`));
+    await route.fulfill({ json: { ...turkey, photos } });
+  });
+  await page.goto('/gallery?trip=2025-10-turkey');
+  await expect(page.getByRole('button', { name: /Open photo/ })).toHaveCount(3);
+
+  await page.getByLabel(/Add photos/).setInputFiles({ name: 'beach.jpg', mimeType: 'image/jpeg', buffer: Buffer.from('jpeg') });
+  await expect(page.getByRole('button', { name: /Open photo/ })).toHaveCount(4);
+
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Delete photo 4' }).click({ force: true });
+  await expect(page.getByRole('button', { name: /Open photo/ })).toHaveCount(3);
+});

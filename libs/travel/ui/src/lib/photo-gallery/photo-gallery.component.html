@@ -2,10 +2,16 @@
 <div class="photo-gallery">
   <h3 class="gallery-title">{{ heading() }}</h3>
   <div class="gallery-grid">
-    @for (url of photoUrls(); track url; let i = $index) {
-      <button type="button" class="gallery-item" (click)="openPhoto(i)" [attr.aria-label]="'Open photo ' + (i + 1)">
-        <img [ngSrc]="url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" />
-      </button>
+    @for (photo of trip().photos; track photo.name; let i = $index) {
+      <div class="gallery-tile">
+        <button type="button" class="gallery-item" (click)="openPhoto(i)" [attr.aria-label]="'Open photo ' + (i + 1)">
+          <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" />
+        </button>
+        @if (deletable()) {
+          <button type="button" class="gallery-delete" (click)="deleteRequested.emit(photo)"
+                  [attr.aria-label]="'Delete photo ' + (i + 1)" title="Delete photo">&times;</button>
+        }
+      </div>
     }
   </div>
 </div>

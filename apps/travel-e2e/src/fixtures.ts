@@ -42,6 +42,10 @@ export const test = base.extend<Fixtures>({
     await page.route('**/api/trips', route => tripsApi(route));
     // Nobody is logged in unless a test says otherwise
     await page.route('**/api/auth/session', route => route.fulfill({ json: { user: null } }));
+    // Trip photos come from the API too; any small image will do
+    await page.route('**/api/photos/**', route =>
+      route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="3"/>' }),
+    );
     await use(page);
   },
 });

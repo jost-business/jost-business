@@ -3,7 +3,14 @@ export interface Trip {
   from: Date;
   to: Date;
   destination: string;
-  photos: string[];
+  photos: Photo[];
+}
+
+/** A trip photo, served by the API. */
+export interface Photo {
+  /** The file name, which the API uses to delete it. */
+  name: string;
+  url: string;
 }
 
 /**

@@ -69,3 +69,45 @@
   font: inherit;
   cursor: pointer;
 }
+
+.upload {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  padding: 1rem;
+  border: 2px dashed var(--jost-color-border);
+  border-radius: 8px;
+  color: var(--jost-color-ink);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+
+  &:hover,
+  &:focus-within,
+  &.dragging {
+    border-color: var(--jost-color-coral);
+    background: rgba(255, 118, 95, 0.06);
+  }
+
+  &.busy {
+    cursor: progress;
+  }
+}
+
+// Hidden but still focusable, so the keyboard reaches the file picker
+.upload-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.problem {
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+  background: #fdecea;
+  color: #8e2a1f;
+}

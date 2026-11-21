@@ -18,7 +18,7 @@ import { TravelGalleryComponent } from '@jost/travel/gallery';
         <a class="action" [routerLink]="['/trip', trip, 'edit']">Edit trip</a>
       </nav>
     }
-    <jost-travel-gallery [tripId]="trip()" (tripChange)="select($event)" />
+    <jost-travel-gallery [tripId]="trip()" [editable]="auth.isLoggedIn()" (tripChange)="select($event)" />
   `,
 })
 export class GalleryRouteComponent {
