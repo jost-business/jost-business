@@ -4,6 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import type { TripDto } from '@jost/models';
+import { LOGIN_PAGE } from '@jost/shared';
 import { TRAVEL_ROUTES } from './travel.routes';
 import { TripDetailRouteComponent } from './trip-detail-route.component';
 
@@ -107,6 +108,7 @@ describe('editing trips', () => {
         provideRouter(TRAVEL_ROUTES, withComponentInputBinding()),
         provideHttpClient(),
         provideHttpClientTesting(),
+        { provide: LOGIN_PAGE, useValue: { route: '/login' } },
       ],
     });
     harness = await RouterTestingHarness.create();

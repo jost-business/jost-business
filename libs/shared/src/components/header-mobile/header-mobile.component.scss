@@ -36,3 +36,5 @@
 .mobile-submenu .nav-link::before { display: none; }
 .overlay { position: fixed; inset: 0; z-index: 999; background: rgba(6, 20, 22, 0.45); opacity: 0; pointer-events: none; transition: opacity 320ms ease; }
 .overlay.visible { opacity: 1; pointer-events: auto; }
+.auth-link { width: 100%; border-width: 0 0 1px; background: none; font-family: inherit; text-align: left; cursor: pointer; }
+.auth-user { margin-left: auto; color: rgba(255, 255, 255, 0.55); font-size: 15px; font-weight: 400; }

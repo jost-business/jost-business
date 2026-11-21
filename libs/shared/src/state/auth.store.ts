@@ -1,13 +1,17 @@
 import { computed, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
 import { catchError, map, type Observable, throwError } from 'rxjs';
-import { signalStore, withComputed, withMethods, withProps } from '@ngrx/signals';
+import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import type { LoginRequest, SessionDto } from '@jost/models';
 import { API_BASE_URL } from '../services/api';
 
 /**
  * Who is logged in. The session itself lives in an httpOnly cookie that this
  * code never sees; the store only asks the API whose session it is.
+ *
+ * Several Angular apps can share a page (the header is its own app) and the
+ * site can be open in several tabs. Each has its own store, so every change
+ * of the session is announced on a BroadcastChannel and the others follow.
  */
 export const AuthStore = signalStore(
   { providedIn: 'root' },
@@ -18,6 +22,7 @@ export const AuthStore = signalStore(
       _apiBaseUrl: apiBaseUrl,
       _http: inject(HttpClient),
       _session: httpResource<SessionDto>(() => `${apiBaseUrl}/auth/session`),
+      _channel: new BroadcastChannel('jost-session'),
     };
   }),
 
@@ -31,33 +36,51 @@ export const AuthStore = signalStore(
     isLoggedIn: computed(() => user() !== null),
   })),
 
-  withMethods(store => ({
-    /**
-     * Logs in once subscribed to; the API answers with the session cookie.
-     * Fails with an Error whose message can be shown to the user.
-     */
-    login(credentials: LoginRequest): Observable<void> {
-      return store._http.post<SessionDto>(`${store._apiBaseUrl}/auth/login`, credentials).pipe(
-        map(session => store._session.set(session)),
-        catchError(error => throwError(() => new Error(loginErrorMessage(error), { cause: error }))),
-      );
-    },
+  withMethods(store => {
+    /** Sets the session here and tells the other apps and tabs. */
+    const changeSession = (session: SessionDto): void => {
+      store._session.set(session);
+      store._channel.postMessage(session);
+    };
 
-    /** Logs out once subscribed to. */
-    logout(): Observable<void> {
-      return store._http
-        .post(`${store._apiBaseUrl}/auth/logout`, null)
-        .pipe(map(() => store._session.set({ user: null })));
-    },
+    return {
+      /**
+       * Logs in once subscribed to; the API answers with the session cookie.
+       * Fails with an Error whose message can be shown to the user.
+       */
+      login(credentials: LoginRequest): Observable<void> {
+        return store._http.post<SessionDto>(`${store._apiBaseUrl}/auth/login`, credentials).pipe(
+          map(changeSession),
+          catchError(error => throwError(() => new Error(loginErrorMessage(error), { cause: error }))),
+        );
+      },
 
-    /**
-     * Forgets the user locally, for example when the API answered 401 because
-     * the session expired.
-     */
-    sessionEnded(): void {
-      store._session.set({ user: null });
+      /** Logs out once subscribed to. */
+      logout(): Observable<void> {
+        return store._http
+          .post(`${store._apiBaseUrl}/auth/logout`, null)
+          .pipe(map(() => changeSession({ user: null })));
+      },
+
+      /**
+       * Forgets the user, for example when the API answered 401 because the
+       * session expired.
+       */
+      sessionEnded(): void {
+        changeSession({ user: null });
+      },
+    };
+  }),
+
+  withHooks({
+    onInit(store) {
+      // Another app or tab logged in or out
+      store._channel.onmessage = ({ data }: MessageEvent<SessionDto>) => store._session.set(data);
     },
-  })),
+    onDestroy(store) {
+      store._channel.close();
+    },
+  }),
 );
 
 function loginErrorMessage(error: unknown): string {

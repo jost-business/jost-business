@@ -20,7 +20,11 @@
         "polyfills": [],
         "tsConfig": "apps/finance/tsconfig.app.json",
         "assets": [
-          "apps/finance/src/favicon.ico",
+          {
+            "glob": "*",
+            "input": "libs/shared-assets/src/favicon",
+            "output": "/"
+          },
           "apps/finance/src/assets",
           {
             "glob": "**/*",

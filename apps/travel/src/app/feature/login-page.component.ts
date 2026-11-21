@@ -1,9 +1,10 @@
 import { Component, inject, input, signal } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { email, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { catchError, firstValueFrom, map, of } from 'rxjs';
 import type { LoginRequest } from '@jost/models';
-import { AuthStore } from '@jost/shared';
+import { AuthStore, isSafeReturnUrl } from '@jost/shared';
 
 @Component({
   selector: 'app-login-page',
@@ -13,9 +14,13 @@ import { AuthStore } from '@jost/shared';
 })
 export class LoginPageComponent {
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   protected readonly auth = inject(AuthStore);
 
-  /** Where to go after logging in; the auth guard puts the page that wanted a login here. */
+  /**
+   * Where to go after logging in, a path on this site like /travel/trips/new
+   * or /playground/signals. The auth guards and the header put it here.
+   */
   readonly returnUrl = input<string>();
 
   protected readonly credentials = signal<LoginRequest>({ email: '', password: '' });
@@ -34,7 +39,7 @@ export class LoginPageComponent {
           firstValueFrom(
             this.auth.login(this.credentials()).pipe(
               map(() => {
-                this.router.navigateByUrl(safeReturnUrl(this.returnUrl()));
+                this.goBack();
                 return undefined;
               }),
               catchError((error: Error) => {
@@ -51,9 +56,23 @@ export class LoginPageComponent {
   protected logout(): void {
     this.auth.logout().subscribe();
   }
-}
 
-/** Only paths inside this app: a crafted link must not send someone to another site after login. */
-function safeReturnUrl(url: string | undefined): string {
-  return url?.startsWith('/') && !url.startsWith('//') ? url : '/dashboard';
+  /**
+   * Back to the page that asked for the login. It may belong to this app
+   * (router navigation) or to another app on the site (full page load).
+   */
+  private goBack(): void {
+    const url = this.returnUrl();
+    if (!isSafeReturnUrl(url)) {
+      this.router.navigateByUrl('/dashboard');
+      return;
+    }
+    // This app's base href: "/travel/" in production, "/" on the dev server
+    const base = this.location.prepareExternalUrl('/');
+    if (url.startsWith(base)) {
+      this.router.navigateByUrl('/' + url.slice(base.length));
+    } else {
+      window.location.assign(url);
+    }
+  }
 }

@@ -15,8 +15,6 @@
       <span>00 — 03</span>
     </div>
     <a href="/about-me/" class="nav-link" (click)="closeMenu()">Home</a>
-  <!--     <a href="/finance/" class="nav-link" (click)="closeMenu()">Finance</a> -->
-    <a href="/playground/dashboard" class="nav-link" (click)="closeMenu()">Playground</a>
     <div class="mobile-item">
       <a href="/travel/" class="nav-link" (click)="closeMenu()">Travel</a>
       <div class="mobile-submenu">
@@ -25,6 +23,18 @@
         <a href="/travel/e-visa" class="nav-link" (click)="closeMenu()">E-Visa</a>
       </div>
     </div>
+    @if (auth.isLoggedIn()) {
+      <a href="/playground/dashboard" class="nav-link" (click)="closeMenu()">Playground</a>
+    }
+    @if (auth.isResolved()) {
+      @if (auth.user(); as user) {
+        <button type="button" class="nav-link auth-link" (click)="logOut(); closeMenu()">
+          Logout <span class="auth-user">{{ user.name }}</span>
+        </button>
+      } @else {
+        <a href="/travel/login" class="nav-link" (click)="logIn($event)">Login</a>
+      }
+    }
   </nav>
 </header>
 <div class="overlay" [class.visible]="menuOpen()" (click)="closeMenu()"></div>

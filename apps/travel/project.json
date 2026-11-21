@@ -25,7 +25,11 @@
         "polyfills": [],
         "tsConfig": "apps/travel/tsconfig.app.json",
         "assets": [
-          "apps/travel/src/favicon.ico",
+          {
+            "glob": "*",
+            "input": "libs/shared-assets/src/favicon",
+            "output": "/"
+          },
           "apps/travel/src/assets",
           {
             "glob": "**/*",

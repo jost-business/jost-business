@@ -1,9 +1,7 @@
-<nav class="route-actions" aria-label="Trip actions">
-  @if (auth.isLoggedIn()) {
+<!-- Logging in and out is in the header; here only what a logged-in user can do -->
+@if (auth.isLoggedIn()) {
+  <nav class="route-actions" aria-label="Trip actions">
     <a class="action primary" routerLink="/trips/new">New trip</a>
-    <a class="action" routerLink="/login">{{ auth.user()?.name }}</a>
-  } @else if (auth.isResolved()) {
-    <a class="action" routerLink="/login">Log in</a>
-  }
-</nav>
+  </nav>
+}
 <app-dashboard (tripSelected)="openTrip($event)"></app-dashboard>
