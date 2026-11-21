@@ -3,7 +3,6 @@ export * from './utils/trip';
 export * from './services/api';
 export * from './services/clock';
 export * from './components/header.component';
-export * from './components/helsana-header/helsana-header.component';
 export * from './components/romantic-countdown/romantic-countdown.component';
 export * from './components/together-card/together-card.component';
 export * from './state/auth.store';

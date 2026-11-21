@@ -6,7 +6,7 @@
 .dashboard-layout {
   display: flex;
   height: 100%;
-  min-height: calc(100vh - 100px); // helsana-header: 36px utility + 64px main
+  min-height: calc(100dvh - 104px); // the site header: 80px plus its 12px padding top and bottom
   position: relative;
   background: #f3f4f6;
 }
