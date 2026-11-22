@@ -118,7 +118,11 @@
   font-size: 0.9rem;
 }
 
-// The photo labels of the selected trip, under the trip filter and a bit smaller
+// The photo labels of the selected trip, under the "Photos" heading and a bit smaller
+.label-filter {
+  margin-bottom: 1rem;
+}
+
 .label-filter .filter-button {
   padding: 4px 12px;
   font-size: 13px;

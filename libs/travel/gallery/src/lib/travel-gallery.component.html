@@ -13,18 +13,6 @@
     </div>
   }
 
-  @if (tripId() && tripLabels().length) {
-    <div class="filter label-filter" role="group" aria-label="Show photos labelled">
-      <button type="button" class="filter-button" [class.active]="!activeLabel()" [attr.aria-pressed]="!activeLabel()"
-              (click)="labelChange.emit(undefined)">All photos</button>
-      @for (label of tripLabels(); track label.name) {
-        <button type="button" class="filter-button"
-                [class.active]="activeLabel() === label.name" [attr.aria-pressed]="activeLabel() === label.name"
-                (click)="labelChange.emit(label.name)">{{ label.name }} <span class="filter-count">{{ label.count }}</span></button>
-      }
-    </div>
-  }
-
   @if (store.error()) {
     <div class="status" role="alert">
       <p>The trips could not be loaded.</p>
@@ -71,7 +59,20 @@
         }
         <jost-photo-gallery [trip]="shownTrip() ?? trip" [deletable]="editable()" [sortable]="editable() && !activeLabel()"
                             [selecting]="selecting()" [(selected)]="selected"
-                            (deleteRequested)="deletePhoto(trip, $event)" (reordered)="reorder(trip, $event)" />
+                            (deleteRequested)="deletePhoto(trip, $event)" (reordered)="reorder(trip, $event)">
+          <!-- Shown under the gallery's heading -->
+          @if (tripLabels().length) {
+            <div class="filter label-filter" role="group" aria-label="Show photos labelled">
+              <button type="button" class="filter-button" [class.active]="!activeLabel()" [attr.aria-pressed]="!activeLabel()"
+                      (click)="labelChange.emit(undefined)">All photos</button>
+              @for (label of tripLabels(); track label.name) {
+                <button type="button" class="filter-button"
+                        [class.active]="activeLabel() === label.name" [attr.aria-pressed]="activeLabel() === label.name"
+                        (click)="labelChange.emit(label.name)">{{ label.name }} <span class="filter-count">{{ label.count }}</span></button>
+              }
+            </div>
+          }
+        </jost-photo-gallery>
 
         @if (selecting()) {
           <!-- Stays at the bottom of the window while scrolling through the photos -->
