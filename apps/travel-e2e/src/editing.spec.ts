@@ -21,7 +21,7 @@ test('logs in, creates a trip and finds it in the gallery', async ({ page }) => 
   await page.route('**/api/trips', async route => {
     if (route.request().method() !== 'POST') return route.fulfill({ json: trips });
     const body: NewTripRequest = route.request().postDataJSON();
-    const trip: TripDto = { ...body, photos: [], photoLabels: {} };
+    const trip: TripDto = { ...body, photos: [], photoLabels: {}, labelOrder: [] };
     trips.push(trip);
     return route.fulfill({ status: 201, json: trip });
   });
@@ -168,4 +168,34 @@ test('with labels, all photos come in sections that are sorted on their own', as
   await page.mouse.up();
 
   await expect.poll(() => saved).toEqual(['alanya_love.jpeg', 'alanya_cable_car.jpeg', 'alanya.jpeg']);
+});
+
+test('a logged-in user drags a label to put its section first', async ({ page }) => {
+  const turkey = TRIPS.find(trip => trip.id === '2025-10-turkey');
+  if (!turkey) throw new Error('The fixtures have no Turkey trip');
+  const labelled = { ...turkey, photoLabels: { 'alanya.jpeg': ['Beach'], 'alanya_love.jpeg': ['Dakhla Club'] } };
+  let saved: string[] | undefined;
+  await page.route('**/api/auth/session', route => route.fulfill({ json: { user: USER } }));
+  await page.route('**/api/trips', route => route.fulfill({ json: TRIPS.map(t => (t.id === turkey.id ? labelled : t)) }));
+  await page.route('**/api/trips/2025-10-turkey/label-order', async route => {
+    saved = route.request().postDataJSON().labels;
+    await route.fulfill({ json: { ...labelled, labelOrder: saved } });
+  });
+  await page.goto('/gallery?trip=2025-10-turkey');
+  const sections = page.getByRole('heading', { level: 4 });
+  await expect(sections).toHaveText([/Beach/, /Dakhla Club/, /Without label/]);
+
+  const labels = page.getByRole('group', { name: 'Show photos labelled' });
+  const from = await labels.getByRole('button', { name: /Dakhla Club/ }).boundingBox();
+  const to = await labels.getByRole('button', { name: /Beach/ }).boundingBox();
+  if (!from || !to) throw new Error('The labels are not on the screen');
+  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(to.x + 4, to.y + to.height / 2, { steps: 15 });
+  await page.mouse.up();
+
+  await expect.poll(() => saved).toEqual(['Dakhla Club', 'Beach']);
+  await expect(sections).toHaveText([/Dakhla Club/, /Beach/, /Without label/]);
+  // A drag is not a click: no label got filtered
+  await expect(page).toHaveURL(/\/gallery\?trip=2025-10-turkey$/);
 });

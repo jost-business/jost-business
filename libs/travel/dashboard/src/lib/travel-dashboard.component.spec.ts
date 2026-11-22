@@ -12,6 +12,7 @@ const trip = (id: string, destination: string, startsAt: string, endsAt: string)
   endsAt,
   photos: [],
   photoLabels: {},
+  labelOrder: [],
 });
 
 const TRIPS: TripDto[] = [

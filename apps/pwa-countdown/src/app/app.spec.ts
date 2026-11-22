@@ -15,6 +15,7 @@ const PAST: TripDto = {
   endsAt: '2030-01-10T10:00:00.000Z',
   photos: [],
   photoLabels: {},
+  labelOrder: [],
 };
 const NEXT: TripDto = {
   id: 'next',
@@ -23,6 +24,7 @@ const NEXT: TripDto = {
   endsAt: '2030-06-10T10:00:00.000Z',
   photos: [],
   photoLabels: {},
+  labelOrder: [],
 };
 const TRIPS = [NEXT, PAST];
 const nextStart = Date.parse(NEXT.startsAt);

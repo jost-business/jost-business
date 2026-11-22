@@ -4,6 +4,8 @@ export interface Trip {
   to: Date;
   destination: string;
   photos: Photo[];
+  /** The order of the photo labels' sections; labels not in it come after, A to Z. */
+  labelOrder: string[];
 }
 
 /** A trip photo, served by the API. */
@@ -28,6 +30,8 @@ export interface TripDto {
   photos: string[];
   /** Photo name → its labels; photos without labels are left out. */
   photoLabels: Record<string, string[]>;
+  /** The order of the photo labels' sections. */
+  labelOrder: string[];
 }
 
 /**

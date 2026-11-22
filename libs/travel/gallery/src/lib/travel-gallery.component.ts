@@ -1,5 +1,6 @@
 import { Component, computed, DestroyRef, inject, Injector, input, linkedSignal, LOCALE_ID, output, signal } from '@angular/core';
 import { formatDate } from '@angular/common';
+import { type CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, concatMap, EMPTY, finalize, from, tap } from 'rxjs';
@@ -33,7 +34,7 @@ interface Album {
  */
 @Component({
   selector: 'jost-travel-gallery',
-  imports: [PhotoGalleryComponent, TripDetailCardComponent],
+  imports: [CdkDropList, CdkDrag, PhotoGalleryComponent, TripDetailCardComponent],
   templateUrl: './travel-gallery.component.html',
   styleUrl: './travel-gallery.component.scss',
 })
@@ -68,16 +69,42 @@ export class TravelGalleryComponent {
   /** A label filter button was clicked; undefined for all photos. */
   readonly labelChange = output<string | undefined>();
 
-  /** The labels of the selected trip's photos with how many photos have each, A to Z. */
+  /**
+   * The labels of the selected trip's photos with how many photos have each:
+   * in the order the user gave them, then the ones not ordered yet, A to Z.
+   */
   protected readonly tripLabels = computed(() => {
+    const trip = this.selectedTrip();
     const counts = new Map<string, number>();
-    for (const photo of this.selectedTrip()?.photos ?? []) {
+    for (const photo of trip?.photos ?? []) {
       for (const label of photo.labels) counts.set(label, (counts.get(label) ?? 0) + 1);
     }
+    const position = new Map((trip?.labelOrder ?? []).map((label, index) => [label, index]));
     return [...counts]
       .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+      .sort(
+        (a, b) =>
+          (position.get(a.name) ?? Infinity) - (position.get(b.name) ?? Infinity) ||
+          a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
+      );
   });
+
+  /** A label chip was dragged to a new place: the sections follow, and the order is saved. */
+  protected labelDropped(event: CdkDragDrop<unknown>): void {
+    const trip = this.selectedTrip();
+    if (!trip || event.previousIndex === event.currentIndex) return;
+    const labels = this.tripLabels().map(label => label.name);
+    moveItemInArray(labels, event.previousIndex, event.currentIndex);
+    this.problems.set([]);
+    this.store
+      .orderLabels(trip.id, labels)
+      .pipe(
+        tap({ error: (error: unknown) => this.report(`The order of the labels could not be saved: ${this.describe(error)}`, error) }),
+        catchError(() => EMPTY),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+  }
 
   /** The label filter in effect: one the trip no longer has shows all photos. */
   protected readonly activeLabel = computed(() => {

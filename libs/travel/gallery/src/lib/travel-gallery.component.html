@@ -63,12 +63,20 @@
             <div class="filter label-filter" role="group" aria-label="Show photos labelled">
               <button type="button" class="filter-button" [class.active]="!activeLabel()" [attr.aria-pressed]="!activeLabel()"
                       (click)="labelChange.emit(undefined)">All photos</button>
-              @for (label of tripLabels(); track label.name) {
-                <button type="button" class="filter-button"
-                        [class.active]="activeLabel() === label.name" [attr.aria-pressed]="activeLabel() === label.name"
-                        (click)="labelChange.emit(label.name)">{{ label.name }} <span class="filter-count">{{ label.count }}</span></button>
-              }
+              <!-- Logged in, the labels can be dragged into the order of their sections -->
+              <div class="label-chips" cdkDropList cdkDropListOrientation="mixed" [cdkDropListDisabled]="!editable() || selecting()"
+                   (cdkDropListDropped)="labelDropped($event)">
+                @for (label of tripLabels(); track label.name) {
+                  <button type="button" class="filter-button" cdkDrag [cdkDragStartDelay]="{ touch: 300, mouse: 0 }"
+                          [class.sortable]="editable() && !selecting()"
+                          [class.active]="activeLabel() === label.name" [attr.aria-pressed]="activeLabel() === label.name"
+                          (click)="labelChange.emit(label.name)">{{ label.name }} <span class="filter-count">{{ label.count }}</span></button>
+                }
+              </div>
             </div>
+            @if (editable() && tripLabels().length > 1 && !selecting()) {
+              <p class="hint label-hint">Drag the labels to change the order of the sections.</p>
+            }
           }
 
           @if (sections(); as sections) {

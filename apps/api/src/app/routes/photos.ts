@@ -86,6 +86,8 @@ export default async function (fastify: FastifyInstance) {
   // one, so "dakhla club" joins "Dakhla Club" instead of starting a second label.
   // Names of photos the trip no longer has are skipped.
   const photoNames = { type: 'array', uniqueItems: true, maxItems: 2000, items: { type: 'string', pattern: PHOTO_NAME_PATTERN } };
+  // Printable text without line breaks; trimmed before it is saved
+  const labelSchema = { type: 'string', minLength: 1, maxLength: 40, pattern: '^[^\\p{Cc}]*\\S[^\\p{Cc}]*$' };
   fastify.patch<{ Params: { id: string }; Body: PhotoLabelChange }>('/trips/:id/photo-labels', {
     preHandler: fastify.requireUser,
     schema: {
@@ -95,8 +97,7 @@ export default async function (fastify: FastifyInstance) {
         required: ['label'],
         additionalProperties: false,
         properties: {
-          // Printable text without line breaks; trimmed before it is saved
-          label: { type: 'string', minLength: 1, maxLength: 40, pattern: '^[^\\p{Cc}]*\\S[^\\p{Cc}]*$' },
+          label: labelSchema,
           add: photoNames,
           remove: photoNames,
         },
@@ -128,6 +129,29 @@ export default async function (fastify: FastifyInstance) {
       const [updated] = await tx<TripDto[]>`SELECT ${columns} FROM trips WHERE id = ${id}`;
       return updated;
     });
+    return trip ?? reply.notFound(`Trip ${id} does not exist`);
+  });
+
+  // The order of the trip's labels, as the gallery shows their sections. Stored
+  // as sent: labels missing from it come after it, and names that are no
+  // longer a label are skipped when the gallery reads it.
+  fastify.put<{ Params: { id: string }; Body: { labels: string[] } }>('/trips/:id/label-order', {
+    preHandler: fastify.requireUser,
+    schema: {
+      params: { type: 'object', required: ['id'], properties: { id: idSchema } },
+      body: {
+        type: 'object',
+        required: ['labels'],
+        additionalProperties: false,
+        properties: { labels: { type: 'array', uniqueItems: true, maxItems: 500, items: labelSchema } },
+      },
+      response: { 200: tripSchema },
+    },
+  }, async (request, reply) => {
+    const { id } = request.params;
+    const [trip] = await sql<TripDto[]>`
+      UPDATE trips SET label_order = ${request.body.labels}::text[] WHERE id = ${id} RETURNING ${columns}
+    `;
     return trip ?? reply.notFound(`Trip ${id} does not exist`);
   });
 

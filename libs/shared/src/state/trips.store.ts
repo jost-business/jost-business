@@ -198,6 +198,21 @@ export const TripsStore = signalStore(
         .pipe(map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)));
     },
 
+    /**
+     * Saves the order of a trip's labels (needs a login) once subscribed to.
+     * Shown right away; if saving fails, the old order comes back.
+     */
+    orderLabels(tripId: string, labels: string[]): Observable<Trip> {
+      return defer(() => {
+        const before = store.trips().find(trip => trip.id === tripId);
+        if (before) replace(store._tripsResource, { ...before, labelOrder: labels });
+        return store._http.put<TripDto>(`${store._apiBaseUrl}/trips/${tripId}/label-order`, { labels }).pipe(
+          map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)),
+          tap({ error: () => before && replace(store._tripsResource, before) }),
+        );
+      });
+    },
+
     /** Deletes a photo of a trip (needs a login) once subscribed to. */
     deletePhoto(tripId: string, photoName: string): Observable<Trip> {
       return store._http
@@ -228,6 +243,7 @@ function toTrip(dto: TripDto, apiBaseUrl: string): Trip {
     destination: dto.destination,
     from: new Date(dto.startsAt),
     to: new Date(dto.endsAt),
+    labelOrder: dto.labelOrder,
     photos: dto.photos.map(name => ({
       name,
       url: `${apiBaseUrl}/photos/${encodeURIComponent(dto.id)}/${encodeURIComponent(name)}`,

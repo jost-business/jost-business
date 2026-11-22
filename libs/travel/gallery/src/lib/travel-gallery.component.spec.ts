@@ -14,6 +14,7 @@ const trip = (id: string, destination: string, startsAt: string, endsAt: string,
   endsAt,
   photos,
   photoLabels: {},
+  labelOrder: [],
 });
 
 const TRIPS: TripDto[] = [
@@ -338,6 +339,44 @@ describe('TravelGalleryComponent', () => {
       const request = await nextRequest('PUT', '/api/trips/2030-03-peru/photos');
       expect(request.request.body).toEqual({ photos: ['b.jpg', 'c2.jpg', 'a.jpg'] });
       request.flush({ ...mixed, photos: ['b.jpg', 'c2.jpg', 'a.jpg'] });
+    });
+
+    const sectionTitles = () => [...document.querySelectorAll('h4 .gallery-title-text')].map(h => h.textContent?.trim());
+    const filterNames = () =>
+      [...document.querySelectorAll('.label-chips .filter-button')].map(b => b.childNodes[0]?.textContent?.trim());
+
+    it('shows the labels in the order the user gave them, new ones after it A to Z', async () => {
+      const ordered: TripDto = { ...labelled, photoLabels: { ...labelled.photoLabels, 'c2.jpg': ['Arcade'] }, labelOrder: ['Dakhla Club', 'Gone'] };
+      await open('2030-03-peru', false, undefined, [TRIPS[0], ordered, TRIPS[2]]);
+
+      await vi.waitFor(() => expect(sectionTitles()).toEqual(['Dakhla Club', 'Arcade', 'Beach']));
+      expect(filterNames()).toEqual(['Dakhla Club', 'Arcade', 'Beach']);
+    });
+
+    it('saves a new order of the labels, and goes back to the old one if that fails', async () => {
+      await openLabelled(true);
+      await expect.element(page.getByText('Drag the labels to change the order of the sections.')).toBeVisible();
+      const component = fixture.componentInstance as unknown as { labelDropped(event: { previousIndex: number; currentIndex: number }): void };
+
+      component.labelDropped({ previousIndex: 1, currentIndex: 0 });
+      await vi.waitFor(() => expect(sectionTitles()).toEqual(['Dakhla Club', 'Beach', 'Without label']));
+      let request = await nextRequest('PUT', '/api/trips/2030-03-peru/label-order');
+      expect(request.request.body).toEqual({ labels: ['Dakhla Club', 'Beach'] });
+      request.flush({ ...labelled, labelOrder: ['Dakhla Club', 'Beach'] });
+      await fixture.whenStable();
+
+      component.labelDropped({ previousIndex: 1, currentIndex: 0 });
+      request = await nextRequest('PUT', '/api/trips/2030-03-peru/label-order');
+      request.flush(null, { status: 500, statusText: 'Error' });
+      await expect.element(page.getByText(/^The order of the labels could not be saved/)).toBeVisible();
+      expect(sectionTitles()).toEqual(['Dakhla Club', 'Beach', 'Without label']);
+    });
+
+    it('does not let visitors move the labels', async () => {
+      await openLabelled(false);
+      await expect.element(labelFilter('All photos')).toBeVisible();
+      expect(document.querySelector('.label-chips')?.classList).toContain('cdk-drop-list-disabled');
+      expect(page.getByText('Drag the labels to change the order of the sections.').elements()).toHaveLength(0);
     });
 
     it('does not let photos be dragged while only some are shown', async () => {

@@ -12,6 +12,7 @@ const LISBON: TripDto = {
   endsAt: new Date(2027, 2, 8, 18, 30).toISOString(),
   photos: [],
   photoLabels: {},
+  labelOrder: [],
 };
 
 describe('TripEditorComponent', () => {
@@ -134,6 +135,7 @@ describe('TripEditorComponent', () => {
       from: new Date(LISBON.startsAt),
       to: new Date(LISBON.endsAt),
       photos: [],
+      labelOrder: [],
     });
 
     await expect.element(field('Id')).toHaveValue('2027-03-lisbon');

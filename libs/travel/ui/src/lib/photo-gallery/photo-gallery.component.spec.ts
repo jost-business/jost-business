@@ -10,6 +10,7 @@ const TRIP: Trip = {
   from: new Date('2030-03-01T10:00:00.000Z'),
   to: new Date('2030-03-08T10:00:00.000Z'),
   photos: ['a.webp', 'b.webp', 'c.webp'].map(name => ({ name, url: `/api/photos/2030-03-peru/${name}`, labels: [] })),
+  labelOrder: [],
 };
 
 describe('PhotoGalleryComponent', () => {

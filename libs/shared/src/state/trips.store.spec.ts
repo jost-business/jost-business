@@ -13,6 +13,7 @@ const trip = (id: string, startsAt: string, endsAt: string): TripDto => ({
   endsAt,
   photos: [],
   photoLabels: {},
+  labelOrder: [],
 });
 
 // Deliberately not sorted: the store must order them itself

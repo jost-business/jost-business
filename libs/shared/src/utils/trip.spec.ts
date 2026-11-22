@@ -20,6 +20,7 @@ const trip: Trip = {
   from: new Date(2030, 5, 2, 14, 0),
   to: new Date(2030, 5, 10, 8, 0),
   photos: [],
+  labelOrder: [],
 };
 const start = trip.from.getTime();
 const end = trip.to.getTime();

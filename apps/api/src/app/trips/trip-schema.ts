@@ -3,7 +3,7 @@
 // are written as ISO 8601 strings because of format: date-time.
 export const tripSchema = {
   type: 'object',
-  required: ['id', 'destination', 'startsAt', 'endsAt', 'photos', 'photoLabels'],
+  required: ['id', 'destination', 'startsAt', 'endsAt', 'photos', 'photoLabels', 'labelOrder'],
   properties: {
     id: { type: 'string' },
     destination: { type: 'string' },
@@ -12,6 +12,8 @@ export const tripSchema = {
     photos: { type: 'array', items: { type: 'string' } },
     // Photo name → its labels; photos without labels are left out
     photoLabels: { type: 'object', additionalProperties: { type: 'array', items: { type: 'string' } } },
+    // The order of the labels' sections; labels not in it come after, A to Z
+    labelOrder: { type: 'array', items: { type: 'string' } },
   },
 } as const;
 
@@ -23,7 +25,7 @@ export const idSchema = { type: 'string', pattern: '^[a-z0-9]+(-[a-z0-9]+)*$', m
  * The labels come along as one JSON object per trip, only for photos the trip
  * still has.
  */
-export const TRIP_COLUMNS = `id, destination, starts_at AS "startsAt", ends_at AS "endsAt", photos,
+export const TRIP_COLUMNS = `id, destination, starts_at AS "startsAt", ends_at AS "endsAt", photos, label_order AS "labelOrder",
   (SELECT coalesce(jsonb_object_agg(l.photo, l.labels), '{}'::jsonb)
      FROM (SELECT photo, array_agg(label ORDER BY lower(label)) AS labels
              FROM photo_labels

@@ -277,3 +277,42 @@
     text-align: left;
   }
 }
+
+// The label chips: a box of their own, so the drag and drop can measure it
+.label-chips {
+  display: flex;
+  flex: 1 1 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.filter-button.sortable {
+  cursor: grab;
+}
+
+// A label chip while it is dragged: lifted, under the pointer
+.filter-button.cdk-drag-preview {
+  border-color: var(--jost-color-coral);
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(16, 42, 46, 0.25);
+  cursor: grabbing;
+  rotate: -3deg;
+}
+
+// Where the dragged label will land
+.filter-button.cdk-drag-placeholder {
+  border-style: dashed;
+  border-color: var(--jost-color-coral);
+  opacity: 0.5;
+}
+
+.label-chips.cdk-drop-list-dragging .filter-button:not(.cdk-drag-placeholder),
+.filter-button.cdk-drag-animating {
+  transition: transform 0.2s ease;
+}
+
+.label-hint {
+  margin: -0.6rem 0 0;
+  font-size: 0.8rem;
+}
