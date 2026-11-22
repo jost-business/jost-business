@@ -1,18 +1,11 @@
 <div class="detail-card">
   <h2 class="detail-title">{{ trip().destination }}</h2>
-
-  <div class="detail-grid">
-    <div class="detail-item">
-      <span class="detail-label">From</span>
-      <span class="detail-value">{{ trip().from | date:'dd MMMM yyyy' }}</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">To</span>
-      <span class="detail-value">{{ trip().to | date:'dd MMMM yyyy' }}</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label">Duration</span>
-      <span class="detail-value">{{ duration() }} days</span>
-    </div>
-  </div>
+  <!-- One quiet line under the name: the photos are what the page is about -->
+  <p class="detail-facts">
+    <time [attr.datetime]="trip().from.toISOString()">{{ trip().from | date: 'd MMM y' }}</time>
+    –
+    <time [attr.datetime]="trip().to.toISOString()">{{ trip().to | date: 'd MMM y' }}</time>
+    <span class="detail-separator" aria-hidden="true">·</span>
+    {{ duration() }} days
+  </p>
 </div>

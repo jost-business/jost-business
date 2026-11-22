@@ -1,53 +1,25 @@
+// No card around it: a name and a line of facts, so the photos below stand out
 .detail-card {
-  background: var(--jost-color-white);
-  border-radius: 12px;
-  border: 1px solid var(--jost-color-border);
-  box-shadow: var(--jost-shadow-card);
-  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
 }
 
 .detail-title {
-  font-size: 1.75rem;
+  margin: 0;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
   color: var(--jost-color-ink);
 }
 
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-
-.detail-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.detail-label {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.detail-facts {
+  margin: 0;
+  font-size: 0.9rem;
   color: var(--jost-color-ink-soft);
+  font-variant-numeric: tabular-nums;
 }
 
-.detail-value {
-  font-size: 1.1rem;
-  color: var(--jost-color-ink);
-
-  &.completed {
-    color: #2e7d32;
-    font-weight: 500;
-  }
-}
-
-@media (max-width: 600px) {
-  .detail-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .detail-card {
-    padding: 1.25rem;
-  }
+.detail-separator {
+  margin: 0 0.35rem;
 }
