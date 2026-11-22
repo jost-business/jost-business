@@ -2,32 +2,67 @@
 .photo-gallery.top-level {
   margin-top: 0.5rem;
   padding-top: 1.25rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--jost-color-border, #e6e6e6);
 }
 
+// The heading sticks to the top of the window while its photos scroll by, and
+// the next gallery's heading pushes it away: on a long page it always says
+// whose photos these are. Frosted glass so the photos shine through.
 .gallery-title {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.9rem;
+  padding: 0.6rem 0;
+  background: color-mix(in srgb, var(--jost-color-paper, #f8f4e9) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4);
+  color: var(--jost-color-ink, #102a2e);
   font-size: 1.25rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+
+  // A coral bar in front of the name
+  &::before {
+    content: '';
+    width: 4px;
+    height: 1.1em;
+    border-radius: 2px;
+    background: var(--jost-color-coral, #ff765f);
+  }
+
+  // A thin line from the name to the edge
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--jost-color-border, #ddd), transparent);
+  }
 }
 
 .gallery-title--section {
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .gallery-count {
-  margin-left: 0.25rem;
-  color: var(--jost-color-ink-soft, #667);
-  font-weight: 400;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--jost-color-petrol, #17464a);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1.1rem;
 }
 
 .gallery-tile {
@@ -35,6 +70,28 @@
 
   &.sortable .gallery-item {
     cursor: grab;
+  }
+}
+
+// Photos fade and grow in as they scroll into view. A scroll-driven animation:
+// the browser runs it from the scroll position, no script. 'scale' and
+// 'translate' leave 'transform' to the drag and drop. Browsers without it
+// simply show the photos.
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .gallery-tile:not(.cdk-drag-preview) {
+      animation: tile-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+
+@keyframes tile-in {
+  from {
+    opacity: 0;
+    scale: 0.9;
+    translate: 0 28px;
   }
 }
 
@@ -79,8 +136,8 @@
   // A shift-click marks a range of photos, not a range of text
   user-select: none;
 
-  .gallery-item:hover {
-    transform: none;
+  .gallery-item:hover .gallery-image {
+    scale: 1;
   }
 }
 
@@ -101,21 +158,19 @@
 
 // Where a dragged photo will land
 .gallery-placeholder {
-  height: 200px;
-  border: 2px dashed #9bb7ba;
-  border-radius: 8px;
-  background: #f3f8f8;
+  height: 210px;
+  border: 2px dashed var(--jost-color-coral, #ff765f);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--jost-color-coral, #ff765f) 10%, transparent);
 }
 
 // The photo under the pointer while dragging; the CDK moves it to the end of <body>
 .gallery-tile.cdk-drag-preview {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  opacity: 0.9;
+  border-radius: 16px;
+  box-shadow: 0 24px 48px rgba(16, 42, 46, 0.35);
+  opacity: 0.95;
   cursor: grabbing;
-
-  .gallery-item {
-    height: 200px;
-  }
+  rotate: 2deg;
 
   .gallery-delete {
     display: none;
@@ -167,26 +222,55 @@
   }
 }
 
-// Photo sizes are unknown, so each tile is a positioned frame and the image fills it
+// Photo sizes are unknown, so each tile is a positioned frame and the image fills it.
+// With a mouse it tilts towards the pointer (TiltDirective) and a soft light follows it.
 .gallery-item {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 210px;
   padding: 0;
   border: none;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  background: var(--jost-color-surface, #dfece5);
+  box-shadow: 0 1px 2px rgba(16, 42, 46, 0.08), 0 6px 16px -6px rgba(16, 42, 46, 0.25);
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
   cursor: pointer;
 
+  // The light on the photo, where the pointer is
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 0%), rgba(255, 255, 255, 0.28), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+    pointer-events: none;
+  }
+
   &:hover {
-    transform: scale(1.02);
+    box-shadow: 0 2px 4px rgba(16, 42, 46, 0.08), 0 22px 40px -12px rgba(16, 42, 46, 0.45);
+    transition-duration: 0.1s;
+
+    &::after {
+      opacity: 1;
+    }
+
+    .gallery-image {
+      scale: 1.06;
+    }
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--jost-color-coral, #ff765f);
+    outline-offset: 3px;
   }
 }
 
 .gallery-image {
   object-fit: cover;
+  transition: scale 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 .lightbox-backdrop {
@@ -261,13 +345,25 @@
   to { opacity: 1; }
 }
 
+// Two columns on a phone: more photos at a glance than one big one each
 @media (max-width: 600px) {
   .gallery-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
   }
 
-  .gallery-item {
+  .gallery-item,
+  .gallery-placeholder {
     height: auto;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1;
+    border-radius: 12px;
+  }
+
+  .gallery-title {
+    font-size: 1.1rem;
+  }
+
+  .gallery-title--section {
+    font-size: 0.95rem;
   }
 }

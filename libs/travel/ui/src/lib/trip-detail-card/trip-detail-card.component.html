@@ -1,11 +1,21 @@
-<div class="detail-card">
-  <h2 class="detail-title">{{ trip().destination }}</h2>
-  <!-- One quiet line under the name: the photos are what the page is about -->
-  <p class="detail-facts">
-    <time [attr.datetime]="trip().from.toISOString()">{{ trip().from | date: 'd MMM y' }}</time>
-    –
-    <time [attr.datetime]="trip().to.toISOString()">{{ trip().to | date: 'd MMM y' }}</time>
-    <span class="detail-separator" aria-hidden="true">·</span>
-    {{ duration() }} days
-  </p>
-</div>
+<!-- The trip's first photo as the backdrop, darkened towards the text so it stays readable -->
+<header class="hero" [class.has-cover]="cover()">
+  @if (cover(); as url) {
+    <img class="hero-cover" [ngSrc]="url" fill priority sizes="100vw" alt="" />
+  }
+  <div class="hero-content">
+    <p class="hero-kicker">{{ trip().from | date: 'MMMM y' }}</p>
+    <h2 class="hero-title">{{ trip().destination }}</h2>
+    <ul class="hero-facts">
+      <li class="hero-fact">
+        <time [attr.datetime]="trip().from.toISOString()">{{ trip().from | date: 'd MMM' }}</time>
+        –
+        <time [attr.datetime]="trip().to.toISOString()">{{ trip().to | date: 'd MMM y' }}</time>
+      </li>
+      <li class="hero-fact">{{ duration() }} days</li>
+      @if (trip().photos.length) {
+        <li class="hero-fact">{{ trip().photos.length }} {{ trip().photos.length === 1 ? 'photo' : 'photos' }}</li>
+      }
+    </ul>
+  </div>
+</header>

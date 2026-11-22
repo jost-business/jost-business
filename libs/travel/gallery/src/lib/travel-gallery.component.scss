@@ -75,14 +75,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 72px;
-  padding: 1rem;
-  border: 2px dashed var(--jost-color-border);
-  border-radius: 8px;
+  gap: 0.75rem;
+  min-height: 64px;
+  padding: 0.85rem 1rem;
+  border: 2px dashed color-mix(in srgb, var(--jost-color-petrol) 30%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--jost-color-mint) 22%, transparent);
   color: var(--jost-color-ink);
   text-align: center;
   cursor: pointer;
   transition: border-color 150ms ease, background 150ms ease;
+
+  // A round plus in front of the text
+  &::before {
+    content: '+';
+    display: grid;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--jost-color-petrol);
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+  }
 
   &:hover,
   &:focus-within,
@@ -122,17 +139,16 @@
 .trip-photos {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 0.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid #f0f0f0;
+  gap: 1.25rem;
+  margin-top: 0.25rem;
 }
 
 .trip-photos-title {
-  margin: 0 0 -0.75rem;
-  font-size: 1.25rem;
-  font-weight: 600;
+  margin: 0 0 -0.6rem;
   color: var(--jost-color-ink);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 // The photo labels of the selected trip, under the "Photos" heading and a bit smaller
@@ -251,5 +267,13 @@
   &:focus-visible {
     outline: 2px solid var(--jost-color-coral);
     outline-offset: 2px;
+  }
+}
+
+@media (max-width: 600px) {
+  // Next to the plus, the text reads better from the left
+  .upload {
+    justify-content: flex-start;
+    text-align: left;
   }
 }

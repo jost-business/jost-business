@@ -1,11 +1,12 @@
 import { Component, input, linkedSignal, computed, model, output } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { TiltDirective } from './tilt.directive';
 import { type CdkDragDrop, CdkDrag, CdkDragPlaceholder, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import type { Photo, Trip } from '@jost/models';
 
 @Component({
   selector: 'jost-photo-gallery',
-  imports: [NgOptimizedImage, CdkDropList, CdkDrag, CdkDragPlaceholder],
+  imports: [NgOptimizedImage, CdkDropList, CdkDrag, CdkDragPlaceholder, TiltDirective],
   templateUrl: './photo-gallery.component.html',
   styleUrl: './photo-gallery.component.scss',
   host: {

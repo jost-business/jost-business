@@ -2,9 +2,9 @@
 <div class="photo-gallery" [class.top-level]="!!heading() && headingLevel() === 3">
   @if (heading()) {
     @if (headingLevel() === 3) {
-      <h3 class="gallery-title">{{ heading() }}</h3>
+      <h3 class="gallery-title"><span class="gallery-title-text">{{ heading() }}</span></h3>
     } @else {
-      <h4 class="gallery-title gallery-title--section">{{ heading() }} <span class="gallery-count">{{ trip().photos.length }}</span></h4>
+      <h4 class="gallery-title gallery-title--section"><span class="gallery-title-text">{{ heading() }}</span>{{ ' ' }}<span class="gallery-count">{{ trip().photos.length }}</span></h4>
     }
   }
   <!-- With sortable the tiles can be dragged into a new order; "mixed" lets them wrap like the grid.
@@ -21,15 +21,15 @@
         @if (selecting()) {
           <button type="button" class="gallery-item" (click)="tileClicked(i, $event)" [attr.aria-pressed]="marked"
                   [attr.aria-label]="'Select photo ' + (i + 1)">
-            <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" draggable="false" />
+            <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 50vw, 25vw" [alt]="trip().destination" class="gallery-image" draggable="false" />
             <span class="gallery-check" aria-hidden="true"></span>
             @if (photo.labels.length) {
               <span class="gallery-labels">{{ photo.labels.join(' · ') }}</span>
             }
           </button>
         } @else {
-          <button type="button" class="gallery-item" (click)="tileClicked(i, $event)" [attr.aria-label]="'Open photo ' + (i + 1)">
-            <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" draggable="false" />
+          <button type="button" class="gallery-item" jostTilt (click)="tileClicked(i, $event)" [attr.aria-label]="'Open photo ' + (i + 1)">
+            <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 50vw, 25vw" [alt]="trip().destination" class="gallery-image" draggable="false" />
           </button>
         }
         @if (deletable() && !selecting()) {
