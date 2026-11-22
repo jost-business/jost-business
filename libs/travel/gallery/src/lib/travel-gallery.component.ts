@@ -1,9 +1,9 @@
-import { Component, computed, DestroyRef, inject, Injector, input, LOCALE_ID, output, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, Injector, input, linkedSignal, LOCALE_ID, output, signal } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, concatMap, EMPTY, finalize, from, tap } from 'rxjs';
-import type { Photo, Trip } from '@jost/models';
+import type { Photo, PhotoLabelChange, Trip } from '@jost/models';
 import { AuthStore, TripsStore, tripCity } from '@jost/shared';
 import { PhotoGalleryComponent, TripDetailCardComponent } from '@jost/travel/ui';
 
@@ -18,7 +18,7 @@ function isImage(file: File): boolean {
 interface Album {
   trip: Trip;
   /** Short name for the filter, like "Casablanca October 2026". */
-  label: string;
+  title: string;
 }
 
 /**
@@ -55,13 +55,105 @@ export class TravelGalleryComponent {
     this.store
       .trips()
       .filter(trip => trip.photos.length > 0)
-      .map(trip => ({ trip, label: `${tripCity(trip)} ${formatDate(trip.from, 'MMMM y', this.locale)}` })),
+      .map(trip => ({ trip, title: `${tripCity(trip)} ${formatDate(trip.from, 'MMMM y', this.locale)}` })),
   );
 
   protected readonly selectedTrip = computed(() => {
     const id = this.tripId();
     return id ? this.store.tripById(id) : undefined;
   });
+
+  /** The selected photo label; only photos with it are shown. */
+  readonly label = input<string>();
+  /** A label filter button was clicked; undefined for all photos. */
+  readonly labelChange = output<string | undefined>();
+
+  /** The labels of the selected trip's photos with how many photos have each, A to Z. */
+  protected readonly tripLabels = computed(() => {
+    const counts = new Map<string, number>();
+    for (const photo of this.selectedTrip()?.photos ?? []) {
+      for (const label of photo.labels) counts.set(label, (counts.get(label) ?? 0) + 1);
+    }
+    return [...counts]
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+  });
+
+  /** The label filter in effect: one the trip no longer has shows all photos. */
+  protected readonly activeLabel = computed(() => {
+    const label = this.label();
+    return this.tripLabels().some(l => l.name === label) ? label : undefined;
+  });
+
+  /** The selected trip with only the photos the label filter lets through. */
+  protected readonly shownTrip = computed(() => {
+    const trip = this.selectedTrip();
+    const label = this.activeLabel();
+    return trip && label ? { ...trip, photos: trip.photos.filter(photo => photo.labels.includes(label)) } : trip;
+  });
+
+  /** Selection mode for labelling; leaves off when another trip is shown. */
+  protected readonly selecting = linkedSignal({ source: this.tripId, computation: () => false });
+  /** Names of the marked photos. */
+  protected readonly selected = linkedSignal<string | undefined, string[]>({ source: this.tripId, computation: () => [] });
+  /** The marked photos that are shown; marks hidden by the label filter do not count. */
+  protected readonly markedPhotos = computed(() => {
+    const names = new Set(this.selected());
+    return (this.shownTrip()?.photos ?? []).filter(photo => names.has(photo.name));
+  });
+  /** Labels that at least one marked photo has, for taking them off again. */
+  protected readonly markedLabels = computed(() =>
+    [...new Set(this.markedPhotos().flatMap(photo => photo.labels))].sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: 'base' }),
+    ),
+  );
+  /** What is typed into the label field. */
+  protected readonly newLabel = signal('');
+  /** While a label change is being saved. */
+  protected readonly labelling = signal(false);
+
+  protected toggleSelecting(): void {
+    this.selecting.update(on => !on);
+    this.selected.set([]);
+  }
+
+  protected selectAll(): void {
+    this.selected.set((this.shownTrip()?.photos ?? []).map(photo => photo.name));
+  }
+
+  /** Gives the typed label to the marked photos; the marks stay for another label. */
+  protected addLabel(event: Event): void {
+    event.preventDefault();
+    const label = this.newLabel().trim();
+    const photos = this.markedPhotos().map(photo => photo.name);
+    if (!label || !photos.length) return;
+    this.changeLabel({ label, add: photos }, () => this.newLabel.set(''));
+  }
+
+  /** Takes a label off the marked photos that have it. */
+  protected removeLabel(label: string): void {
+    const photos = this.markedPhotos().filter(photo => photo.labels.includes(label)).map(photo => photo.name);
+    this.changeLabel({ label, remove: photos });
+  }
+
+  private changeLabel(change: PhotoLabelChange, done?: () => void): void {
+    const trip = this.selectedTrip();
+    if (!trip || this.labelling()) return;
+    this.problems.set([]);
+    this.labelling.set(true);
+    this.store
+      .labelPhotos(trip.id, change)
+      .pipe(
+        tap({
+          next: () => done?.(),
+          error: (error: unknown) => this.report(`The label could not be saved: ${this.describe(error)}`, error),
+        }),
+        catchError(() => EMPTY),
+        finalize(() => this.labelling.set(false)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+  }
 
   /** While uploading: how many of how many photos are done. */
   protected readonly upload = signal<{ done: number; total: number } | null>(null);

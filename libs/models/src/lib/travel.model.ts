@@ -11,6 +11,8 @@ export interface Photo {
   /** The file name, which the API uses to delete it. */
   name: string;
   url: string;
+  /** Labels the user gave it, like the hotel it was taken at; sorted. */
+  labels: string[];
 }
 
 /**
@@ -24,6 +26,18 @@ export interface TripDto {
   startsAt: string;
   endsAt: string;
   photos: string[];
+  /** Photo name → its labels; photos without labels are left out. */
+  photoLabels: Record<string, string[]>;
+}
+
+/**
+ * Body of PATCH /trips/:id/photo-labels: gives the label to the photos in add
+ * and takes it off the photos in remove.
+ */
+export interface PhotoLabelChange {
+  label: string;
+  add?: string[];
+  remove?: string[];
 }
 
 /** Body of PUT /trips/:id. The id is fixed once a trip exists. */

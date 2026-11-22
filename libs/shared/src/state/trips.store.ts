@@ -2,7 +2,7 @@ import { computed, effect, inject, type WritableResource } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
 import { defer, map, type Observable, tap } from 'rxjs';
 import { patchState, signalStore, withComputed, withHooks, withMethods, withProps, withState } from '@ngrx/signals';
-import type { NewTripRequest, Trip, TripDto, TripInput } from '@jost/models';
+import type { NewTripRequest, PhotoLabelChange, Trip, TripDto, TripInput } from '@jost/models';
 import { API_BASE_URL } from '../services/api';
 import { Clock } from '../services/clock';
 import {
@@ -188,6 +188,16 @@ export const TripsStore = signalStore(
       });
     },
 
+    /**
+     * Gives a label to photos and/or takes it off others (needs a login) once
+     * subscribed to. The API answers with the trip and its labels.
+     */
+    labelPhotos(tripId: string, change: PhotoLabelChange): Observable<Trip> {
+      return store._http
+        .patch<TripDto>(`${store._apiBaseUrl}/trips/${tripId}/photo-labels`, change)
+        .pipe(map(dto => upsert(store._tripsResource, dto, store._apiBaseUrl)));
+    },
+
     /** Deletes a photo of a trip (needs a login) once subscribed to. */
     deletePhoto(tripId: string, photoName: string): Observable<Trip> {
       return store._http
@@ -221,6 +231,7 @@ function toTrip(dto: TripDto, apiBaseUrl: string): Trip {
     photos: dto.photos.map(name => ({
       name,
       url: `${apiBaseUrl}/photos/${encodeURIComponent(dto.id)}/${encodeURIComponent(name)}`,
+      labels: dto.photoLabels[name] ?? [],
     })),
   };
 }

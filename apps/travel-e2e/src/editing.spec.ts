@@ -21,7 +21,7 @@ test('logs in, creates a trip and finds it in the gallery', async ({ page }) => 
   await page.route('**/api/trips', async route => {
     if (route.request().method() !== 'POST') return route.fulfill({ json: trips });
     const body: NewTripRequest = route.request().postDataJSON();
-    const trip: TripDto = { ...body, photos: [] };
+    const trip: TripDto = { ...body, photos: [], photoLabels: {} };
     trips.push(trip);
     return route.fulfill({ status: 201, json: trip });
   });
@@ -110,4 +110,33 @@ test('a logged-in user drags a photo to a new place', async ({ page }) => {
   await expect(tiles.first()).toHaveAttribute('src', /alanya_cable_car/);
   // A drag is not a click: no photo opened
   await expect(page.locator('.lightbox-backdrop')).toHaveCount(0);
+});
+
+test('a logged-in user labels photos and filters by the label', async ({ page }) => {
+  const turkey = TRIPS.find(trip => trip.id === '2025-10-turkey');
+  if (!turkey) throw new Error('The fixtures have no Turkey trip');
+  let photoLabels: Record<string, string[]> = {};
+  await page.route('**/api/auth/session', route => route.fulfill({ json: { user: USER } }));
+  await page.route('**/api/trips/2025-10-turkey/photo-labels', async route => {
+    const { label, add = [] } = route.request().postDataJSON();
+    for (const name of add) photoLabels = { ...photoLabels, [name]: [label] };
+    await route.fulfill({ json: { ...turkey, photoLabels } });
+  });
+  await page.goto('/gallery?trip=2025-10-turkey');
+
+  await page.getByRole('button', { name: 'Select photos' }).click();
+  await page.getByRole('button', { name: 'Select photo 1' }).click();
+  await page.getByRole('button', { name: 'Select photo 3' }).click();
+  await page.getByRole('combobox', { name: 'Label' }).fill('Dakhla Club');
+  await page.getByRole('button', { name: 'Add label' }).click();
+  await page.getByRole('button', { name: 'Done' }).click();
+
+  const labels = page.getByRole('group', { name: 'Show photos labelled' });
+  await labels.getByRole('button', { name: /Dakhla Club/ }).click();
+  await expect(page).toHaveURL(/\/gallery\?trip=2025-10-turkey&label=Dakhla%20Club$/);
+  await expect(page.getByRole('button', { name: /Open photo/ })).toHaveCount(2);
+
+  await labels.getByRole('button', { name: 'All photos' }).click();
+  await expect(page).toHaveURL(/\/gallery\?trip=2025-10-turkey$/);
+  await expect(page.getByRole('button', { name: /Open photo/ })).toHaveCount(3);
 });

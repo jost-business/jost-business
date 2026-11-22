@@ -14,6 +14,7 @@ const trip = (id: string, destination: string, photos: string[] = []): TripDto =
   startsAt: '2025-10-01T08:00:00.000Z',
   endsAt: '2025-10-10T18:00:00.000Z',
   photos,
+  photoLabels: {},
 });
 
 const TRIPS: TripDto[] = [

@@ -8,7 +8,19 @@
       @for (album of albums(); track album.trip.id) {
         <button type="button" class="filter-button"
                 [class.active]="tripId() === album.trip.id" [attr.aria-pressed]="tripId() === album.trip.id"
-                (click)="tripChange.emit(album.trip.id)">{{ album.label }}</button>
+                (click)="tripChange.emit(album.trip.id)">{{ album.title }}</button>
+      }
+    </div>
+  }
+
+  @if (tripId() && tripLabels().length) {
+    <div class="filter label-filter" role="group" aria-label="Show photos labelled">
+      <button type="button" class="filter-button" [class.active]="!activeLabel()" [attr.aria-pressed]="!activeLabel()"
+              (click)="labelChange.emit(undefined)">All photos</button>
+      @for (label of tripLabels(); track label.name) {
+        <button type="button" class="filter-button"
+                [class.active]="activeLabel() === label.name" [attr.aria-pressed]="activeLabel() === label.name"
+                (click)="labelChange.emit(label.name)">{{ label.name }} <span class="filter-count">{{ label.count }}</span></button>
       }
     </div>
   }
@@ -43,11 +55,53 @@
       }
 
       @if (trip.photos.length) {
-        @if (editable() && trip.photos.length > 1) {
-          <p class="hint">Drag the photos to change their order.</p>
+        @if (editable()) {
+          <div class="photo-tools">
+            <button type="button" class="tool-button" (click)="toggleSelecting()">
+              {{ selecting() ? 'Done' : 'Select photos' }}
+            </button>
+            @if (selecting()) {
+              <span class="hint">Click photos to mark them, shift-click to mark a range.</span>
+            } @else if (activeLabel()) {
+              <span class="hint">Show all photos to change their order.</span>
+            } @else if (trip.photos.length > 1) {
+              <span class="hint">Drag the photos to change their order.</span>
+            }
+          </div>
         }
-        <jost-photo-gallery [trip]="trip" [deletable]="editable()" [sortable]="editable()"
+        <jost-photo-gallery [trip]="shownTrip() ?? trip" [deletable]="editable()" [sortable]="editable() && !activeLabel()"
+                            [selecting]="selecting()" [(selected)]="selected"
                             (deleteRequested)="deletePhoto(trip, $event)" (reordered)="reorder(trip, $event)" />
+
+        @if (selecting()) {
+          <!-- Stays at the bottom of the window while scrolling through the photos -->
+          <div class="label-bar" role="region" aria-label="Label marked photos">
+            <div class="label-bar-row">
+              <span class="label-bar-count" aria-live="polite">{{ markedPhotos().length }} marked</span>
+              <button type="button" class="tool-button" (click)="selectAll()">Mark all</button>
+              <button type="button" class="tool-button" [disabled]="!markedPhotos().length" (click)="selected.set([])">Unmark</button>
+            </div>
+            <form class="label-bar-row" (submit)="addLabel($event)">
+              <input class="label-input" type="text" maxlength="40" list="trip-labels" placeholder="Label, e.g. the hotel"
+                     aria-label="Label" [value]="newLabel()" (input)="newLabel.set($any($event.target).value)" />
+              <datalist id="trip-labels">
+                @for (label of tripLabels(); track label.name) {
+                  <option [value]="label.name"></option>
+                }
+              </datalist>
+              <button type="submit" class="tool-button primary"
+                      [disabled]="labelling() || !markedPhotos().length || !newLabel().trim()">Add label</button>
+            </form>
+            @if (markedLabels().length) {
+              <div class="label-bar-row" role="group" aria-label="Take a label off the marked photos">
+                @for (label of markedLabels(); track label) {
+                  <button type="button" class="label-chip" [disabled]="labelling()" (click)="removeLabel(label)"
+                          [attr.aria-label]="'Remove label ' + label">{{ label }} <span aria-hidden="true">&times;</span></button>
+                }
+              </div>
+            }
+          </div>
+        }
       } @else {
         <p class="status">There are no photos of this trip yet.</p>
       }
@@ -57,7 +111,7 @@
   } @else {
     <!-- One gallery per trip: the lightbox pages through that trip's photos -->
     @for (album of albums(); track album.trip.id) {
-      <jost-photo-gallery [trip]="album.trip" [heading]="album.label" />
+      <jost-photo-gallery [trip]="album.trip" [heading]="album.title" />
     } @empty {
       <p class="status">There are no photos yet.</p>
     }

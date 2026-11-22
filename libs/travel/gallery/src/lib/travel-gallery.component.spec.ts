@@ -13,6 +13,7 @@ const trip = (id: string, destination: string, startsAt: string, endsAt: string,
   startsAt,
   endsAt,
   photos,
+  photoLabels: {},
 });
 
 const TRIPS: TripDto[] = [
@@ -27,18 +28,19 @@ describe('TravelGalleryComponent', () => {
   let changes: (string | undefined)[];
 
   /** Shows the gallery for a trip (or all trips) once the trips have loaded. */
-  async function open(tripId?: string, editable = false): Promise<void> {
+  async function open(tripId?: string, editable = false, label?: string, trips: TripDto[] = TRIPS): Promise<void> {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     fixture = TestBed.createComponent(TravelGalleryComponent);
     fixture.componentRef.setInput('tripId', tripId);
     fixture.componentRef.setInput('editable', editable);
+    fixture.componentRef.setInput('label', label);
     changes = [];
     fixture.componentInstance.tripChange.subscribe(id => changes.push(id));
     fixture.autoDetectChanges();
     http = TestBed.inject(HttpTestingController);
-    http.expectOne('/api/trips').flush(TRIPS);
+    http.expectOne('/api/trips').flush(trips);
     await fixture.whenStable();
   }
 
@@ -213,6 +215,115 @@ describe('TravelGalleryComponent', () => {
         await expect.element(page.getByText(/^The new order could not be saved/)).toBeVisible();
         expect(photoSources()).toEqual([expect.stringContaining('a.jpg'), expect.stringContaining('b.jpg')]);
       });
+    });
+  });
+
+  describe('photo labels', () => {
+    const peru = TRIPS[1];
+    // Three photos, two of them at the Dakhla Club and one also at the beach
+    const labelled: TripDto = {
+      ...peru,
+      photos: ['a.jpg', 'b.jpg', 'c2.jpg'],
+      photoLabels: { 'a.jpg': ['Beach', 'Dakhla Club'], 'b.jpg': ['Dakhla Club'] },
+    };
+    const trips = [TRIPS[0], labelled, TRIPS[2]];
+    let labels: (string | undefined)[];
+
+    async function openLabelled(editable: boolean, label?: string): Promise<void> {
+      await open('2030-03-peru', editable, label, trips);
+      labels = [];
+      fixture.componentInstance.labelChange.subscribe(l => labels.push(l));
+    }
+
+    const labelFilter = (name: string | RegExp) =>
+      page.getByRole('group', { name: 'Show photos labelled' }).getByRole('button', { name });
+
+    it('has a filter per label of the trip with how many photos have it', async () => {
+      await openLabelled(false);
+
+      await expect.element(labelFilter('All photos')).toHaveAttribute('aria-pressed', 'true');
+      await expect.element(labelFilter('Beach 1')).toBeVisible();
+      await expect.element(labelFilter('Dakhla Club 2')).toBeVisible();
+      expect(photos().elements()).toHaveLength(3);
+
+      await labelFilter(/Dakhla Club/).click();
+      expect(labels).toEqual(['Dakhla Club']);
+    });
+
+    it('shows only the photos with the label from the URL', async () => {
+      await openLabelled(false, 'Dakhla Club');
+
+      await expect.element(labelFilter(/Dakhla Club/)).toHaveAttribute('aria-pressed', 'true');
+      expect(photos().elements()).toHaveLength(2);
+    });
+
+    it('shows all photos for a label the trip does not have', async () => {
+      await openLabelled(false, 'Oasis 212');
+
+      await expect.element(labelFilter('All photos')).toHaveAttribute('aria-pressed', 'true');
+      expect(photos().elements()).toHaveLength(3);
+    });
+
+    it('has no label filter for all trips or a trip without labels', async () => {
+      await open(undefined, false, undefined, trips);
+      await expect.element(page.getByRole('heading', { name: 'Lima March 2030' })).toBeVisible();
+      expect(page.getByRole('group', { name: 'Show photos labelled' }).elements()).toHaveLength(0);
+    });
+
+    it('gives the marked photos a label, suggesting the labels the trip has', async () => {
+      await openLabelled(true);
+      await page.getByRole('button', { name: 'Select photos' }).click();
+
+      await page.getByRole('button', { name: 'Select photo 2' }).click();
+      await page.getByRole('button', { name: 'Select photo 3' }).click();
+      await expect.element(page.getByText('2 marked')).toBeVisible();
+      const suggestions = [...document.querySelectorAll<HTMLOptionElement>('#trip-labels option')].map(o => o.value);
+      expect(suggestions).toEqual(['Beach', 'Dakhla Club']);
+
+      await page.getByRole('combobox', { name: 'Label' }).fill('  Oasis 212 ');
+      await page.getByRole('button', { name: 'Add label' }).click();
+
+      const request = await nextRequest('PATCH', '/api/trips/2030-03-peru/photo-labels');
+      expect(request.request.body).toEqual({ label: 'Oasis 212', add: ['b.jpg', 'c2.jpg'] });
+      request.flush({ ...labelled, photoLabels: { ...labelled.photoLabels, 'b.jpg': ['Dakhla Club', 'Oasis 212'], 'c2.jpg': ['Oasis 212'] } });
+
+      await expect.element(labelFilter('Oasis 212 2')).toBeVisible();
+      // The field empties for the next label, the marks stay
+      await expect.element(page.getByRole('combobox', { name: 'Label' })).toHaveValue('');
+      await expect.element(page.getByText('2 marked')).toBeVisible();
+    });
+
+    it('takes a label off the marked photos that have it', async () => {
+      await openLabelled(true);
+      await page.getByRole('button', { name: 'Select photos' }).click();
+      await page.getByRole('button', { name: 'Mark all' }).click();
+
+      await page.getByRole('button', { name: 'Remove label Dakhla Club' }).click();
+
+      const request = await nextRequest('PATCH', '/api/trips/2030-03-peru/photo-labels');
+      expect(request.request.body).toEqual({ label: 'Dakhla Club', remove: ['a.jpg', 'b.jpg'] });
+      request.flush({ ...labelled, photoLabels: { 'a.jpg': ['Beach'] } });
+      await vi.waitFor(() => expect(labelFilter(/Dakhla Club/).elements()).toHaveLength(0));
+    });
+
+    it('says so when a label cannot be saved', async () => {
+      await openLabelled(true);
+      await page.getByRole('button', { name: 'Select photos' }).click();
+      await page.getByRole('button', { name: 'Select photo 1' }).click();
+      await page.getByRole('combobox', { name: 'Label' }).fill('Oasis 212');
+      await page.getByRole('button', { name: 'Add label' }).click();
+
+      (await nextRequest('PATCH', '/api/trips/2030-03-peru/photo-labels')).flush(null, { status: 500, statusText: 'Error' });
+
+      await expect.element(page.getByText(/^The label could not be saved/)).toBeVisible();
+      await expect.element(page.getByRole('combobox', { name: 'Label' })).toHaveValue('Oasis 212');
+    });
+
+    it('does not let photos be dragged while only some are shown', async () => {
+      await openLabelled(true, 'Dakhla Club');
+
+      await expect.element(page.getByText('Show all photos to change their order.')).toBeVisible();
+      expect(document.querySelector('.gallery-grid')?.classList).toContain('cdk-drop-list-disabled');
     });
   });
 });

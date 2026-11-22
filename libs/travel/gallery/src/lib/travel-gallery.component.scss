@@ -117,3 +117,121 @@
   color: #5b6b6d;
   font-size: 0.9rem;
 }
+
+// The photo labels of the selected trip, under the trip filter and a bit smaller
+.label-filter .filter-button {
+  padding: 4px 12px;
+  font-size: 13px;
+}
+
+.filter-count {
+  margin-left: 4px;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.photo-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.tool-button {
+  padding: 6px 14px;
+  border: 1px solid var(--jost-color-border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--jost-color-ink);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: var(--jost-color-coral);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &.primary {
+    border-color: var(--jost-color-coral);
+    background: var(--jost-color-coral);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--jost-color-coral);
+    outline-offset: 2px;
+  }
+}
+
+// Sticks to the bottom of the window while scrolling through the photos
+.label-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  border: 1px solid var(--jost-color-border);
+  border-radius: 10px 10px 0 0;
+  background: #fff;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.label-bar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.label-bar-count {
+  min-width: 6em;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.label-input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--jost-color-border);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 16px; // below 16px iOS zooms into the field
+
+  &:focus-visible {
+    outline: 2px solid var(--jost-color-coral);
+    outline-offset: 1px;
+  }
+}
+
+.label-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--jost-color-border);
+  border-radius: 999px;
+  background: #f4f6f6;
+  color: var(--jost-color-ink);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: #c0392b;
+    color: #c0392b;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--jost-color-coral);
+    outline-offset: 2px;
+  }
+}

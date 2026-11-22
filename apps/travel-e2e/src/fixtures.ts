@@ -10,6 +10,7 @@ const trip = (id: string, destination: string, startsAt: string, endsAt: string,
   startsAt,
   endsAt,
   photos,
+  photoLabels: {},
 });
 
 export const TRIPS: TripDto[] = [

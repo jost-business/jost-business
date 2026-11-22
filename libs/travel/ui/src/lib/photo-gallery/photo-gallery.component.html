@@ -1,16 +1,32 @@
 @if (photoUrls().length > 0) {
 <div class="photo-gallery">
   <h3 class="gallery-title">{{ heading() }}</h3>
-  <!-- With sortable the tiles can be dragged into a new order; "mixed" lets them wrap like the grid -->
-  <div class="gallery-grid" cdkDropList cdkDropListOrientation="mixed" [cdkDropListDisabled]="!sortable()"
+  <!-- With sortable the tiles can be dragged into a new order; "mixed" lets them wrap like the grid.
+       Near the top or bottom of the window the page scrolls by itself, 20px a frame (the default 2px
+       crawls through a trip with hundreds of photos) -->
+  <div class="gallery-grid" cdkDropList cdkDropListOrientation="mixed" [cdkDropListAutoScrollStep]="20"
+       [cdkDropListDisabled]="!sortable() || selecting()"
        (cdkDropListDropped)="dropped($event)">
     @for (photo of trip().photos; track photo.name; let i = $index) {
-      <div class="gallery-tile" cdkDrag [cdkDragStartDelay]="{ touch: 300, mouse: 0 }" [class.sortable]="sortable()">
+      @let marked = selectedNames().has(photo.name);
+      <div class="gallery-tile" cdkDrag [cdkDragStartDelay]="{ touch: 300, mouse: 0 }"
+           [class.sortable]="sortable() && !selecting()" [class.selecting]="selecting()" [class.marked]="marked">
         <div *cdkDragPlaceholder class="gallery-placeholder"></div>
-        <button type="button" class="gallery-item" (click)="openPhoto(i)" [attr.aria-label]="'Open photo ' + (i + 1)">
-          <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" draggable="false" />
-        </button>
-        @if (deletable()) {
+        @if (selecting()) {
+          <button type="button" class="gallery-item" (click)="tileClicked(i, $event)" [attr.aria-pressed]="marked"
+                  [attr.aria-label]="'Select photo ' + (i + 1)">
+            <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" draggable="false" />
+            <span class="gallery-check" aria-hidden="true"></span>
+            @if (photo.labels.length) {
+              <span class="gallery-labels">{{ photo.labels.join(' · ') }}</span>
+            }
+          </button>
+        } @else {
+          <button type="button" class="gallery-item" (click)="tileClicked(i, $event)" [attr.aria-label]="'Open photo ' + (i + 1)">
+            <img [ngSrc]="photo.url" fill sizes="(max-width: 600px) 100vw, 25vw" [alt]="trip().destination" class="gallery-image" draggable="false" />
+          </button>
+        }
+        @if (deletable() && !selecting()) {
           <button type="button" class="gallery-delete" (click)="deleteRequested.emit(photo)"
                   [attr.aria-label]="'Delete photo ' + (i + 1)" title="Delete photo">&times;</button>
         }

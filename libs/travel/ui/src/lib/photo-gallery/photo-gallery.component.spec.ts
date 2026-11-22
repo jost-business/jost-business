@@ -9,7 +9,7 @@ const TRIP: Trip = {
   destination: 'Lima, Peru',
   from: new Date('2030-03-01T10:00:00.000Z'),
   to: new Date('2030-03-08T10:00:00.000Z'),
-  photos: ['a.webp', 'b.webp', 'c.webp'].map(name => ({ name, url: `/api/photos/2030-03-peru/${name}` })),
+  photos: ['a.webp', 'b.webp', 'c.webp'].map(name => ({ name, url: `/api/photos/2030-03-peru/${name}`, labels: [] })),
 };
 
 describe('PhotoGalleryComponent', () => {
@@ -107,5 +107,47 @@ describe('PhotoGalleryComponent', () => {
 
     expect(orders).toEqual([['b.webp', 'c.webp', 'a.webp']]);
     expect(TRIP.photos.map(photo => photo.name)).toEqual(['a.webp', 'b.webp', 'c.webp']);
+  });
+});
+
+describe('PhotoGalleryComponent selecting photos', () => {
+  function showSelecting() {
+    const fixture = TestBed.createComponent(PhotoGalleryComponent);
+    const labelled: Trip = { ...TRIP, photos: TRIP.photos.map((p, i) => (i === 0 ? { ...p, labels: ['Dakhla Club'] } : p)) };
+    fixture.componentRef.setInput('trip', labelled);
+    fixture.componentRef.setInput('selecting', true);
+    fixture.componentRef.setInput('sortable', true);
+    fixture.componentRef.setInput('deletable', true);
+    fixture.autoDetectChanges();
+    return fixture.componentInstance;
+  }
+
+  it('marks photos instead of opening them, and shows their labels', async () => {
+    const gallery = showSelecting();
+
+    await page.getByRole('button', { name: 'Select photo 1' }).click();
+    await page.getByRole('button', { name: 'Select photo 3' }).click();
+
+    expect(gallery.selected()).toEqual(['a.webp', 'c.webp']);
+    await expect.element(page.getByRole('button', { name: 'Select photo 1' })).toHaveAttribute('aria-pressed', 'true');
+    await expect.element(page.getByText('Dakhla Club')).toBeVisible();
+    expect(document.querySelector('.lightbox-backdrop')).toBeNull();
+    // No deleting or dragging while marking
+    expect(page.getByRole('button', { name: /Delete photo/ }).elements()).toHaveLength(0);
+    expect(document.querySelector('.gallery-grid')?.classList).toContain('cdk-drop-list-disabled');
+
+    await page.getByRole('button', { name: 'Select photo 1' }).click();
+    expect(gallery.selected()).toEqual(['c.webp']);
+  });
+
+  it('marks a range with shift-click', async () => {
+    const gallery = showSelecting();
+
+    await page.getByRole('button', { name: 'Select photo 1' }).click();
+    await userEvent.keyboard('{Shift>}');
+    await page.getByRole('button', { name: 'Select photo 3' }).click();
+    await userEvent.keyboard('{/Shift}');
+
+    expect(gallery.selected()).toEqual(['a.webp', 'b.webp', 'c.webp']);
   });
 });

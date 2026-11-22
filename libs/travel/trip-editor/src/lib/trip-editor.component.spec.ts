@@ -11,6 +11,7 @@ const LISBON: TripDto = {
   startsAt: new Date(2027, 2, 1, 10, 0).toISOString(),
   endsAt: new Date(2027, 2, 8, 18, 30).toISOString(),
   photos: [],
+  photoLabels: {},
 };
 
 describe('TripEditorComponent', () => {

@@ -4,9 +4,10 @@ import { AuthStore } from '@jost/shared';
 import { TravelGalleryComponent } from '@jost/travel/gallery';
 
 /**
- * /gallery shows every photo, /gallery?trip=<id> one trip's. The filter lives
- * in the URL, so it survives a reload, can be shared as a link, and the back
- * button steps through the trips that were looked at.
+ * /gallery shows every photo, /gallery?trip=<id> one trip's, and
+ * &label=<label> only that trip's photos with a label. The filters live in
+ * the URL, so they survive a reload, can be shared as a link, and the back
+ * button steps through what was looked at.
  */
 @Component({
   selector: 'app-gallery-route',
@@ -18,7 +19,8 @@ import { TravelGalleryComponent } from '@jost/travel/gallery';
         <a class="action" [routerLink]="['/trip', trip, 'edit']">Edit trip</a>
       </nav>
     }
-    <jost-travel-gallery [tripId]="trip()" [editable]="auth.isLoggedIn()" (tripChange)="select($event)" />
+    <jost-travel-gallery [tripId]="trip()" [label]="label()" [editable]="auth.isLoggedIn()"
+                         (tripChange)="select($event)" (labelChange)="selectLabel($event)" />
   `,
 })
 export class GalleryRouteComponent {
@@ -27,8 +29,15 @@ export class GalleryRouteComponent {
 
   /** The ?trip= query parameter (withComponentInputBinding). */
   readonly trip = input<string>();
+  /** The ?label= query parameter: only the trip's photos with this label. */
+  readonly label = input<string>();
 
+  /** Another trip; its photos have other labels, so the label filter goes. */
   protected select(trip: string | undefined): void {
     this.router.navigate(['/gallery'], { queryParams: trip ? { trip } : {} });
+  }
+
+  protected selectLabel(label: string | undefined): void {
+    this.router.navigate(['/gallery'], { queryParams: { trip: this.trip(), label } });
   }
 }

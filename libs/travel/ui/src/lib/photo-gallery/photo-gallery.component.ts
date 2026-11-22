@@ -1,4 +1,4 @@
-import { Component, input, linkedSignal, computed, output } from '@angular/core';
+import { Component, input, linkedSignal, computed, model, output } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { type CdkDragDrop, CdkDrag, CdkDragPlaceholder, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import type { Photo, Trip } from '@jost/models';
@@ -26,6 +26,34 @@ export class PhotoGalleryComponent {
   readonly sortable = input(false);
   /** The photos in their new order after a drag; saving it is up to the page. */
   readonly reordered = output<Photo[]>();
+  /**
+   * Selection mode: a click marks a photo instead of opening it, a shift-click
+   * marks every photo from the last clicked one. Dragging and deleting are off.
+   */
+  readonly selecting = input(false);
+  /** Names of the marked photos; the page reads and clears it. */
+  readonly selected = model<string[]>([]);
+
+  protected readonly selectedNames = computed(() => new Set(this.selected()));
+  /** Where a shift-click range starts. */
+  private rangeStart = 0;
+
+  protected tileClicked(index: number, event: MouseEvent): void {
+    if (!this.selecting()) {
+      this.openPhoto(index);
+      return;
+    }
+    const photos = this.trip().photos;
+    const name = photos[index].name;
+    if (event.shiftKey) {
+      const [from, to] = [Math.min(this.rangeStart, index), Math.max(this.rangeStart, index)];
+      const range = photos.slice(from, to + 1).map(photo => photo.name);
+      this.selected.update(selected => [...new Set([...selected, ...range])]);
+    } else {
+      this.selected.update(selected => (selected.includes(name) ? selected.filter(n => n !== name) : [...selected, name]));
+    }
+    this.rangeStart = index;
+  }
 
   dropped(event: CdkDragDrop<unknown>): void {
     if (event.previousIndex === event.currentIndex) return;
