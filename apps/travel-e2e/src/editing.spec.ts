@@ -140,3 +140,32 @@ test('a logged-in user labels photos and filters by the label', async ({ page })
   await expect(page).toHaveURL(/\/gallery\?trip=2025-10-turkey$/);
   await expect(page.getByRole('button', { name: /Open photo/ })).toHaveCount(3);
 });
+
+test('with labels, all photos come in sections that are sorted on their own', async ({ page }) => {
+  const turkey = TRIPS.find(trip => trip.id === '2025-10-turkey');
+  if (!turkey) throw new Error('The fixtures have no Turkey trip');
+  // alanya_cable_car.jpeg has no label and sits between the two hotel photos
+  const labelled = { ...turkey, photoLabels: { 'alanya.jpeg': ['Dakhla Club'], 'alanya_love.jpeg': ['Dakhla Club'] } };
+  let saved: string[] | undefined;
+  await page.route('**/api/auth/session', route => route.fulfill({ json: { user: USER } }));
+  await page.route('**/api/trips', route => route.fulfill({ json: TRIPS.map(t => (t.id === turkey.id ? labelled : t)) }));
+  await page.route('**/api/trips/2025-10-turkey/photos', async route => {
+    saved = route.request().postDataJSON().photos;
+    await route.fulfill({ json: { ...labelled, photos: saved } });
+  });
+  await page.setViewportSize({ width: 1100, height: 1000 });
+  await page.goto('/gallery?trip=2025-10-turkey');
+
+  await expect(page.getByRole('heading', { level: 4 })).toHaveText([/Dakhla Club\s*2/, /Without label\s*1/]);
+  await page.screenshot({ path: 'C:/Users/dains/AppData/Local/Temp/claude/ba077d8fe1140e8f/492b043d-a8d3-44f7-8566-65d3167d48a9/scratchpad/sections.png' });
+
+  const first = await page.getByRole('button', { name: 'Open photo 1' }).first().boundingBox();
+  const second = await page.getByRole('button', { name: 'Open photo 2' }).first().boundingBox();
+  if (!first || !second) throw new Error('The photos are not on the screen');
+  await page.mouse.move(first.x + first.width / 2, first.y + first.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(second.x + second.width * 0.75, second.y + second.height / 2, { steps: 20 });
+  await page.mouse.up();
+
+  await expect.poll(() => saved).toEqual(['alanya_love.jpeg', 'alanya_cable_car.jpeg', 'alanya.jpeg']);
+});

@@ -244,7 +244,10 @@ describe('TravelGalleryComponent', () => {
       await expect.element(labelFilter('All photos')).toHaveAttribute('aria-pressed', 'true');
       await expect.element(labelFilter('Beach 1')).toBeVisible();
       await expect.element(labelFilter('Dakhla Club 2')).toBeVisible();
-      expect(photos().elements()).toHaveLength(3);
+      // All photos come in a section per label, A to Z, and the rest at the end; a.jpg has two labels
+      const sectionTitles = [...document.querySelectorAll('h4')].map(h => h.textContent?.replace(/\s+/g, ' ').trim());
+      expect(sectionTitles).toEqual(['Beach 1', 'Dakhla Club 2', 'Without label 1']);
+      expect(photos().elements()).toHaveLength(4);
 
       await labelFilter(/Dakhla Club/).click();
       expect(labels).toEqual(['Dakhla Club']);
@@ -261,7 +264,7 @@ describe('TravelGalleryComponent', () => {
       await openLabelled(false, 'Oasis 212');
 
       await expect.element(labelFilter('All photos')).toHaveAttribute('aria-pressed', 'true');
-      expect(photos().elements()).toHaveLength(3);
+      expect(photos().elements()).toHaveLength(4);
     });
 
     it('has no label filter for all trips or a trip without labels', async () => {
@@ -275,7 +278,8 @@ describe('TravelGalleryComponent', () => {
       await page.getByRole('button', { name: 'Select photos' }).click();
 
       await page.getByRole('button', { name: 'Select photo 2' }).click();
-      await page.getByRole('button', { name: 'Select photo 3' }).click();
+      // The third "photo 1" is c2.jpg, the first in "Without label"
+      await page.getByRole('button', { name: 'Select photo 1' }).nth(2).click();
       await expect.element(page.getByText('2 marked')).toBeVisible();
       const suggestions = [...document.querySelectorAll<HTMLOptionElement>('#trip-labels option')].map(o => o.value);
       expect(suggestions).toEqual(['Beach', 'Dakhla Club']);
@@ -309,7 +313,7 @@ describe('TravelGalleryComponent', () => {
     it('says so when a label cannot be saved', async () => {
       await openLabelled(true);
       await page.getByRole('button', { name: 'Select photos' }).click();
-      await page.getByRole('button', { name: 'Select photo 1' }).click();
+      await page.getByRole('button', { name: 'Select photo 1' }).first().click();
       await page.getByRole('combobox', { name: 'Label' }).fill('Oasis 212');
       await page.getByRole('button', { name: 'Add label' }).click();
 
@@ -317,6 +321,23 @@ describe('TravelGalleryComponent', () => {
 
       await expect.element(page.getByText(/^The label could not be saved/)).toBeVisible();
       await expect.element(page.getByRole('combobox', { name: 'Label' })).toHaveValue('Oasis 212');
+    });
+
+    it('sorts a section on its own: its photos swap places, the others stay put', async () => {
+      // c2.jpg (no label) sits between the two Dakhla Club photos
+      const mixed: TripDto = { ...labelled, photos: ['a.jpg', 'c2.jpg', 'b.jpg'], photoLabels: { 'a.jpg': ['Dakhla Club'], 'b.jpg': ['Dakhla Club'] } };
+      await open('2030-03-peru', true, undefined, [TRIPS[0], mixed, TRIPS[2]]);
+      await expect.element(page.getByText('Drag the photos to change their order within a label.')).toBeVisible();
+      const galleries = fixture.debugElement.queryAll(By.directive(PhotoGalleryComponent)).map(d => d.componentInstance as PhotoGalleryComponent);
+      expect(galleries.map(g => g.heading())).toEqual(['Dakhla Club', 'Without label']);
+      expect(galleries.every(g => g.sortable())).toBe(true);
+
+      const dakhla = galleries[0];
+      dakhla.reordered.emit([...dakhla.trip().photos].reverse());
+
+      const request = await nextRequest('PUT', '/api/trips/2030-03-peru/photos');
+      expect(request.request.body).toEqual({ photos: ['b.jpg', 'c2.jpg', 'a.jpg'] });
+      request.flush({ ...mixed, photos: ['b.jpg', 'c2.jpg', 'a.jpg'] });
     });
 
     it('does not let photos be dragged while only some are shown', async () => {

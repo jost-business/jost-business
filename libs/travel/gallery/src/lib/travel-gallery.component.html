@@ -53,14 +53,12 @@
             } @else if (activeLabel()) {
               <span class="hint">Show all photos to change their order.</span>
             } @else if (trip.photos.length > 1) {
-              <span class="hint">Drag the photos to change their order.</span>
+              <span class="hint">{{ sections() ? 'Drag the photos to change their order within a label.' : 'Drag the photos to change their order.' }}</span>
             }
           </div>
         }
-        <jost-photo-gallery [trip]="shownTrip() ?? trip" [deletable]="editable()" [sortable]="editable() && !activeLabel()"
-                            [selecting]="selecting()" [(selected)]="selected"
-                            (deleteRequested)="deletePhoto(trip, $event)" (reordered)="reorder(trip, $event)">
-          <!-- Shown under the gallery's heading -->
+        <section class="trip-photos" aria-labelledby="trip-photos-title">
+          <h3 id="trip-photos-title" class="trip-photos-title">Photos</h3>
           @if (tripLabels().length) {
             <div class="filter label-filter" role="group" aria-label="Show photos labelled">
               <button type="button" class="filter-button" [class.active]="!activeLabel()" [attr.aria-pressed]="!activeLabel()"
@@ -72,7 +70,21 @@
               }
             </div>
           }
-        </jost-photo-gallery>
+
+          @if (sections(); as sections) {
+            <!-- All photos of a trip with labels: a section per label, each sorted on its own -->
+            @for (section of sections; track section.key) {
+              <jost-photo-gallery [trip]="section.trip" [heading]="section.title" [headingLevel]="4"
+                                  [deletable]="editable()" [sortable]="editable()"
+                                  [selecting]="selecting()" [(selected)]="selected"
+                                  (deleteRequested)="deletePhoto(trip, $event)" (reordered)="reorderSection(trip, $event)" />
+            }
+          } @else {
+            <jost-photo-gallery [trip]="shownTrip() ?? trip" heading="" [deletable]="editable()" [sortable]="editable() && !activeLabel()"
+                                [selecting]="selecting()" [(selected)]="selected"
+                                (deleteRequested)="deletePhoto(trip, $event)" (reordered)="reorder(trip, $event)" />
+          }
+        </section>
 
         @if (selecting()) {
           <!-- Stays at the bottom of the window while scrolling through the photos -->

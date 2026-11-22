@@ -92,6 +92,25 @@ export class TravelGalleryComponent {
     return trip && label ? { ...trip, photos: trip.photos.filter(photo => photo.labels.includes(label)) } : trip;
   });
 
+  /**
+   * "All photos" of a trip with labels: one section per label, A to Z, and the
+   * photos without one at the end. A photo with two labels is in both. Null
+   * when there is nothing to group: no labels, or one label is filtered.
+   */
+  protected readonly sections = computed(() => {
+    const trip = this.selectedTrip();
+    const labels = this.tripLabels();
+    if (!trip || !labels.length || this.activeLabel()) return null;
+    const sections = labels.map(({ name }) => ({
+      key: `label:${name}`,
+      title: name,
+      trip: { ...trip, photos: trip.photos.filter(photo => photo.labels.includes(name)) },
+    }));
+    const unlabelled = trip.photos.filter(photo => !photo.labels.length);
+    if (unlabelled.length) sections.push({ key: 'unlabelled', title: 'Without label', trip: { ...trip, photos: unlabelled } });
+    return sections;
+  });
+
   /** Selection mode for labelling; leaves off when another trip is shown. */
   protected readonly selecting = linkedSignal({ source: this.tripId, computation: () => false });
   /** Names of the marked photos. */
@@ -213,6 +232,17 @@ export class TravelGalleryComponent {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe();
+  }
+
+  /**
+   * A section's photos in a new order. They swap only the places they already
+   * hold in the trip's order; every other photo stays where it is. So photos
+   * of a label keep their order around photos of other labels.
+   */
+  protected reorderSection(trip: Trip, sectionPhotos: Photo[]): void {
+    const inSection = new Set(sectionPhotos.map(photo => photo.name));
+    const next = sectionPhotos[Symbol.iterator]();
+    this.reorder(trip, trip.photos.map(photo => (inSection.has(photo.name) ? next.next().value ?? photo : photo)));
   }
 
   /** Shows the new order at once; the store puts the old one back if saving fails. */

@@ -118,10 +118,24 @@
   font-size: 0.9rem;
 }
 
-// The photo labels of the selected trip, under the "Photos" heading and a bit smaller
-.label-filter {
-  margin-bottom: 1rem;
+// A trip's photos: heading, label filter, then one gallery or a section per label
+.trip-photos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f0f0f0;
 }
+
+.trip-photos-title {
+  margin: 0 0 -0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--jost-color-ink);
+}
+
+// The photo labels of the selected trip, under the "Photos" heading and a bit smaller
 
 .label-filter .filter-button {
   padding: 4px 12px;

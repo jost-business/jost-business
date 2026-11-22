@@ -16,8 +16,13 @@ import type { Photo, Trip } from '@jost/models';
 })
 export class PhotoGalleryComponent {
   readonly trip = input.required<Trip>();
-  /** The heading above the photos. */
+  /** The heading above the photos; empty for none. */
   readonly heading = input('Photos');
+  /**
+   * 3 for a gallery of its own, set apart by a line; 4 for one section of a
+   * page's photos, which also shows how many photos it has.
+   */
+  readonly headingLevel = input<3 | 4>(3);
   /** Shows a delete button on every photo (for a logged-in user). */
   readonly deletable = input(false);
   /** The delete button of a photo was clicked; deleting is up to the page. */

@@ -1,8 +1,12 @@
 @if (photoUrls().length > 0) {
-<div class="photo-gallery">
-  <h3 class="gallery-title">{{ heading() }}</h3>
-  <!-- Whatever the page puts inside, like a filter, goes under the heading -->
-  <ng-content />
+<div class="photo-gallery" [class.top-level]="!!heading() && headingLevel() === 3">
+  @if (heading()) {
+    @if (headingLevel() === 3) {
+      <h3 class="gallery-title">{{ heading() }}</h3>
+    } @else {
+      <h4 class="gallery-title gallery-title--section">{{ heading() }} <span class="gallery-count">{{ trip().photos.length }}</span></h4>
+    }
+  }
   <!-- With sortable the tiles can be dragged into a new order; "mixed" lets them wrap like the grid.
        Near the top or bottom of the window the page scrolls by itself, 20px a frame (the default 2px
        crawls through a trip with hundreds of photos) -->
